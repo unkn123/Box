@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="headAlign">100dp</dimen>
+    <dimen name="changeOf30dp">30dp</dimen>
+    <dimen name="fortySpSize">40sp</dimen>
+    <dimen name="heightOf110dp">110dp</dimen>
+    <dimen name="marginOf63dp">63dp</dimen>
+</resources>
