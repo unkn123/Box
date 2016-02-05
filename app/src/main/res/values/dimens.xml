@@ -15,5 +15,19 @@
     <dimen name="eightyDpSize">80dp</dimen>
     <dimen name="twoHundredandTen">210dp</dimen>
     <dimen name="fortyfiveSp">45sp</dimen>
+    <dimen name="tendp">10dp</dimen>
+    <dimen name="fivedp">5dp</dimen>
+    <dimen name="fiftydp">50dp</dimen>
+    <dimen name="oneDp">1dp</dimen>
+    <dimen name="twentyFiveSp">25sp</dimen>
+    <dimen name="hundredDp">100dp</dimen>
+    <dimen name="threeTwentyDp">320dp</dimen>
+    <dimen name="sixtyDp">60dp</dimen>
+    <dimen name="threeDp">3dp</dimen>
+    <dimen name="ninetyDp">90dp</dimen>
+    <dimen name="thirtyTwoSp">32sp</dimen>
+    <dimen name="twentyDp">20dp</dimen>
+    <dimen name="fortyDp">40dp</dimen>
+    <dimen name="thirtyDp">30dp</dimen>
 
 </resources>

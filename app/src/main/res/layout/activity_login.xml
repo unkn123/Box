@@ -6,7 +6,29 @@
     android:layout_height="match_parent"
     tools:context="com.jiit.minor2.shubhamjoshi.box.login.login">
 
+    <!--Base Background Setter -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baseColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="@dimen/twentyDp"
+            android:layout_marginLeft="@dimen/thirtyDp"
+            android:layout_marginRight="@dimen/thirtyDp"
+            android:gravity="center"
+            android:text="@string/termsAndConditions"
+            android:textColor="@color/greyShade"/>
+    </RelativeLayout>
+
     <!--Signup Label-->
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -28,6 +50,7 @@
     </LinearLayout>
 
     <!--Custom Facebook Button-->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -61,7 +84,9 @@
     </RelativeLayout>
 
     <!--Third Layer -->
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/adjust40dp"
         android:layout_marginTop="@dimen/adjust110dp"
@@ -70,17 +95,168 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/tendp"
             android:gravity="center"
-            android:text="or with email"
+            android:text="@string/emailChoice"
             android:textColor="@color/greyShade"/>
 
     </LinearLayout>
 
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout2"
+        android:background="#2e2f33"
         android:orientation="vertical">
+        <!--Email-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/editTextColor"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/padding20dp"
+                android:layout_height="@dimen/padding20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/tendp"
+                android:paddingLeft="@dimen/fivedp"
+                android:src="@drawable/check"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftydp"
+                android:layout_marginLeft="@dimen/padding20dp"
+                android:background="@null"
+                android:hint="@string/email"
+                android:textColorHint="@color/greyShade"/>
+        </LinearLayout>
+
+        <!--Choose Password-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/oneDp"
+            android:background="@color/editTextColor"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/padding20dp"
+                android:layout_height="@dimen/padding20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/tendp"
+                android:paddingLeft="@dimen/fivedp"
+                android:src="@drawable/lock"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftydp"
+                android:layout_marginLeft="@dimen/padding20dp"
+                android:background="@null"
+                android:hint="@string/passwordChoose"
+                android:textColorHint="@color/greyShade"/>
+        </LinearLayout>
+
+        <!--Choose Username-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/oneDp"
+            android:background="@color/editTextColor"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/padding20dp"
+                android:layout_height="@dimen/padding20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/tendp"
+                android:paddingLeft="@dimen/fivedp"
+                android:src="@drawable/home"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftydp"
+                android:layout_marginLeft="@dimen/padding20dp"
+                android:background="@null"
+                android:hint="@string/usernameChoose"
+                android:textColorHint="@color/greyShade"/>
+        </LinearLayout>
+
+        <!-- Date of birth -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/oneDp"
+            android:background="@color/editTextColor"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/padding20dp"
+                android:layout_height="@dimen/padding20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/tendp"
+                android:paddingLeft="@dimen/fivedp"
+                android:src="@drawable/calender"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftydp"
+                android:layout_marginLeft="@dimen/padding20dp"
+                android:background="@null"
+                android:hint="@string/Dob"
+                android:textColorHint="@color/greyShade"/>
+        </LinearLayout>
+
+        <!-- Gender Box -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/oneDp"
+            android:background="@color/editTextColor"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/padding20dp"
+                android:layout_height="@dimen/padding20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/tendp"
+                android:paddingLeft="@dimen/fivedp"
+                android:src="@drawable/gender"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fiftydp"
+                android:layout_marginLeft="@dimen/padding20dp"
+                android:background="@null"
+                android:hint="@string/gender"
+                android:textColorHint="@color/greyShade"/>
+        </LinearLayout>
+
+        <!--Sign up button-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fiftydp"
+            android:background="#1db954">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/signUp"
+
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize20sp"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -2,4 +2,14 @@
     <string name="app_name">Box</string>
     <string name="title_activity_login">login</string>
     <string name="signup">SIGN UP</string>
+    <string name="email">Email</string>
+    <string name="passwordChoose">Choose password</string>
+    <string name="usernameChoose">Choose username</string>
+    <string name="Dob">Date of birth</string>
+    <string name="gender">Gender</string>
+    <string name="emailChoice">or with email</string>
+    <string name="signUp">SIGN UP</string>
+    <string name="termsAndConditions">By proceeding you also agree to Box <u>Terms of Service</u>
+        and  <u>Privacy Policy</u>.</string>
+
 </resources>
