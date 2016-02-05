@@ -9,7 +9,7 @@
     <string name="gender">Gender</string>
     <string name="emailChoice">or with email</string>
     <string name="signUp">SIGN UP</string>
-    <string name="termsAndConditions">By proceeding you also agree to Box <u>Terms of Service</u>
-        and  <u>Privacy Policy</u>.</string>
+    <string name="termsAndConditions">By proceeding you also agree to Box <u><font fgcolor="#ffffffff">Terms of Service</font></u>
+        and  <u><font fgcolor="#ffffffff">Privacy Policy</font></u>.</string>
 
 </resources>
