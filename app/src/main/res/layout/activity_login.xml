@@ -129,6 +129,7 @@
                 android:paddingLeft="@dimen/fivedp"
                 android:src="@drawable/check"/>
 
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
@@ -230,6 +231,8 @@
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:id="@+id/date"
+                android:textColor="@android:color/white"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/textSize17sp"
                 android:hint="@string/Dob"
@@ -260,6 +263,8 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/textSize17sp"
+                android:id="@+id/gender"
+                android:textColor="@android:color/white"
                 android:hint="@string/gender"
                 android:textColorHint="@color/greyShade"/>
         </LinearLayout>

@@ -127,7 +127,7 @@
 
             <ImageView
                 android:layout_width="@dimen/sixtyDp"
-                android:layout_height="@dimen/sixtyDp"
+                android:layout_height="@dimen/changeOf30dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/tendp"
                 android:paddingLeft="@dimen/fivedp"
@@ -138,6 +138,9 @@
                 android:layout_height="@dimen/eightyDpSize"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:singleLine="true"
+                android:textCursorDrawable="@null"
+                android:textColor="@android:color/white"
                 android:hint="@string/email"
                 android:textColorHint="@color/greyShade"
                 android:textSize="@dimen/twentyFiveSp"/>
@@ -152,7 +155,7 @@
 
             <ImageView
                 android:layout_width="@dimen/sixtyDp"
-                android:layout_height="@dimen/sixtyDp"
+                android:layout_height="@dimen/changeOf30dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/tendp"
                 android:paddingLeft="@dimen/fivedp"
@@ -162,7 +165,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/eightyDpSize"
                 android:layout_marginLeft="@dimen/padding20dp"
+                android:textColor="@android:color/white"
                 android:background="@null"
+                android:textCursorDrawable="@null"
+                android:singleLine="true"
                 android:hint="@string/passwordChoose"
                 android:textColorHint="@color/greyShade"
                 android:textSize="@dimen/twentyFiveSp"/>
@@ -177,7 +183,7 @@
 
             <ImageView
                 android:layout_width="@dimen/sixtyDp"
-                android:layout_height="@dimen/sixtyDp"
+                android:layout_height="@dimen/changeOf30dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/tendp"
                 android:paddingLeft="@dimen/fivedp"
@@ -185,10 +191,13 @@
 
             <EditText
                 android:layout_width="match_parent"
+                android:textColor="@android:color/white"
                 android:layout_height="@dimen/eightyDpSize"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:textCursorDrawable="@null"
                 android:hint="@string/usernameChoose"
+                android:singleLine="true"
                 android:textColorHint="@color/greyShade"
                 android:textSize="@dimen/twentyFiveSp"/>
         </LinearLayout>
@@ -202,20 +211,25 @@
 
             <ImageView
                 android:layout_width="@dimen/sixtyDp"
-                android:layout_height="@dimen/sixtyDp"
+                android:layout_height="@dimen/changeOf30dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/tendp"
                 android:paddingLeft="@dimen/fivedp"
                 android:src="@drawable/calender"/>
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/eightyDpSize"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+
+                android:id="@+id/date"
+                android:textColor="@android:color/white"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/twentyFiveSp"
                 android:hint="@string/Dob"
-                android:textColorHint="@color/greyShade"
-                android:textSize="@dimen/twentyFiveSp"/>
+                android:textColorHint="@color/greyShade"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -227,18 +241,22 @@
 
             <ImageView
                 android:layout_width="@dimen/sixtyDp"
-                android:layout_height="@dimen/sixtyDp"
+                android:layout_height="@dimen/changeOf30dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/tendp"
                 android:paddingLeft="@dimen/fivedp"
                 android:src="@drawable/gender"/>
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/eightyDpSize"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:id="@+id/gender"
+                android:textColor="@android:color/white"
                 android:hint="@string/gender"
+                android:gravity="center_vertical"
+            
                 android:textColorHint="@color/greyShade"
                 android:textSize="@dimen/twentyFiveSp"/>
         </LinearLayout>
