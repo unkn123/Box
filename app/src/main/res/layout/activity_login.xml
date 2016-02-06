@@ -24,7 +24,10 @@
             android:layout_marginRight="@dimen/thirtyDp"
             android:gravity="center"
             android:text="@string/termsAndConditions"
-            android:textColor="@color/greyShade"/>
+            android:textColor="@color/greyShade"
+            android:id="@+id/textView2"/>
+
+
     </RelativeLayout>
 
     <!--Signup Label-->
@@ -131,8 +134,13 @@
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:singleLine="true"
                 android:hint="@string/email"
-                android:textColorHint="@color/greyShade"/>
+                android:textSize="@dimen/textSize17sp"
+                android:nextFocusForward="@+id/password"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/greyShade"
+                android:textCursorDrawable="@null"/>
         </LinearLayout>
 
         <!--Choose Password-->
@@ -157,8 +165,17 @@
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
-                android:hint="@string/passwordChoose"
-                android:textColorHint="@color/greyShade"/>
+                android:id="@+id/password"
+                android:textSize="@dimen/textSize17sp"
+                android:singleLine="true"
+                android:textCursorDrawable="@null"
+                android:inputType="textPassword"
+                android:fontFamily="sans serif"
+                android:ellipsize="start"
+                android:hint="Choose password"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/greyShade"
+                />
         </LinearLayout>
 
         <!--Choose Username-->
@@ -183,8 +200,12 @@
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:singleLine="true"
+                android:textSize="@dimen/textSize17sp"
                 android:hint="@string/usernameChoose"
-                android:textColorHint="@color/greyShade"/>
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/greyShade"
+                android:textCursorDrawable="@null"/>
         </LinearLayout>
 
         <!-- Date of birth -->
@@ -204,11 +225,13 @@
                 android:paddingLeft="@dimen/fivedp"
                 android:src="@drawable/calender"/>
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/textSize17sp"
                 android:hint="@string/Dob"
                 android:textColorHint="@color/greyShade"/>
         </LinearLayout>
@@ -230,11 +253,13 @@
                 android:paddingLeft="@dimen/fivedp"
                 android:src="@drawable/gender"/>
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/textSize17sp"
                 android:hint="@string/gender"
                 android:textColorHint="@color/greyShade"/>
         </LinearLayout>
@@ -252,7 +277,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="@string/signUp"
-
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize20sp"/>
 
