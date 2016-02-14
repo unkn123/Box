@@ -29,5 +29,6 @@
     <dimen name="twentyDp">20dp</dimen>
     <dimen name="fortyDp">40dp</dimen>
     <dimen name="thirtyDp">30dp</dimen>
+    <dimen name="twentyFiveDp">25dp</dimen>
 
 </resources>

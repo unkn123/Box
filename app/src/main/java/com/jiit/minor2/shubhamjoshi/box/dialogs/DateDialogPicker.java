@@ -34,13 +34,12 @@ public class DateDialogPicker extends DialogFragment implements DatePickerDialog
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        String date=checkDigit(monthOfYear+1)+"/"+checkDigit(dayOfMonth)+"/"+year;
+        String date = checkDigit(dayOfMonth) + "/" + checkDigit(monthOfYear + 1) + "/" + year;
         dateTextView.setText(date);
     }
 
-    public String checkDigit(int number)
-    {
-        return number<=9?"0"+number:String.valueOf(number);
+    public String checkDigit(int number) {
+        return number <= 9 ? "0" + number : String.valueOf(number);
     }
 
 }

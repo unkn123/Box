@@ -1,31 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jiit.minor2.shubhamjoshi.box.login.login">
-
-    <!--Base Background Setter -->
+    tools:context=".signup.SignUp">
 
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/baseColor">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="@dimen/twentyDp"
-            android:layout_marginLeft="@dimen/thirtyDp"
-            android:layout_marginRight="@dimen/thirtyDp"
-            android:gravity="center"
-            android:text="@string/termsAndConditions"
-            android:textColor="@color/greyShade"
-            android:id="@+id/textView2"/>
 
 
     </RelativeLayout>
@@ -33,7 +17,7 @@
     <!--Signup Label-->
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="@dimen/headAlign"
         android:background="@color/baseColor"
@@ -44,22 +28,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/adj15dp"
             android:gravity="center|center_horizontal"
-            android:text="@string/signup"
+            android:text="@string/login"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize20sp"
             />
 
-
     </LinearLayout>
 
-    <!--Custom Facebook Button-->
+    <!-- Fb Login -->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
+        android:layout_below="@+id/login"
         android:background="@color/fbColor"
         >
 
@@ -80,13 +63,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="Sign up with facebook"
+            android:text="@string/fblogin"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize17sp"/>
 
     </RelativeLayout>
 
-    <!--Third Layer -->
+
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -95,15 +78,18 @@
         android:layout_marginTop="@dimen/adjust110dp"
         android:background="@color/baseColor">
 
+        <!--or label -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tendp"
             android:gravity="center"
-            android:text="@string/emailChoice"
+            android:text="@string/or"
             android:textColor="@color/greyShade"/>
 
     </LinearLayout>
+
 
 
     <LinearLayout
@@ -114,7 +100,9 @@
         android:layout_below="@+id/linearLayout2"
         android:background="#2e2f33"
         android:orientation="vertical">
-        <!--Email-->
+
+        <!--Username-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,7 +115,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/tendp"
                 android:paddingLeft="@dimen/fivedp"
-                android:src="@drawable/check"/>
+                android:src="@drawable/home"/>
 
 
             <EditText
@@ -135,16 +123,16 @@
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
-                android:singleLine="true"
                 android:hint="@string/email"
-                android:textSize="@dimen/textSize17sp"
-                android:nextFocusForward="@+id/password"
+                android:singleLine="true"
+                android:id="@+id/email"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/greyShade"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/textSize17sp"/>
         </LinearLayout>
 
-        <!--Choose Password-->
+        <!-- Password field -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -161,119 +149,27 @@
                 android:paddingLeft="@dimen/fivedp"
                 android:src="@drawable/lock"/>
 
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
                 android:id="@+id/password"
-                android:textSize="@dimen/textSize17sp"
+                android:hint="@string/Password"
                 android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/greyShade"
                 android:textCursorDrawable="@null"
-                android:inputType="textPassword"
-                android:fontFamily="sans serif"
-                android:ellipsize="start"
-                android:hint="Choose password"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/greyShade"
-                />
+                android:textSize="@dimen/textSize17sp"/>
         </LinearLayout>
 
-        <!--Choose Username-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/oneDp"
-            android:background="@color/editTextColor"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/padding20dp"
-                android:layout_height="@dimen/padding20dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/tendp"
-                android:paddingLeft="@dimen/fivedp"
-                android:src="@drawable/home"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fiftydp"
-                android:layout_marginLeft="@dimen/padding20dp"
-                android:background="@null"
-                android:singleLine="true"
-                android:textSize="@dimen/textSize17sp"
-                android:hint="@string/usernameChoose"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/greyShade"
-                android:textCursorDrawable="@null"/>
-        </LinearLayout>
-
-        <!-- Date of birth -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/oneDp"
-            android:background="@color/editTextColor"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/padding20dp"
-                android:layout_height="@dimen/padding20dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/tendp"
-                android:paddingLeft="@dimen/fivedp"
-                android:src="@drawable/calender"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fiftydp"
-                android:layout_marginLeft="@dimen/padding20dp"
-                android:background="@null"
-                android:id="@+id/date"
-                android:textColor="@android:color/white"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/textSize17sp"
-                android:hint="@string/Dob"
-                android:textColorHint="@color/greyShade"/>
-        </LinearLayout>
-
-        <!-- Gender Box -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/oneDp"
-            android:background="@color/editTextColor"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/padding20dp"
-                android:layout_height="@dimen/padding20dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/tendp"
-                android:paddingLeft="@dimen/fivedp"
-                android:src="@drawable/gender"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fiftydp"
-                android:layout_marginLeft="@dimen/padding20dp"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/textSize17sp"
-                android:id="@+id/gender"
-                android:textColor="@android:color/white"
-                android:hint="@string/gender"
-                android:textColorHint="@color/greyShade"/>
-        </LinearLayout>
-
-        <!--Sign up button-->
+        <!-- Login Button-->
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/fiftydp"
+            android:id="@+id/LoginButton"
             android:background="#1db954">
 
             <TextView
@@ -281,10 +177,26 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="@string/signUp"
+                android:text="@string/login"
+
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize20sp"/>
 
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/baseColor"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/greyShade"
+                android:layout_marginTop="@dimen/twentyFiveDp"
+                android:text="@string/passForgot"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
         </RelativeLayout>
 
     </LinearLayout>

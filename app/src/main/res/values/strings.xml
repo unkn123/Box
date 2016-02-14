@@ -16,5 +16,11 @@
     <string name="Female">Female</string>
     <string name="Gender">Gender</string>
     <string name="Date">Date</string>
+    <string name="login">LOG  IN</string>
+    <string name="or">or</string>
+    <string name="Password">Password</string>
+    <string name="Username">Username</string>
+    <string name="fblogin">Log in with facebook</string>
+    <string name="passForgot">Forget your password?</string>
 
 </resources>
