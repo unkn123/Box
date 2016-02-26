@@ -14,6 +14,7 @@
         android:background="@color/baseColor">
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -24,8 +25,7 @@
             android:layout_marginRight="@dimen/thirtyDp"
             android:gravity="center"
             android:text="@string/termsAndConditions"
-            android:textColor="@color/greyShade"
-            android:id="@+id/textView2"/>
+            android:textColor="@color/greyShade"/>
 
 
     </RelativeLayout>
@@ -54,37 +54,52 @@
 
     <!--Custom Facebook Button-->
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/FrameLayout1"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
-        android:background="@color/fbColor"
-        >
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout">
 
-        <TextView
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/fbLogin"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="@dimen/padding20dp"
-            android:text="f"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/fortyfiveSp"
-            android:textStyle="bold"/>
+            android:background="@color/fbColor"
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="Sign up with facebook"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize17sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="@dimen/padding20dp"
+                android:text="f"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fortyfiveSp"
+                android:textStyle="bold"/>
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/fblogin"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize17sp"/>
+
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <!--Third Layer -->
 
@@ -131,18 +146,18 @@
 
 
             <EditText
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
-                android:singleLine="true"
                 android:hint="@string/email"
-                android:textSize="@dimen/textSize17sp"
-                android:id="@+id/email"
                 android:nextFocusForward="@+id/password"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/greyShade"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/textSize17sp"/>
         </LinearLayout>
 
         <!--Choose Password-->
@@ -163,20 +178,20 @@
                 android:src="@drawable/lock"/>
 
             <EditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
-                android:id="@+id/password"
-                android:textSize="@dimen/textSize17sp"
-                android:singleLine="true"
-                android:textCursorDrawable="@null"
-                android:inputType="textPassword"
-                android:fontFamily="sans serif"
                 android:ellipsize="start"
+                android:fontFamily="sans serif"
                 android:hint="Choose password"
+                android:inputType="textPassword"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/greyShade"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/textSize17sp"
                 />
         </LinearLayout>
 
@@ -198,17 +213,17 @@
                 android:src="@drawable/home"/>
 
             <EditText
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
-                android:singleLine="true"
-                android:id="@+id/username"
-                android:textSize="@dimen/textSize17sp"
                 android:hint="@string/usernameChoose"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/greyShade"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/textSize17sp"/>
         </LinearLayout>
 
         <!-- Date of birth -->
@@ -229,16 +244,16 @@
                 android:src="@drawable/calender"/>
 
             <TextView
+                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
-                android:id="@+id/date"
-                android:textColor="@android:color/white"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/textSize17sp"
                 android:hint="@string/Dob"
-                android:textColorHint="@color/greyShade"/>
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/greyShade"
+                android:textSize="@dimen/textSize17sp"/>
         </LinearLayout>
 
         <!-- Gender Box -->
@@ -259,24 +274,24 @@
                 android:src="@drawable/gender"/>
 
             <TextView
+                android:id="@+id/gender"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/textSize17sp"
-                android:id="@+id/gender"
-                android:textColor="@android:color/white"
                 android:hint="@string/gender"
-                android:textColorHint="@color/greyShade"/>
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/greyShade"
+                android:textSize="@dimen/textSize17sp"/>
         </LinearLayout>
 
         <!--Sign up button-->
 
         <RelativeLayout
+            android:id="@+id/signUp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/fiftydp"
-            android:id="@+id/signUp"
             android:background="#1db954">
 
             <TextView

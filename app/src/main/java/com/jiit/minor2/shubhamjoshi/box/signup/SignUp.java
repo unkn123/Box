@@ -3,6 +3,7 @@ package com.jiit.minor2.shubhamjoshi.box.signup;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,18 +17,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.dialogs.DateDialogPicker;
-import com.jiit.minor2.shubhamjoshi.box.login.LoginActivity;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
-import java.util.HashMap;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
@@ -36,9 +49,13 @@ public class SignUp extends AppCompatActivity {
     private EditText email;
     private EditText username;
     private TextView dob;
+    private View facebookLoginButton;
     private EditText password;
     private TextView genderTextView;
+    private ProgressDialog mProgress;
     private Firebase baseUrl;
+    private LoginButton mLoginButton;
+    private CallbackManager mCallbackManager;
     private final static String TAG = SignUp.class.getSimpleName();
 
     @Override
@@ -98,6 +115,7 @@ public class SignUp extends AppCompatActivity {
         public void onAuthenticated(AuthData authData) {
             // Authenticated successfully with payload authData
         }
+
         @Override
         public void onAuthenticationError(FirebaseError firebaseError) {
             // Authenticated failed with error firebaseError
@@ -106,26 +124,35 @@ public class SignUp extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
+        mProgress = new ProgressDialog(SignUp.this, ProgressDialog.STYLE_HORIZONTAL);
+        mProgress.setTitle("Processing...");
+        mProgress.setMessage("Please wait...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
 
         init();
+
         baseUrl = new Firebase(Constants.FIREBASE_URL);
+        mCallbackManager = CallbackManager.Factory.create();
 
-        baseUrl.addAuthStateListener(new Firebase.AuthStateListener() {
+        //Crux of facebook Login
+
+        fbLoginFunctionality();
+
+
+        //Facebook Login Screen
+
+        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onAuthStateChanged(AuthData authData) {
-                if (authData != null) {
-                    // user is logged in
-                    Log.e(TAG, "Loged in");
-                } else {
-
-                    Log.e(TAG, "Loged out");
-                    // user is not logged in
-                }
+            public void onClick(View v) {
+                mLoginButton.performClick();
             }
         });
+
+
         View S = findViewById(R.id.signUp);
         S.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,12 +163,12 @@ public class SignUp extends AppCompatActivity {
                 final String Dob = dob.getText().toString();
                 final String Gender = genderTextView.getText().toString();
                 User user = new User(Email, Username, Dob, Gender);
-                Firebase child = baseUrl.child("user");
+                Firebase child = baseUrl.child(Constants.USER);
                 child.push().setValue(user);
                 baseUrl.createUser(Email, Password, new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> result) {
-                        baseUrl.authWithPassword(Email,Password, authResultHandler);
+                        baseUrl.authWithPassword(Email, Password, authResultHandler);
                         Intent intent = new Intent(getBaseContext(), Chooser.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -158,6 +185,88 @@ public class SignUp extends AppCompatActivity {
 
     }
 
+    private void fbLoginFunctionality() {
+        mLoginButton.setReadPermissions(Arrays.asList("user_photos", "email",
+                "user_birthday", "public_profile"));
+
+        mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(final LoginResult loginResult) {
+                System.out.println("onSuccess");
+                final String accessToken = loginResult.getAccessToken()
+                        .getToken();
+                Log.i("accessToken", accessToken);
+
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.i("LoginActivity", response.toString());
+                                try {
+                                    String id = object.getString("id");
+                                    try {
+                                        URL profile_pic = new URL(
+                                                "http://graph.facebook.com/" + id + "/picture?type=large");
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    }
+                                    String name = object.getString("name");
+                                    String email = object.getString("email");
+                                    String gender = object.getString("gender");
+                                    String birthday = object.getString("birthday");
+                                    onFacebookAccessTokenChange(loginResult.getAccessToken(), name, email, birthday, gender);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields",
+                        "id,name,email,gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                System.out.println("onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                System.out.println("onError");
+            }
+        });
+    }
+
+    private void onFacebookAccessTokenChange(AccessToken token, final String name, final String email, final String dob, final String gender) {
+        if (token != null) {
+            baseUrl.authWithOAuthToken("facebook", token.getToken(), new Firebase.AuthResultHandler() {
+                @Override
+                public void onAuthenticated(AuthData authData) {
+                    User user = new User(email, name, dob, gender);
+                    Firebase child = baseUrl.child(Constants.USER);
+                    child.push().setValue(user);
+                }
+
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+
+                }
+            });
+        } else {
+            baseUrl.unauth();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, responseCode, data);
+        mCallbackManager.onActivityResult(requestCode, responseCode, data);
+    }
+
     public void init() {
         email = (EditText) findViewById(R.id.email);
         username = (EditText) findViewById(R.id.username);
@@ -165,5 +274,9 @@ public class SignUp extends AppCompatActivity {
         dateTextView = (TextView) findViewById(R.id.date);
         genderTextView = (TextView) findViewById(R.id.gender);
         dob = (TextView) findViewById(R.id.date);
+        facebookLoginButton = findViewById(R.id.fbLogin);
+        mLoginButton = (LoginButton) findViewById(R.id.login_button);
+
     }
+
 }

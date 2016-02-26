@@ -4,10 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:background="@color/baseColor"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jiit.minor2.shubhamjoshi.box.chooser.Chooser">
+
+    <LinearLayout
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/headAlign"
+        android:background="@color/baseColor"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/adj15dp"
+            android:gravity="center|center_horizontal"
+            android:text="LOGGED IN"
+            android:id="@+id/logout"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize20sp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

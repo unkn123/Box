@@ -2,8 +2,8 @@ package com.jiit.minor2.shubhamjoshi.box;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.firebase.client.Firebase;
-import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
 /**
  * Created by Shubham Joshi on 14-02-2016.
@@ -13,5 +13,7 @@ public class engine extends Application {
     public void onCreate() {
         super.onCreate();
         Firebase.setAndroidContext(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
     }
 }

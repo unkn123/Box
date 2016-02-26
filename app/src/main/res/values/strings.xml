@@ -22,5 +22,6 @@
     <string name="Username">Username</string>
     <string name="fblogin">Log in with facebook</string>
     <string name="passForgot">Forget your password?</string>
+    <string name="facebook_app_id">1120505551295641</string>
 
 </resources>

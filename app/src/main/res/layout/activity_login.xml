@@ -37,39 +37,53 @@
 
     <!-- Fb Login -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/login"
-        android:background="@color/fbColor"
-        >
 
-        <TextView
+    <FrameLayout
+        android:id="@+id/FrameLayout1"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/login"
+        android:layout_height="wrap_content">
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/fbLogin"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="@dimen/padding20dp"
-            android:text="f"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/fortyfiveSp"
-            android:textStyle="bold"/>
+            android:background="@color/fbColor"
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="@string/fblogin"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize17sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="@dimen/padding20dp"
+                android:text="f"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/fortyfiveSp"
+                android:textStyle="bold"/>
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/fblogin"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize17sp"/>
 
 
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -89,7 +103,6 @@
             android:textColor="@color/greyShade"/>
 
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -119,13 +132,13 @@
 
 
             <EditText
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
                 android:hint="@string/email"
                 android:singleLine="true"
-                android:id="@+id/email"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/greyShade"
                 android:textCursorDrawable="@null"
@@ -151,12 +164,14 @@
 
 
             <EditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fiftydp"
                 android:layout_marginLeft="@dimen/padding20dp"
                 android:background="@null"
-                android:id="@+id/password"
+                android:fontFamily="sans-serif"
                 android:hint="@string/Password"
+                android:inputType="textPassword"
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/greyShade"
@@ -167,9 +182,9 @@
         <!-- Login Button-->
 
         <RelativeLayout
+            android:id="@+id/LoginButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/fiftydp"
-            android:id="@+id/LoginButton"
             android:background="#1db954">
 
             <TextView
@@ -187,16 +202,17 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@color/baseColor"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/baseColor">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/greyShade"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/twentyFiveDp"
                 android:text="@string/passForgot"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"/>
+                android:textColor="@color/greyShade"/>
         </RelativeLayout>
 
     </LinearLayout>
