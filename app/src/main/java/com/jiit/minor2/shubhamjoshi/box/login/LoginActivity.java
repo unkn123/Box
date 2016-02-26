@@ -10,13 +10,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
+import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,26 +40,31 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email;
     private View facebookLoginButton;
     private ProgressDialog mProgress;
+    private CallbackManager mCallbackManager;
+    private LoginButton mLoginButton;
+    private Firebase baseRef;
+    private static final String TAG = LoginActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         init();
-        mProgress= new ProgressDialog(LoginActivity.this, ProgressDialog.STYLE_HORIZONTAL);
+        mProgress = new ProgressDialog(LoginActivity.this, ProgressDialog.STYLE_HORIZONTAL);
         mProgress.setTitle("Processing...");
         mProgress.setMessage("Please wait...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
-        final Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
-
+        baseRef = new Firebase(Constants.FIREBASE_URL);
+        mCallbackManager = CallbackManager.Factory.create();
         //For fb LoginButton
+
+        fbLoginFunctionality();
 
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("SJ","YO");
-                com.facebook.login.widget.LoginButton btn = new LoginButton(LoginActivity.this);
-                btn.performClick();
+                mLoginButton.performClick();
             }
         });
 
@@ -73,10 +94,86 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void fbLoginFunctionality() {
+        mLoginButton.setReadPermissions(Arrays.asList(Constants.USER_PHOTO, Constants.EMAIL,
+                Constants.BIRTHDAY, Constants.PUBLIC_PROFILE));
+
+        mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(final LoginResult loginResult) {
+                System.out.println("onSuccess");
+                final String accessToken = loginResult.getAccessToken()
+                        .getToken();
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try {
+                                    String id = object.getString("id");
+                                    try {
+                                        URL profile_pic = new URL(
+                                                "http://graph.facebook.com/" + id + "/picture?type=large");
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    }
+                                    String name = object.getString("name");
+                                    Log.e(TAG, name);
+                                    onFacebookAccessTokenChange(loginResult.getAccessToken());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields",
+                        "id,name,email,gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                System.out.println("onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                System.out.println("onError");
+            }
+        });
+    }
+
+    private void onFacebookAccessTokenChange(AccessToken token) {
+        if (token != null) {
+            baseRef.authWithOAuthToken("facebook", token.getToken(), new Firebase.AuthResultHandler() {
+                @Override
+                public void onAuthenticated(AuthData authData) {
+
+                }
+
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+
+                }
+            });
+        } else {
+            baseRef.unauth();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, responseCode, data);
+        mCallbackManager.onActivityResult(requestCode, responseCode, data);
+    }
+
     public void init() {
         password = (EditText) findViewById(R.id.password);
         email = (EditText) findViewById(R.id.email);
         facebookLoginButton = findViewById(R.id.fbLogin);
-
+        mLoginButton = (LoginButton) findViewById(R.id.login_button);
     }
 }

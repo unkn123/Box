@@ -186,8 +186,8 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void fbLoginFunctionality() {
-        mLoginButton.setReadPermissions(Arrays.asList("user_photos", "email",
-                "user_birthday", "public_profile"));
+        mLoginButton.setReadPermissions(Arrays.asList(Constants.USER_PHOTO,Constants.EMAIL,
+                Constants.BIRTHDAY, Constants.PUBLIC_PROFILE));
 
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
@@ -196,13 +196,11 @@ public class SignUp extends AppCompatActivity {
                 System.out.println("onSuccess");
                 final String accessToken = loginResult.getAccessToken()
                         .getToken();
-                Log.i("accessToken", accessToken);
-
+                Log.e(TAG,loginResult.toString());
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.i("LoginActivity", response.toString());
                                 try {
                                     String id = object.getString("id");
                                     try {

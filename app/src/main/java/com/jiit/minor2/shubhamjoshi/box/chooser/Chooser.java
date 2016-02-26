@@ -26,7 +26,7 @@ public class Chooser extends AppCompatActivity {
                 baseRef.unauth();
                 //For loggin out from facebook
                 LoginManager.getInstance().logOut();
-                startActivity(new Intent(getBaseContext(),MainActivity.class));
+                startActivity(new Intent(getBaseContext(), MainActivity.class));
             }
         });
     }
