@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".signup.SignUp">
 
     <RelativeLayout
@@ -41,14 +43,14 @@
     <FrameLayout
         android:id="@+id/FrameLayout1"
         android:layout_width="match_parent"
-        android:layout_below="@+id/login"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login">
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/fbLogin"
@@ -130,7 +132,6 @@
                 android:paddingLeft="@dimen/fivedp"
                 android:src="@drawable/home"/>
 
-
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -143,6 +144,8 @@
                 android:textColorHint="@color/greyShade"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/textSize17sp"/>
+
+
         </LinearLayout>
 
         <!-- Password field -->

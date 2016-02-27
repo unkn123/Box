@@ -16,12 +16,12 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/adj15dp"
-            android:gravity="center|center_horizontal"
-            android:text="LOGGED IN"
-            android:id="@+id/logout"
+            android:paddingLeft="@dimen/padding20dp"
+            android:text="Let us know about you"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize20sp"
             />

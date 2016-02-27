@@ -19,6 +19,10 @@
 
     <style name="jehadStyle" parent="AlertDialog.AppCompat">
 
+
     </style>
 
+    <style name="HintText">
+        <item name="android:textSize">0dp</item>
+    </style>
 </resources>

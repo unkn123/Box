@@ -13,10 +13,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowId;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -30,7 +28,6 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
-import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.dialogs.DateDialogPicker;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
@@ -111,8 +108,8 @@ public class SignUp extends AppCompatActivity {
         public void onAuthenticated(AuthData authData) {
             // Authenticated successfully with payload authData
             User user = new User(Email, Username, Dob, Gender);
-            Firebase child = baseUrl.child(Constants.USER);
-            child.push().setValue(user);
+            Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(Email));
+            child.setValue(user);
         }
 
         @Override
@@ -217,6 +214,8 @@ public class SignUp extends AppCompatActivity {
                                     String email = object.getString("email");
                                     String gender = object.getString("gender");
                                     String birthday = object.getString("birthday");
+
+                                    //String birthday="";
                                     onFacebookAccessTokenChange(loginResult.getAccessToken(), name, email, birthday, gender);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -225,7 +224,7 @@ public class SignUp extends AppCompatActivity {
                         });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields",
-                        "id,name,email,gender, birthday");
+                        "id,name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -249,8 +248,8 @@ public class SignUp extends AppCompatActivity {
                 public void onAuthenticated(AuthData authData) {
                     //add to db
                     User user = new User(email, name, dob, gender);
-                    Firebase child = baseUrl.child(Constants.USER);
-                    child.push().setValue(user);
+                    Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
+                    child.setValue(user);
                 }
 
                 @Override
