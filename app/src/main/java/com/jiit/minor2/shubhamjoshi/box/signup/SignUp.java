@@ -13,12 +13,12 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowId;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -56,21 +56,22 @@ public class SignUp extends AppCompatActivity {
     private Firebase baseUrl;
     private LoginButton mLoginButton;
     private CallbackManager mCallbackManager;
+    private String Email;
+    private String Username;
+    private String Dob;
+    private String Gender;
     private final static String TAG = SignUp.class.getSimpleName();
 
     @Override
     protected void onStart() {
         super.onStart();
 
-
         dateTextView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 DateDialogPicker picker = new DateDialogPicker(v);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 picker.show(ft, getString(R.string.Date));
-
                 return false;
             }
         });
@@ -79,12 +80,9 @@ public class SignUp extends AppCompatActivity {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 final CharSequence[] gender = {getString(R.string.Male), getString(R.string.Female)};
-
                 AlertDialog.Builder alert = new AlertDialog.Builder(SignUp.this, AlertDialog.THEME_HOLO_DARK);
-                alert.setTitle(Html.fromHtml("<font color='#1db954'>" + getString(R.string.Gender) + "</font>"));
-
+                alert.setTitle(Html.fromHtml(getString(R.string.green_color_hack) + getString(R.string.Gender) + getString(R.string.font_tag)));
                 alert.setItems(gender, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -96,12 +94,10 @@ public class SignUp extends AppCompatActivity {
                 });
 
                 /****HACK **/
-
                 Dialog d = alert.show();
                 int dividerId = d.getContext().getResources().getIdentifier(getString(R.string.hack), null, null);
                 View divider = d.findViewById(dividerId);
                 divider.setBackgroundColor(Color.parseColor("#1db954"));
-
                 return false;
             }
         });
@@ -109,11 +105,14 @@ public class SignUp extends AppCompatActivity {
     }
 
 
-    //For Loging in User while Signing up
+    //For storing in db
     Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
         @Override
         public void onAuthenticated(AuthData authData) {
             // Authenticated successfully with payload authData
+            User user = new User(Email, Username, Dob, Gender);
+            Firebase child = baseUrl.child(Constants.USER);
+            child.push().setValue(user);
         }
 
         @Override
@@ -128,8 +127,8 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         mProgress = new ProgressDialog(SignUp.this, ProgressDialog.STYLE_HORIZONTAL);
-        mProgress.setTitle("Processing...");
-        mProgress.setMessage("Please wait...");
+        mProgress.setTitle(getString(R.string.processing));
+        mProgress.setMessage(getString(R.string.please_wait));
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
 
@@ -139,12 +138,10 @@ public class SignUp extends AppCompatActivity {
         mCallbackManager = CallbackManager.Factory.create();
 
         //Crux of facebook Login
-
         fbLoginFunctionality();
 
 
         //Facebook Login Screen
-
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,36 +154,43 @@ public class SignUp extends AppCompatActivity {
         S.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String Email = email.getText().toString();
+                mProgress.show();
+                Email = email.getText().toString();
                 final String Password = password.getText().toString();
-                final String Username = username.getText().toString();
-                final String Dob = dob.getText().toString();
-                final String Gender = genderTextView.getText().toString();
-                User user = new User(Email, Username, Dob, Gender);
-                Firebase child = baseUrl.child(Constants.USER);
-                child.push().setValue(user);
+                Username = username.getText().toString();
+                Dob = dob.getText().toString();
+                Gender = genderTextView.getText().toString();
+                //FireBase Normal Login
+
                 baseUrl.createUser(Email, Password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+
                     @Override
                     public void onSuccess(Map<String, Object> result) {
                         baseUrl.authWithPassword(Email, Password, authResultHandler);
-                        Intent intent = new Intent(getBaseContext(), Chooser.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+
+                        //dismiss the progress dialog
+                        mProgress.dismiss();
+
                     }
 
                     @Override
                     public void onError(FirebaseError firebaseError) {
                         // there was an error
-                        Toast.makeText(SignUp.this, firebaseError.getMessage(), Toast.LENGTH_LONG).show();
+                        mProgress.dismiss();
+                        if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL)
+                            email.setError(firebaseError.getMessage());
+                        if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD)
+                            password.setError(firebaseError.getMessage());
                     }
                 });
             }
+
         });
 
     }
 
     private void fbLoginFunctionality() {
-        mLoginButton.setReadPermissions(Arrays.asList(Constants.USER_PHOTO,Constants.EMAIL,
+        mLoginButton.setReadPermissions(Arrays.asList(Constants.USER_PHOTO, Constants.EMAIL,
                 Constants.BIRTHDAY, Constants.PUBLIC_PROFILE));
 
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -196,7 +200,7 @@ public class SignUp extends AppCompatActivity {
                 System.out.println("onSuccess");
                 final String accessToken = loginResult.getAccessToken()
                         .getToken();
-                Log.e(TAG,loginResult.toString());
+                Log.e(TAG, loginResult.toString());
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
@@ -243,6 +247,7 @@ public class SignUp extends AppCompatActivity {
             baseUrl.authWithOAuthToken("facebook", token.getToken(), new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
+                    //add to db
                     User user = new User(email, name, dob, gender);
                     Firebase child = baseUrl.child(Constants.USER);
                     child.push().setValue(user);

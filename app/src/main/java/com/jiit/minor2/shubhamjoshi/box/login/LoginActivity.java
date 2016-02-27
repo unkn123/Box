@@ -2,11 +2,9 @@ package com.jiit.minor2.shubhamjoshi.box.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,7 +14,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
@@ -24,7 +21,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
-import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
 import org.json.JSONException;
@@ -50,15 +46,18 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         init();
+
+        //progress bar setup
         mProgress = new ProgressDialog(LoginActivity.this, ProgressDialog.STYLE_HORIZONTAL);
-        mProgress.setTitle("Processing...");
-        mProgress.setMessage("Please wait...");
+        mProgress.setTitle(getString(R.string.processing));
+        mProgress.setMessage(getString(R.string.please_wait));
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
+
         baseRef = new Firebase(Constants.FIREBASE_URL);
         mCallbackManager = CallbackManager.Factory.create();
-        //For fb LoginButton
 
+        //For fb LoginButton
         fbLoginFunctionality();
 
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +86,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
+                        mProgress.dismiss();
+                        if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL)
+                            email.setError(firebaseError.getMessage());
+                        else if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD)
+                            password.setError(firebaseError.getMessage());
+                        else if (firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST)
+                            email.setError(firebaseError.getMessage());
                         Toast.makeText(getBaseContext(), firebaseError.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -102,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                System.out.println("onSuccess");
                 final String accessToken = loginResult.getAccessToken()
                         .getToken();
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
@@ -118,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                     String name = object.getString("name");
-                                    Log.e(TAG, name);
                                     onFacebookAccessTokenChange(loginResult.getAccessToken());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -134,12 +138,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                System.out.println("onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
-                System.out.println("onError");
+                Toast.makeText(getBaseContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

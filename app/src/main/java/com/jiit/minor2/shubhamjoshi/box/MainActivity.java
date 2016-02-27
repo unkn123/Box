@@ -16,10 +16,12 @@ import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
         baseRef.addAuthStateListener(new Firebase.AuthStateListener() {
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(new Intent(getBaseContext(), Chooser.class));
                 } else {
+
                     Button login = (Button) findViewById(R.id.loginB);
                     login.setOnClickListener(new View.OnClickListener() {
                         @Override

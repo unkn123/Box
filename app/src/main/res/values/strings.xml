@@ -23,5 +23,9 @@
     <string name="fblogin">Log in with facebook</string>
     <string name="passForgot">Forget your password?</string>
     <string name="facebook_app_id">1120505551295641</string>
+    <string name="processing">Processing...</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="green_color_hack"><![CDATA[<font color=\'#1db954\'>]]></string>
+    <string name="font_tag"><![CDATA[</font>]]></string>
 
 </resources>
