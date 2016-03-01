@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -250,6 +251,11 @@ public class SignUp extends AppCompatActivity {
                     User user = new User(email, name, dob, gender);
                     Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
                     child.setValue(user);
+
+                    SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCE_FOR_GETTING_USER
+                            , MODE_PRIVATE).edit();
+                    editor.putString("email", email);
+                    editor.commit();
                 }
 
                 @Override
