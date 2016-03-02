@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -112,6 +113,7 @@ public class SignUp extends AppCompatActivity {
             User user = new User(Email, Username, Dob, Gender);
             Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(Email));
             child.setValue(user);
+            sharedPrefCreator();
         }
 
         @Override
@@ -119,6 +121,8 @@ public class SignUp extends AppCompatActivity {
             // Authenticated failed with error firebaseError
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,6 +255,7 @@ public class SignUp extends AppCompatActivity {
                     User user = new User(email, name, dob, gender);
                     Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
                     child.setValue(user);
+                    sharedPrefCreator();
                 }
 
                 @Override
@@ -280,6 +285,13 @@ public class SignUp extends AppCompatActivity {
         facebookLoginButton = findViewById(R.id.fbLogin);
         mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
+    }
+
+    private void sharedPrefCreator() {
+        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = sp.edit();
+        mEditor.putString(Constants.SPEMAIL,Constants.encodeEmail(Email));
+        mEditor.apply();
     }
 
 }

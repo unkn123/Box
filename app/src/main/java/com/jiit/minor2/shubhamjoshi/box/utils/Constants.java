@@ -11,8 +11,10 @@ public final class Constants {
     public static final String BIRTHDAY = "user_birthday";
     public static final String PUBLIC_PROFILE = "public_profile";
     public static final String USER_PHOTO = "user_photos";
+    public static final String FIREBASE_CATEGORIES="categories";
     public static final String EMAIL = "email";
-    public static final String SHARED_PREFERENCE_FOR_GETTING_USER="USER_SHARED_PREFF";
+    public static final String SPEMAIL="EmailSP";
+    public static final String SHAREDPREF_EMAIL="emailSharedPreff";
     public static String encodeEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }

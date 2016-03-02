@@ -1,52 +1,44 @@
 package com.jiit.minor2.shubhamjoshi.box.chooser;
 
-import android.content.Context;
-import android.os.Vibrator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.model.list_models.Categories;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Shubham Joshi on 01-03-2016.
  */
 
 
-public class ChooserInterestHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ChooserInterestHolder extends RecyclerView.ViewHolder {
 
     public ImageView choicePhoto;
     public boolean flagFirsPressed = false;
     RelativeLayout selector;
+    private List<Categories> mList;
+    private String pathPart;
 
-    public ChooserInterestHolder(View itemView) {
+    private ArrayList<String> likes = new ArrayList<>();
+
+    public ChooserInterestHolder(View itemView, List<Categories> mlist, String pathPart) {
         super(itemView);
 
-        itemView.setOnClickListener(this);
+
         choicePhoto = (ImageView) itemView.findViewById(R.id.choicePhoto);
         selector = (RelativeLayout) itemView.findViewById(R.id.selectedBg);
+        this.mList = mlist;
+        this.pathPart = pathPart;
+
 
     }
 
 
-    @Override
-    public void onClick(View view) {
-        if (!flagFirsPressed) {
-            Vibrator vibe = (Vibrator) view.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-            vibe.vibrate(50);
-            //do work to add shade
-            selector.setVisibility(View.VISIBLE);
-            selector.setBackground(view.getResources().getDrawable(R.drawable.selection_work));
-            flagFirsPressed = true;
-        } else {
-            selector.setVisibility(View.INVISIBLE);
-            selector.setBackground(null);
-            flagFirsPressed = false;
-            //do work to remove shade
-        }
-    }
 }
 
 

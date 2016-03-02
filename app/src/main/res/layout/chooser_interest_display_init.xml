@@ -16,8 +16,11 @@
         <ProgressBar
             android:id="@+id/pbar"
             android:layout_width="wrap_content"
+            android:progressDrawable="@drawable/progress_style"
+            android:indeterminateDrawable="@drawable/progress_style"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
+
 
         <ImageView
             android:id="@+id/choicePhoto"
@@ -30,9 +33,10 @@
         <RelativeLayout
             android:id="@+id/selectedBg"
             android:layout_width="140dp"
-            android:layout_height="110dp"
+            android:layout_height="111dp"
             android:orientation="vertical"
             android:visibility="invisible"
+            android:background="@drawable/selection_work"
             android:scaleType="centerCrop">
 
             <ImageView

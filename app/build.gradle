@@ -18,8 +18,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each{
-        it.buildConfigField 'String','UNIQUE_FIREBASE_ROOT_URL', UniqueFirebaseRootUrl
+    buildTypes.each {
+        it.buildConfigField 'String', 'UNIQUE_FIREBASE_ROOT_URL', UniqueFirebaseRootUrl
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
