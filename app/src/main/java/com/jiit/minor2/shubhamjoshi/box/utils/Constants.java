@@ -15,6 +15,7 @@ public final class Constants {
     public static final String EMAIL = "email";
     public static final String SPEMAIL="EmailSP";
     public static final String SHAREDPREF_EMAIL="emailSharedPreff";
+
     public static String encodeEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }

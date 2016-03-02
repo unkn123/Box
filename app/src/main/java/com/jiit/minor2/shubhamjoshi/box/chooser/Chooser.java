@@ -26,13 +26,13 @@ import com.jiit.minor2.shubhamjoshi.box.model.list_models.GiantChooserModel;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Chooser extends AppCompatActivity {
 
     private ArrayList chooserItems = new ArrayList();
     private GridLayoutManager mGridLayoutManager;
     private String pathPart;
-    private RelativeLayout rl;
     private ArrayList<String> likes = new ArrayList<>();
     private ArrayList<GiantChooserModel> mGiantChooserModels = new ArrayList<>();
 
@@ -93,6 +93,7 @@ public class Chooser extends AppCompatActivity {
 
                     @Override
                     public void onClick(View v, int pos) {
+                        Firebase ref = baseRef.child("likes").child(pathPart);
                         RelativeLayout rl = (RelativeLayout) v.findViewById(R.id.selectedBg);
                         if (!mGiantChooserModels.get(pos).isSelected()) {
                             Vibrator vibe = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -102,12 +103,20 @@ public class Chooser extends AppCompatActivity {
                             mGiantChooserModels.get(pos).setSelected(true);
 
 
+                            ref.child(mGiantChooserModels.get(pos).getDescription()).setValue("");
+
+
                         } else {
                             rl.setVisibility(View.INVISIBLE);
+
+                            //o(n) complexity
+                            int count = Collections.frequency(likes, mGiantChooserModels.get(pos).getDescription());
+                            if (count == 1)
+                                ref.child(mGiantChooserModels.get(pos).getDescription()).removeValue();
                             mGiantChooserModels.get(pos).setSelected(false);
                             likes.remove(mGiantChooserModels.get(pos).getDescription());
                         }
-                        Log.e("SJSJ", likes.toString());
+                        //Log.e("SJSJ", likes.toString());
                     }
                 });
             }

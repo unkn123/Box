@@ -30,7 +30,6 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
-import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.dialogs.DateDialogPicker;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
@@ -113,7 +112,7 @@ public class SignUp extends AppCompatActivity {
             User user = new User(Email, Username, Dob, Gender);
             Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(Email));
             child.setValue(user);
-            sharedPrefCreator();
+            sharedPrefCreator(Email);
         }
 
         @Override
@@ -121,7 +120,6 @@ public class SignUp extends AppCompatActivity {
             // Authenticated failed with error firebaseError
         }
     };
-
 
 
     @Override
@@ -218,9 +216,10 @@ public class SignUp extends AppCompatActivity {
                                     String name = object.getString("name");
                                     String email = object.getString("email");
                                     String gender = object.getString("gender");
-                                    String birthday = object.getString("birthday");
+                                    //String birthday = object.getString("birthday");
 
-                                    //String birthday="";
+
+                                    String birthday = "20/05/1995";
                                     onFacebookAccessTokenChange(loginResult.getAccessToken(), name, email, birthday, gender);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -255,7 +254,7 @@ public class SignUp extends AppCompatActivity {
                     User user = new User(email, name, dob, gender);
                     Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
                     child.setValue(user);
-                    sharedPrefCreator();
+                    sharedPrefCreator(email);
                 }
 
                 @Override
@@ -287,10 +286,10 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    private void sharedPrefCreator() {
+    private void sharedPrefCreator(String Email) {
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sp.edit();
-        mEditor.putString(Constants.SPEMAIL,Constants.encodeEmail(Email));
+        mEditor.putString(Constants.SPEMAIL, Constants.encodeEmail(Email));
         mEditor.apply();
     }
 
