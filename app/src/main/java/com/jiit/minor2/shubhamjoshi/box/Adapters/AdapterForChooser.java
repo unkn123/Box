@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.chooser.ChooserInterestHolder;
+import com.jiit.minor2.shubhamjoshi.box.model.Categories;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.ChooserObject;
 import com.squareup.picasso.Picasso;
 
@@ -28,10 +29,10 @@ import java.util.List;
 
 public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolder> {
 
-    private List<ChooserObject> itemList;
+    private List<Categories> itemList;
     private Context context;
 
-    public AdapterForChooser(Context context, List<ChooserObject> itemList) {
+    public AdapterForChooser(Context context, List<Categories> itemList) {
         this.itemList = itemList;
         this.context = context;
     }
@@ -47,7 +48,7 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
     @Override
     public void onBindViewHolder(ChooserInterestHolder holder, int position) {
 
-        Picasso.with(context).load(itemList.get(position).getChooserImage()).into(holder.choicePhoto);
+        Picasso.with(context).load(itemList.get(position).getUrl()).into(holder.choicePhoto);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
             @Override
             protected Bitmap doInBackground(String... params) {
 
-                String add = itemList.get(position).getChooserImage();
+                String add = itemList.get(position).getUrl();
                 URL url = null;
                 Bitmap image = null;
                 try {

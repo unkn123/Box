@@ -29,6 +29,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.dialogs.DateDialogPicker;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
@@ -165,10 +166,9 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onSuccess(Map<String, Object> result) {
                         baseUrl.authWithPassword(Email, Password, authResultHandler);
-
-                        //dismiss the progress dialog
                         mProgress.dismiss();
-
+                        finish();
+                        //dismiss the progress dialog
                     }
 
                     @Override
@@ -251,11 +251,6 @@ public class SignUp extends AppCompatActivity {
                     User user = new User(email, name, dob, gender);
                     Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
                     child.setValue(user);
-
-                    SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCE_FOR_GETTING_USER
-                            , MODE_PRIVATE).edit();
-                    editor.putString("email", email);
-                    editor.commit();
                 }
 
                 @Override

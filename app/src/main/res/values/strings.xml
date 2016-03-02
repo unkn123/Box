@@ -28,5 +28,6 @@
     <string name="green_color_hack"><![CDATA[<font color=\'#1db954\'>]]></string>
     <string name="font_tag"><![CDATA[</font>]]></string>
     <string name="moto">Let box know your interests</string>
+    <string name="title_activity_profile_activity">Profile_activity</string>
 
 </resources>
