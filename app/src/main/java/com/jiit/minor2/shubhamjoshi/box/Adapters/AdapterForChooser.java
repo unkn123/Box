@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.chooser.ChooserInterestHolder;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.Categories;
+import com.jiit.minor2.shubhamjoshi.box.model.list_models.GiantChooserModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,11 +32,14 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
     private Context context;
     private String pathPart;
     private  ChooserInterestHolder rcv;
+    private ArrayList<GiantChooserModel> mGiantChooserModels;
 
-    public AdapterForChooser(Context context, List<Categories> itemList,String pathPart) {
+    public AdapterForChooser(Context context, List<Categories> itemList, String pathPart, ArrayList<GiantChooserModel> giantChooserModels) {
         this.itemList = itemList;
         this.context = context;
         this.pathPart = pathPart;
+        mGiantChooserModels=giantChooserModels;
+
     }
 
     @Override
@@ -48,15 +53,22 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
 
 
     @Override
-    public void onBindViewHolder(ChooserInterestHolder holder, final int position) {
+    public void onBindViewHolder(final ChooserInterestHolder holder, final int position) {
 
         Picasso.with(context).load(itemList.get(position).getUrl()).into(holder.choicePhoto);
+
+        //Bugg Fixer
+        if(mGiantChooserModels.get(position).isSelected())
+            holder.selector.setVisibility(View.VISIBLE);
+        else
+            holder.selector.setVisibility(View.INVISIBLE);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+
                 clickListener.onClick(v, position);
             }
         });

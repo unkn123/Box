@@ -59,6 +59,7 @@ public class SignUp extends AppCompatActivity {
     private String Username;
     private String Dob;
     private String Gender;
+    private URL profileImage;
     private final static String TAG = SignUp.class.getSimpleName();
 
     @Override
@@ -209,7 +210,8 @@ public class SignUp extends AppCompatActivity {
                                     String id = object.getString("id");
                                     try {
                                         URL profile_pic = new URL(
-                                                "http://graph.facebook.com/" + id + "/picture?type=large");
+                                                "https://graph.facebook.com/" + id + "/picture?type=large");
+                                        profileImage = profile_pic;
                                     } catch (MalformedURLException e) {
                                         e.printStackTrace();
                                     }
@@ -255,6 +257,7 @@ public class SignUp extends AppCompatActivity {
                     Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
                     child.setValue(user);
                     sharedPrefCreator(email);
+                   // Log.e("SJSJ", profileImage.toString());
                 }
 
                 @Override
@@ -290,7 +293,9 @@ public class SignUp extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sp.edit();
         mEditor.putString(Constants.SPEMAIL, Constants.encodeEmail(Email));
+        mEditor.putString("ProfilePhoto", profileImage.toString());
         mEditor.apply();
+
     }
 
 }

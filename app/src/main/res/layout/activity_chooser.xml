@@ -26,15 +26,25 @@
             android:textStyle="bold"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:text="@string/moto"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:text="@string/moto"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"/>
+
+
+
+        </RelativeLayout>
 
     </LinearLayout>
+
 
 
     <FrameLayout
@@ -61,6 +71,7 @@
 
         <RelativeLayout
 
+            android:id="@+id/footerChooser"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
@@ -82,4 +93,8 @@
         </RelativeLayout>
 
     </FrameLayout>
+
+
+
+
 </RelativeLayout>

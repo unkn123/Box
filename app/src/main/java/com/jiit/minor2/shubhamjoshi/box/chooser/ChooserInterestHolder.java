@@ -20,7 +20,7 @@ public class ChooserInterestHolder extends RecyclerView.ViewHolder {
 
     public ImageView choicePhoto;
     public boolean flagFirsPressed = false;
-    RelativeLayout selector;
+    public RelativeLayout selector;
     private List<Categories> mList;
     private String pathPart;
 

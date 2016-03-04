@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -18,6 +19,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Adapters.AdapterForChooser;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
@@ -35,12 +37,20 @@ public class Chooser extends AppCompatActivity {
     private String pathPart;
     private ArrayList<String> likes = new ArrayList<>();
     private ArrayList<GiantChooserModel> mGiantChooserModels = new ArrayList<>();
+    private FirebaseRecyclerAdapter<Categories, ChooserInterestHolder> mAdapter;
+    private int countForStatus = 0;
+    private String ImageUrl;
+
 
     @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         pathPart = sp.getString(Constants.SPEMAIL, "Error");
+        ImageUrl = sp.getString("ProfilePhoto","ERROR");
+
+        Log.e("SJ", ImageUrl);
+
 
     }
 
@@ -48,7 +58,12 @@ public class Chooser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
+        final LinearLayout header = (LinearLayout) findViewById(R.id.headerChooser);
+        final RelativeLayout footer = (RelativeLayout) findViewById(R.id.footerChooser);
 
+
+        header.setAlpha(0f);
+        footer.setAlpha(0f);
 
         final Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
         View v = findViewById(R.id.logout);
@@ -63,7 +78,9 @@ public class Chooser extends AppCompatActivity {
             }
         });
 
+
         Firebase newRef = baseRef.child(Constants.FIREBASE_CATEGORIES);
+
         newRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -82,23 +99,30 @@ public class Chooser extends AppCompatActivity {
 
                 ProgressBar mProgressBar = (ProgressBar) findViewById(R.id.chooserProgress);
                 mProgressBar.setVisibility(View.INVISIBLE);
+                footer.setAlpha(1f);
+                header.setAlpha(1f);
 
                 mGridLayoutManager = new GridLayoutManager(Chooser.this, 3);
                 RecyclerView rView = (RecyclerView) findViewById(R.id.interest_choices_recycler_view);
                 rView.setLayoutManager(mGridLayoutManager);
-                AdapterForChooser mAdapterForChooser = new AdapterForChooser(Chooser.this, chooserItems, pathPart);
+                AdapterForChooser mAdapterForChooser = new AdapterForChooser(Chooser.this, chooserItems, pathPart,mGiantChooserModels);
                 rView.setAdapter(mAdapterForChooser);
 
                 mAdapterForChooser.setClickListener(new AdapterForChooser.ClickListener() {
 
                     @Override
                     public void onClick(View v, int pos) {
+
+
                         Firebase ref = baseRef.child("likes").child(pathPart);
                         RelativeLayout rl = (RelativeLayout) v.findViewById(R.id.selectedBg);
+
                         if (!mGiantChooserModels.get(pos).isSelected()) {
                             Vibrator vibe = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibe.vibrate(50);
                             rl.setVisibility(View.VISIBLE);
+                            countForStatus++;
+
                             likes.add(mGiantChooserModels.get(pos).getDescription());
                             mGiantChooserModels.get(pos).setSelected(true);
 
@@ -108,7 +132,7 @@ public class Chooser extends AppCompatActivity {
 
                         } else {
                             rl.setVisibility(View.INVISIBLE);
-
+                            countForStatus--;
                             //o(n) complexity
                             int count = Collections.frequency(likes, mGiantChooserModels.get(pos).getDescription());
                             if (count == 1)
@@ -116,9 +140,13 @@ public class Chooser extends AppCompatActivity {
                             mGiantChooserModels.get(pos).setSelected(false);
                             likes.remove(mGiantChooserModels.get(pos).getDescription());
                         }
-                        //Log.e("SJSJ", likes.toString());
+
+//                        Log.e("SJS",likes.size() + "");
+
                     }
                 });
+
+
             }
 
             @Override
@@ -126,7 +154,12 @@ public class Chooser extends AppCompatActivity {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
+        footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
 
     }
 }
