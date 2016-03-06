@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/baseColor"
+    android:background="@color/editTextColor"
     tools:context="com.jiit.minor2.shubhamjoshi.box.chooser.Chooser">
 
     <LinearLayout

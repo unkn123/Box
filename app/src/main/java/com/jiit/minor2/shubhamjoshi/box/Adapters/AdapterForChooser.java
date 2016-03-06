@@ -55,7 +55,8 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
     @Override
     public void onBindViewHolder(final ChooserInterestHolder holder, final int position) {
 
-        Picasso.with(context).load(itemList.get(position).getUrl()).into(holder.choicePhoto);
+        Picasso.with(context).load(itemList.get(position).getUrl()).fit().into(holder.choicePhoto);
+        //getImage(holder,position);
 
         //Bugg Fixer
         if(mGiantChooserModels.get(position).isSelected())
@@ -86,7 +87,7 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
     }
 
     public interface ClickListener {
-        public void onClick(View v, int pos);
+        void onClick(View v, int pos);
 
     }
 

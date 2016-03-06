@@ -22,6 +22,7 @@ import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Adapters.AdapterForChooser;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
+import com.jiit.minor2.shubhamjoshi.box.Profile;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.Categories;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.GiantChooserModel;
@@ -157,7 +158,9 @@ public class Chooser extends AppCompatActivity {
         footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Chooser.this,Profile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 

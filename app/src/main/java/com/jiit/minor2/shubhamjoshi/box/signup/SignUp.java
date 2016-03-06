@@ -30,6 +30,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.dialogs.DateDialogPicker;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
@@ -170,7 +171,11 @@ public class SignUp extends AppCompatActivity {
                     public void onSuccess(Map<String, Object> result) {
                         baseUrl.authWithPassword(Email, Password, authResultHandler);
                         mProgress.dismiss();
+                        Intent intent = new Intent(getBaseContext(), Chooser.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                         finish();
+
                         //dismiss the progress dialog
                     }
 
@@ -257,6 +262,10 @@ public class SignUp extends AppCompatActivity {
                     Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
                     child.setValue(user);
                     sharedPrefCreator(email);
+                    Intent intent = new Intent(getBaseContext(), Chooser.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                    // Log.e("SJSJ", profileImage.toString());
                 }
 

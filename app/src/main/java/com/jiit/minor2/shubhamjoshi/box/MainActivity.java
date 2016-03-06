@@ -1,10 +1,13 @@
 package com.jiit.minor2.shubhamjoshi.box;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.VideoView;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -16,11 +19,28 @@ import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
+    private VideoView view;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        view = (VideoView)findViewById(R.id.splash);
+        String path = "android.resource://" + getPackageName() + "/" + R.raw.splash;
+        view.setVideoURI(Uri.parse(path));
+        view.start();
+
+        view.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                view.start();
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
@@ -32,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 if (authData != null) {
                     // user is logged in
 
-                    Intent intent = new Intent(getBaseContext(), Chooser.class);
+                    Intent intent = new Intent(getBaseContext(), Profile.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
