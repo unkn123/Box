@@ -24,23 +24,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        view = (VideoView)findViewById(R.id.splash);
-        String path = "android.resource://" + getPackageName() + "/" + R.raw.splash;
-        view.setVideoURI(Uri.parse(path));
-        view.start();
 
-        view.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            public void onCompletion(MediaPlayer mp) {
-                view.start();
-            }
-        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         Firebase baseRef = new Firebase(Constants.FIREBASE_URL);

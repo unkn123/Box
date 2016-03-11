@@ -56,6 +56,7 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
     public void onBindViewHolder(final ChooserInterestHolder holder, final int position) {
 
         Picasso.with(context).load(itemList.get(position).getUrl()).fit().into(holder.choicePhoto);
+
         //getImage(holder,position);
 
         //Bugg Fixer

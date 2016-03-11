@@ -108,6 +108,7 @@ public class Chooser extends AppCompatActivity {
                 rView.setLayoutManager(mGridLayoutManager);
                 AdapterForChooser mAdapterForChooser = new AdapterForChooser(Chooser.this, chooserItems, pathPart,mGiantChooserModels);
                 rView.setAdapter(mAdapterForChooser);
+                rView.setHasFixedSize(true);
 
                 mAdapterForChooser.setClickListener(new AdapterForChooser.ClickListener() {
 

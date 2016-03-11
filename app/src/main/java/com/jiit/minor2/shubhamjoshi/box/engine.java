@@ -19,7 +19,5 @@ public class engine extends Application {
         Picasso p = new Picasso.Builder(this)
                 .memoryCache(new LruCache(24000))
                 .build();
-
-
     }
 }

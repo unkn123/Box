@@ -11,7 +11,15 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
+
+
+
+
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -38,5 +46,7 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.5.0+'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+
     compile 'com.firebaseui:firebase-ui:0.3.1'
 }

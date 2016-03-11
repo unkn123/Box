@@ -29,5 +29,6 @@
     <string name="font_tag"><![CDATA[</font>]]></string>
     <string name="moto">Let box know your interests</string>
     <string name="title_activity_profile_activity">Profile_activity</string>
+    <string name="action_settings">settings</string>
 
 </resources>
