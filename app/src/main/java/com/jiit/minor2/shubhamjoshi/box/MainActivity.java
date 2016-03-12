@@ -1,8 +1,6 @@
 package com.jiit.minor2.shubhamjoshi.box;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,8 +9,8 @@ import android.widget.VideoView;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.login.LoginActivity;
+import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 import com.jiit.minor2.shubhamjoshi.box.signup.SignUp;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
@@ -33,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
+        final Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
         baseRef.addAuthStateListener(new Firebase.AuthStateListener() {
 
             @Override
-            public void onAuthStateChanged(AuthData authData) {
+            public void onAuthStateChanged(final AuthData authData) {
 
                 if (authData != null) {
                     // user is logged in
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(getBaseContext(), LoginActivity.class));
+
                         }
                     });
 
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(getBaseContext(), SignUp.class));
+
                         }
                     });
                 }

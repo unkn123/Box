@@ -46,7 +46,9 @@
             android:name=".profile.ProfileActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Profile">
+        <activity android:name=".profile.Profile">
+        </activity>
+        <activity android:name=".StarterPage">
         </activity>
     </application>
 

@@ -111,10 +111,15 @@ public class SignUp extends AppCompatActivity {
         @Override
         public void onAuthenticated(AuthData authData) {
             // Authenticated successfully with payload authData
-            User user = new User(Email, Username, Dob, Gender);
+
+            User user = new User(Email, Username, Dob, Gender, "");
             Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(Email));
             child.setValue(user);
             sharedPrefCreator(Email);
+            Intent intent = new Intent(getBaseContext(), Chooser.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         }
 
         @Override
@@ -171,10 +176,7 @@ public class SignUp extends AppCompatActivity {
                     public void onSuccess(Map<String, Object> result) {
                         baseUrl.authWithPassword(Email, Password, authResultHandler);
                         mProgress.dismiss();
-                        Intent intent = new Intent(getBaseContext(), Chooser.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
+
 
                         //dismiss the progress dialog
                     }
@@ -258,7 +260,7 @@ public class SignUp extends AppCompatActivity {
                 @Override
                 public void onAuthenticated(AuthData authData) {
                     //add to db
-                    User user = new User(email, name, dob, gender);
+                    User user = new User(email, name, dob, gender, profileImage.toString());
                     Firebase child = baseUrl.child(Constants.USER).child(Constants.encodeEmail(email));
                     child.setValue(user);
                     sharedPrefCreator(email);
@@ -266,7 +268,7 @@ public class SignUp extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                   // Log.e("SJSJ", profileImage.toString());
+                    // Log.e("SJSJ", profileImage.toString());
                 }
 
                 @Override
@@ -302,9 +304,7 @@ public class SignUp extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sp.edit();
         mEditor.putString(Constants.SPEMAIL, Constants.encodeEmail(Email));
-        mEditor.putString("ProfilePhoto", profileImage.toString());
         mEditor.apply();
-
     }
 
 }

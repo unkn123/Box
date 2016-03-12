@@ -1,23 +1,21 @@
-package com.jiit.minor2.shubhamjoshi.box.model;
+package com.jiit.minor2.shubhamjoshi.box.model.list_models;
 
 /**
  * Created by Shubham Joshi on 13-02-2016.
  */
-public class User {
-    public String email;
-    public String username;
+public class MainUser {
     public String dob;
+    public String email;
     public String gender;
-    public String profileUrl;
-    public User(){}
 
-    public User(String email, String username, String dob, String gender,String profileUrl){
-        this.email = email;
-        this.username = username;
-        this.dob = dob;
-        this.gender = gender;
-        this.profileUrl = profileUrl;
-    }
+    public String profileUrl;
+    public String username;
+
+
+
+    public MainUser(){}
+
+
 
     public String getProfileUrl() {
         return profileUrl;

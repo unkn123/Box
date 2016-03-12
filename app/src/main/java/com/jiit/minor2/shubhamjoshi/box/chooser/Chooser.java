@@ -22,7 +22,7 @@ import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Adapters.AdapterForChooser;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
-import com.jiit.minor2.shubhamjoshi.box.Profile;
+import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.Categories;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.GiantChooserModel;
@@ -48,9 +48,9 @@ public class Chooser extends AppCompatActivity {
         super.onStart();
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         pathPart = sp.getString(Constants.SPEMAIL, "Error");
-        ImageUrl = sp.getString("ProfilePhoto","ERROR");
+//        ImageUrl = sp.getString("ProfilePhoto","ERROR");
 
-        Log.e("SJ", ImageUrl);
+       // Log.e("SJ", ImageUrl+"SD");
 
 
     }
@@ -148,7 +148,7 @@ public class Chooser extends AppCompatActivity {
                     }
                 });
 
-
+                mAdapterForChooser.notifyDataSetChanged();
             }
 
             @Override
