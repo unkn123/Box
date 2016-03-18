@@ -10,12 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 
 import com.facebook.login.LoginManager;
 import com.jiit.minor2.shubhamjoshi.box.Adapters.PostAdapter;
 import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
+import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "RecyclerViewActivity";
     private LinearLayout nav;
+    private LinearLayout profileNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,15 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         PostAdapter postAdapter = new PostAdapter(persons);
         mRecyclerView.setAdapter(postAdapter);
 
+        profileNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), Profile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -52,6 +64,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         mRecyclerView = (RecyclerView) findViewById(R.id.rView);
         nav = (LinearLayout) findViewById(R.id.navigation);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        profileNav = (LinearLayout)findViewById(R.id.profileNav);
     }
 
 

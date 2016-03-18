@@ -20,6 +20,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         mProgress.dismiss();
-                        Intent intent = new Intent(getBaseContext(), Chooser.class);
+                        Intent intent = new Intent(getBaseContext(), StarterPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
