@@ -54,6 +54,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                 Intent intent = new Intent(getBaseContext(), Profile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up );
+
             }
         });
 

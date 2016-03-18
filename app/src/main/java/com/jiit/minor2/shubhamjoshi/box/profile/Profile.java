@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.firebase.client.DataSnapshot;
@@ -34,8 +35,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import ooo.oxo.library.widget.PullBackLayout;
 
-public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, PullBackLayout.Callback {
 
     private String pathPart;
     private String ImageUrl;
@@ -61,8 +63,13 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     @Override
     protected void onResume() {
         super.onResume();
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+    }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
     }
 
     @Override
@@ -74,7 +81,8 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         setTitle("");
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
-
+        PullBackLayout puller = (PullBackLayout) findViewById(R.id.puller);
+        puller.setCallback(this);
 
         setSupportActionBar(mToolbar);
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
@@ -170,6 +178,30 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         v.startAnimation(alphaAnimation);
     }
 
+    @Override
+    public void onPullStart() {
+
+
+    }
+
+    @Override
+    public void onPull(float v) {
+
+        if (v * 10 > 1.4)
+            finish();
+    }
+
+    @Override
+    public void onPullCancel() {
+
+    }
+
+    @Override
+    public void onPullComplete() {
+
+
+    }
+
     public class Blur implements Transformation {
         protected static final int UP_LIMIT = 25;
         protected static final int LOW_LIMIT = 1;
@@ -187,6 +219,7 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
             } else
                 this.blurRadius = radius;
         }
+
 
         @Override
         public Bitmap transform(Bitmap source) {
@@ -224,5 +257,9 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+    }
 }
