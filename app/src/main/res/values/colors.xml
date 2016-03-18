@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">@android:color/black</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#00C853</color>
     <color name="baseColor">#121315</color>
     <color name="fbColor">#3a5898</color>
     <color name="appMainColor">#1db954</color>

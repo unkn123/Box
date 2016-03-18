@@ -1,15 +1,16 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@android:color/black"
     android:layout_height="match_parent">
 
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
+        android:background="@android:color/black"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         >
 
@@ -77,7 +78,6 @@
             android:layout_height="110dp"
             android:layout_gravity="center"
             android:layout_marginTop="-330dp"
-            android:src="@drawable/b"
             app:civ_border_color="#fff"
             app:civ_border_width="2dp"/>
 

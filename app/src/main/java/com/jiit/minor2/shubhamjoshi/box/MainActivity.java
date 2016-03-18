@@ -40,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
                 if (authData != null) {
                     // user is logged in
 
-                    Intent intent = new Intent(getBaseContext(), Profile.class);
+                    Intent intent = new Intent(getBaseContext(), StarterPage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
 
-
+                    //startActivity(new Intent(MainActivity.this, StarterPage.class));
                 } else {
 
                     Button login = (Button) findViewById(R.id.loginB);

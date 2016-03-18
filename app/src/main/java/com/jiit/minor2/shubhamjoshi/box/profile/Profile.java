@@ -21,21 +21,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
-import com.jiit.minor2.shubhamjoshi.box.model.list_models.MainUser;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
-
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,28 +54,7 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
-        pathPart = sp.getString(Constants.SPEMAIL, "Error");
 
-        Firebase ref = baseRef.child(Constants.USER).child(pathPart);
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                ImageUrl = user.getProfileUrl();
-                Log.e("SJSJ", ImageUrl + "  " + user.getEmail());
-                Picasso.with(getBaseContext()).load(ImageUrl).resize(100, 100).into(profile);
-                ImageView relative = (ImageView) findViewById(R.id.profileBg);
-                Picasso.with(getBaseContext()).load(ImageUrl).transform(new Blur(getBaseContext(), 50)).into(relative);
-                relative.setAlpha(.5f);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
 
     }
 
@@ -94,17 +69,36 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         init();
         setTitle("");
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
-        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
-        pathPart = sp.getString(Constants.SPEMAIL, "Error");
-
 
 
         setSupportActionBar(mToolbar);
+        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
+        pathPart = sp.getString(Constants.SPEMAIL, "Error");
 
+        Firebase ref = baseRef.child(Constants.USER).child(pathPart);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                ImageUrl = user.getProfileUrl();
+//                Log.e("SJSJ", ImageUrl + "  " + user.getEmail());
+                Picasso.with(getBaseContext()).load(ImageUrl).resize(100, 100).into(profile);
+                ImageView relative = (ImageView) findViewById(R.id.profileBg);
+                Picasso.with(getBaseContext()).load(ImageUrl).transform(new Blur(getBaseContext(), 50)).into(relative);
+                relative.setAlpha(.5f);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
 
     }
