@@ -12,14 +12,12 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.firebase.client.DataSnapshot;
@@ -28,7 +26,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
-import com.jiit.minor2.shubhamjoshi.box.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
@@ -46,11 +43,8 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private TextView mTitle;
     private AppBarLayout mAppBarLayout;
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
-    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
-
     private boolean mIsTheTitleVisible = false;
-    private boolean mIsTheTitleContainerVisible = true;
     final Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
 
     @Override
