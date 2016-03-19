@@ -3,6 +3,7 @@ package com.jiit.minor2.shubhamjoshi.box;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 
 import com.facebook.login.LoginManager;
 import com.jiit.minor2.shubhamjoshi.box.Adapters.PostAdapter;
+import com.jiit.minor2.shubhamjoshi.box.AddingPost.PostAdding;
 import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
 import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 
@@ -32,6 +34,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private static String LOG_TAG = "RecyclerViewActivity";
     private LinearLayout nav;
     private LinearLayout profileNav;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,16 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                 Intent intent = new Intent(getBaseContext(), Profile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up );
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), PostAdding.class);
+                startActivity(intent);
 
             }
         });
@@ -67,6 +79,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         nav = (LinearLayout) findViewById(R.id.navigation);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         profileNav = (LinearLayout)findViewById(R.id.profileNav);
+        fab = (FloatingActionButton)findViewById(R.id.fabButton);
     }
 
 
