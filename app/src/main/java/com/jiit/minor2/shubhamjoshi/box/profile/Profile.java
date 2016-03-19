@@ -95,6 +95,7 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 ImageUrl = user.getProfileUrl();
+
 //                Log.e("SJSJ", ImageUrl + "  " + user.getEmail());
                 Picasso.with(getBaseContext()).load(ImageUrl).resize(100, 100).into(profile);
                 ImageView relative = (ImageView) findViewById(R.id.profileBg);
