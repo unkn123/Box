@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class PostAdding extends AppCompatActivity {
     private TextView submitPost;
     private ImageView picturePick;
     private ImageView imageOfPost;
+    private EditText postTitle;
+    private EditText postBody;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,7 @@ public class PostAdding extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Firebase posts = baseRef.child("posts").child(pathPart);
-                Post post = new Post("HAM", "j", "D");
+                Post post = new Post(postTitle.getText().toString(), postBody.getText().toString());
                 posts.push().setValue(post);
             }
         });
@@ -91,7 +94,9 @@ public class PostAdding extends AppCompatActivity {
         profile = (ImageView) findViewById(R.id.pImage);
         submitPost = (TextView) findViewById(R.id.postTextView);
         picturePick = (ImageView) findViewById(R.id.picture_tab);
-        imageOfPost = (ImageView)findViewById(R.id.image_of_post);
+        imageOfPost = (ImageView) findViewById(R.id.image_of_post);
+        postTitle = (EditText) findViewById(R.id.titlePost);
+        postBody = (EditText) findViewById(R.id.post_body);
     }
 
     @Override
@@ -111,13 +116,14 @@ public class PostAdding extends AppCompatActivity {
         super.onResume();
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        switch(requestCode) {
+        switch (requestCode) {
             case SELECT_PHOTO:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     InputStream imageStream = null;
                     try {

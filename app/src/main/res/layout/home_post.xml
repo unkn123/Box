@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
         android:background="#000">
 
         <RelativeLayout
@@ -25,8 +25,10 @@
                 />
 
             <TextView
-                android:id="@+id/person_name"
+                android:id="@+id/head"
                 android:layout_width="wrap_content"
+                android:text="heading"
+                android:textColor="#fff"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/person_photo"
@@ -34,13 +36,23 @@
                 />
 
             <TextView
-                android:id="@+id/person_age"
+                android:id="@+id/body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/person_name"
+                android:layout_below="@+id/head"
+                android:text="body"
+                android:textColor="#fff"
                 android:layout_toRightOf="@+id/person_photo"
                 />
 
+            <TextView
+                android:id="@+id/timeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="timestamp"
+                android:textSize="14sp"
+                android:textColor="#fff"
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
     </RelativeLayout>

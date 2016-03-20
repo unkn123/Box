@@ -59,10 +59,11 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_marginTop="10dp"
                 android:layout_below="@id/titlePost"
                 android:background="@null"
                 android:gravity="top"
-                android:id="@+id/post_text"
+                android:id="@+id/post_body"
                 android:hint="Your text here"
                 android:paddingLeft="20dp"
                 android:textColor="@android:color/black"
@@ -71,8 +72,9 @@
 
             <ImageView
                 android:layout_width="70dp"
-                android:layout_below="@id/post_text"
+                android:layout_below="@id/post_body"
                 android:layout_height="70dp"
+                android:layout_marginLeft="10dp"
                 android:id="@+id/image_of_post"
                 />
 

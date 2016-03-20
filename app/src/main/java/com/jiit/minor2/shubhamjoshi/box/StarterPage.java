@@ -1,6 +1,8 @@
 package com.jiit.minor2.shubhamjoshi.box;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,14 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-
 import com.facebook.login.LoginManager;
-import com.jiit.minor2.shubhamjoshi.box.Adapters.PostAdapter;
+import com.firebase.client.Firebase;
+import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.AddingPost.PostAdding;
 import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
+import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
+import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
+import com.jiit.minor2.shubhamjoshi.box.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -35,6 +40,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private LinearLayout nav;
     private LinearLayout profileNav;
     private FloatingActionButton fab;
+    FirebaseRecyclerAdapter mAdapter;
+    private String pathPart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +50,32 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         init();
         setSupportActionBar(mToolbar);
         setTitle("Home");
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        ArrayList<GalleryModel> l = new ArrayList<>();
-        initializeData();
-        PostAdapter postAdapter = new PostAdapter(persons);
-        mRecyclerView.setAdapter(postAdapter);
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.rView);
+        recycler.setHasFixedSize(true);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
 
+
+        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
+        pathPart = sp.getString(Constants.SPEMAIL, "Error");
+        // Log.e("SJSj", pathPart);
+        Firebase mRef = new Firebase(Constants.FIREBASE_URL).child("posts").child(pathPart);
+        mAdapter = new FirebaseRecyclerAdapter<Post, PostHolder>(Post.class, R.layout.home_post, PostHolder.class, mRef) {
+            @Override
+            public void populateViewHolder(PostHolder postHolder, Post post, int position) {
+                postHolder.postBody.setText(post.getTitle().toString());
+                postHolder.postHead.setText(post.getBody().toString());
+                if (post.getTimestampLastChanged() != null) {
+                    postHolder.timeStamp.setText(
+                            Utils.SIMPLE_DATE_FORMAT.format(
+                                    new Date(post.getTimestampLastChangedLong())));
+                } else {
+                    postHolder.timeStamp.setText("");
+                }
+
+
+            }
+        };
+        recycler.setAdapter(mAdapter);
         profileNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,8 +103,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         mRecyclerView = (RecyclerView) findViewById(R.id.rView);
         nav = (LinearLayout) findViewById(R.id.navigation);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        profileNav = (LinearLayout)findViewById(R.id.profileNav);
-        fab = (FloatingActionButton)findViewById(R.id.fabButton);
+        profileNav = (LinearLayout) findViewById(R.id.profileNav);
+        fab = (FloatingActionButton) findViewById(R.id.fabButton);
     }
 
 
@@ -91,18 +116,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
     private List<GalleryModel> persons;
 
-    private void initializeData() {
-        persons = new ArrayList<>();
-        persons.add(new GalleryModel("Emma Wilson", "23 years old"));
-        persons.add(new GalleryModel("Lavery Maiss", "25 years old"));
-        persons.add(new GalleryModel("Lillie Watts", "35 years old"));
-        persons.add(new GalleryModel("Emma Wilson", "23 years old"));
-        persons.add(new GalleryModel("Lavery Maiss", "25 years old"));
-        persons.add(new GalleryModel("Lillie Watts", "35 years old"));
-        persons.add(new GalleryModel("Emma Wilson", "23 years old"));
-        persons.add(new GalleryModel("Lavery Maiss", "25 years old"));
-        persons.add(new GalleryModel("Lillie Watts", "35 years old"));
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,4 +140,9 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.cleanup();
+    }
 }
