@@ -10,8 +10,8 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
 
         android:layout_marginTop="15dp"
@@ -61,12 +61,20 @@
                 android:layout_height="100dp"
                 android:layout_below="@id/titlePost"
                 android:background="@null"
-                android:hint="Your text here"
                 android:gravity="top"
+                android:id="@+id/post_text"
+                android:hint="Your text here"
                 android:paddingLeft="20dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="#ccc"
                 android:textSize="18sp"/>
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_below="@id/post_text"
+                android:layout_height="70dp"
+                android:id="@+id/image_of_post"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -116,19 +124,20 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/head"
-                android:paddingLeft="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="-3dp"
+                android:layout_toEndOf="@+id/head"
+                android:paddingLeft="5dp"
                 android:text="Shubham Joshi"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:id="@+id/textView3"/>
+                android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/postTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -136,28 +145,28 @@
                 android:text="Post"
                 android:textColor="@color/appMainColor"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:id="@+id/postTextView"/>
+                android:textStyle="bold"/>
 
             <ImageView
+                android:id="@+id/globe"
                 android:layout_width="15dp"
-                android:src="@drawable/globe"
                 android:layout_height="15dp"
-                android:layout_marginLeft="15dp"
+                android:layout_alignStart="@+id/textView3"
                 android:layout_below="@+id/textView3"
 
-                android:layout_alignStart="@+id/textView3"
-                android:id="@+id/globe"/>
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/globe"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/globe"
+                android:layout_below="@+id/textView3"
+                android:layout_toEndOf="@+id/globe"
+                android:paddingLeft="5dp"
                 android:text="Public"
                 android:textColor="#439be9"
-                android:layout_alignBaseline="@id/globe"
-                android:paddingLeft="5dp"
-                android:textSize="12sp"
-                android:layout_below="@+id/textView3"
-                android:layout_toEndOf="@+id/globe"/>
+                android:textSize="12sp"/>
         </RelativeLayout>
     </LinearLayout>
 
