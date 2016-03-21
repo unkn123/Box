@@ -17,7 +17,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.facebook.login.LoginManager;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.AddingPost.PostAdding;
 import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
@@ -25,6 +28,7 @@ import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.jiit.minor2.shubhamjoshi.box.utils.Utils;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 import java.util.List;
@@ -58,18 +62,35 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         pathPart = sp.getString(Constants.SPEMAIL, "Error");
         // Log.e("SJSj", pathPart);
-        Firebase mRef = new Firebase(Constants.FIREBASE_URL).child("posts").child(pathPart);
+        Firebase mRef = new Firebase(Constants.FIREBASE_URL).child("allPosts");
+        final Firebase photoRef = new Firebase(Constants.FIREBASE_URL).child("user");
         mAdapter = new FirebaseRecyclerAdapter<Post, PostHolder>(Post.class, R.layout.home_post, PostHolder.class, mRef) {
             @Override
-            public void populateViewHolder(PostHolder postHolder, Post post, int position) {
+            public void populateViewHolder(final PostHolder postHolder, Post post, int position) {
                 postHolder.postBody.setText(post.getTitle().toString());
                 postHolder.postHead.setText(post.getBody().toString());
+                Firebase photoEmailRef = photoRef.child(post.getEmail().toString()).child(Constants.PROFILE_URL);
+
+                photoEmailRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        //Log.e("SJSJ",snapshot.getValue().toString());
+                        Picasso.with(getBaseContext()).load(snapshot.getValue().toString()).resize(100, 100).into(postHolder.postOwnerPhoto);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                        System.out.println("The read failed: " + firebaseError.getMessage());
+                    }
+                });
+                //  Log.e("SJS",photoRef.child(post.getEmail().toString()).g);
+
                 if (post.getTimestampLastChanged() != null) {
-                    postHolder.timeStamp.setText(
-                            Utils.SIMPLE_DATE_FORMAT.format(
-                                    new Date(post.getTimestampLastChangedLong())));
+//                    postHolder.timeStamp.setText(
+//                            Utils.SIMPLE_DATE_FORMAT.format(
+//                                    new Date(post.getTimestampLastChangedLong())));
                 } else {
-                    postHolder.timeStamp.setText("");
+                    postHolder.timeStamp.setText("3w");
                 }
 
 

@@ -16,7 +16,7 @@ public final class Constants {
     public static final String SPEMAIL="EmailSP";
     public static final String SHAREDPREF_EMAIL="emailSharedPreff";
     public static final String FIREBASE_PROPERTY_TIMESTAMP="timestamp";
-
+    public static final String PROFILE_URL="profileUrl";
     public static String encodeEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }

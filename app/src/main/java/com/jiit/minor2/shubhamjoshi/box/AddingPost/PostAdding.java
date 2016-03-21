@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +30,6 @@ import java.io.InputStream;
 
 public class PostAdding extends AppCompatActivity {
     private static final int SELECT_PHOTO = 100;
-    private Toolbar mToolbar;
     private String pathPart;
     private String ImageUrl;
     private Firebase baseRef;
@@ -74,8 +72,16 @@ public class PostAdding extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Firebase posts = baseRef.child("posts").child(pathPart);
-                Post post = new Post(postTitle.getText().toString(), postBody.getText().toString());
-                posts.push().setValue(post);
+                Firebase allPosts = baseRef.child("allPosts");
+                Post post = new Post(postTitle.getText().toString(), postBody.getText().toString(),pathPart);
+
+                String id = posts.push().getKey();
+
+
+
+                posts.child(id).setValue(post);
+                allPosts.child(id).setValue(post);
+                finish();
             }
         });
 
@@ -102,7 +108,7 @@ public class PostAdding extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+        overridePendingTransition(R.anim.slide_out_down, R.anim.slide_in_down);
     }
 
     @Override

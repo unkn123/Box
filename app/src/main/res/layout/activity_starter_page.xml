@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:clipToPadding="true"
     android:layout_height="match_parent"
-    android:background="#000">
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -42,6 +42,7 @@
     </android.support.v7.widget.RecyclerView>
     <RelativeLayout
             android:layout_width="match_parent"
+
             app:layout_behavior="com.jiit.minor2.shubhamjoshi.box.Behaviour.LLayoutBehaviour"
             android:layout_height="match_parent">
 
