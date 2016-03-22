@@ -15,20 +15,30 @@ public class Post {
     private HashMap<String, Object> timestampLastChanged;
     private String title;
     private String email;
+    private String postImageUrl;
+
 
     public Post() {
     }
 
-    public Post(String body, String title,String email) {
+    public Post(String body, String title, String email, String postImageUrl) {
         this.body = body;
         HashMap<String, Object> timestampLastChangedObj = new HashMap<String, Object>();
         timestampLastChangedObj.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
         this.timestampLastChanged = timestampLastChangedObj;
         this.title = title;
         this.email = email;
+        this.postImageUrl = postImageUrl;
 
     }
 
+    public String getPostImageUrl() {
+        return postImageUrl;
+    }
+
+    public void setPostImageUrl(String postImageUrl) {
+        this.postImageUrl = postImageUrl;
+    }
 
     public void setTimestampLastChanged(HashMap<String, Object> timestampLastChanged) {
         this.timestampLastChanged = timestampLastChanged;

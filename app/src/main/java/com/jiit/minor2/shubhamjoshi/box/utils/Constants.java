@@ -17,6 +17,8 @@ public final class Constants {
     public static final String SHAREDPREF_EMAIL="emailSharedPreff";
     public static final String FIREBASE_PROPERTY_TIMESTAMP="timestamp";
     public static final String PROFILE_URL="profileUrl";
+    public static final String UPLOAD_URL = "http://jiitminor128.netai.net/funk.php";
+    public static final String MAIN_URL = "http://jiitminor128.netai.net/posts/";
     public static String encodeEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }

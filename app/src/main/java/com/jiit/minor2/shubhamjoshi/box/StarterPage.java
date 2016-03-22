@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import com.facebook.login.LoginManager;
@@ -64,11 +65,16 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         // Log.e("SJSj", pathPart);
         Firebase mRef = new Firebase(Constants.FIREBASE_URL).child("allPosts");
         final Firebase photoRef = new Firebase(Constants.FIREBASE_URL).child("user");
+
+
         mAdapter = new FirebaseRecyclerAdapter<Post, PostHolder>(Post.class, R.layout.home_post, PostHolder.class, mRef) {
+
             @Override
             public void populateViewHolder(final PostHolder postHolder, Post post, int position) {
+
                 postHolder.postBody.setText(post.getTitle().toString());
                 postHolder.postHead.setText(post.getBody().toString());
+                Picasso.with(getBaseContext()).load(post.getPostImageUrl().toString()).into(postHolder.postImage);
                 Firebase photoEmailRef = photoRef.child(post.getEmail().toString()).child(Constants.PROFILE_URL);
 
                 photoEmailRef.addValueEventListener(new ValueEventListener() {
@@ -166,4 +172,16 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         super.onDestroy();
         mAdapter.cleanup();
     }
+
+    private void runEnterAnimation(View view, int position) {
+
+
+        view.setTranslationY(10);
+        view.animate()
+                .translationY(0)
+                .setInterpolator(new DecelerateInterpolator(3.f))
+                .setDuration(700)
+                .start();
+    }
+
 }

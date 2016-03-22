@@ -4,29 +4,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.jiit.minor2.shubhamjoshi.box.utils.PicUploadBackend;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class PostAdding extends AppCompatActivity {
     private static final int SELECT_PHOTO = 100;
@@ -39,6 +43,12 @@ public class PostAdding extends AppCompatActivity {
     private ImageView imageOfPost;
     private EditText postTitle;
     private EditText postBody;
+    private String postImageName;
+
+
+    private int PICK_IMAGE_REQUEST = 1;
+    private Bitmap bitmap;
+    private Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +83,16 @@ public class PostAdding extends AppCompatActivity {
             public void onClick(View v) {
                 Firebase posts = baseRef.child("posts").child(pathPart);
                 Firebase allPosts = baseRef.child("allPosts");
-                Post post = new Post(postTitle.getText().toString(), postBody.getText().toString(),pathPart);
+                String uniqueKey = posts.push().getKey();
+                Post post = new Post(postTitle.getText().toString(), postBody.getText().toString(),
+                        pathPart, Constants.MAIN_URL + uniqueKey + ".JPG");
 
-                String id = posts.push().getKey();
 
-
-
-                posts.child(id).setValue(post);
-                allPosts.child(id).setValue(post);
+                posts.child(uniqueKey).setValue(post);
+                allPosts.child(uniqueKey).setValue(post);
+                //if()
+                if (filePath != null)
+                    uploadImage(uniqueKey);
                 finish();
             }
         });
@@ -88,9 +100,7 @@ public class PostAdding extends AppCompatActivity {
         picturePick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                showFileChooser();
             }
         });
     }
@@ -123,23 +133,76 @@ public class PostAdding extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        switch (requestCode) {
-            case SELECT_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-                    imageOfPost.setImageBitmap(yourSelectedImage);
-                }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imageOfPost.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    private void uploadImage(final String postImageName) {
+
+        this.postImageName = postImageName;
+        class UploadImage extends AsyncTask<Bitmap, Void, String> {
+
+            PicUploadBackend rh = new PicUploadBackend();
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+
+                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected String doInBackground(Bitmap... params) {
+                Bitmap bitmap = params[0];
+                String uploadImage = getStringImage(bitmap);
+
+                HashMap<String, String> data = new HashMap<>();
+                data.put("image", uploadImage);
+
+
+                data.put("name", postImageName);
+
+                String result = rh.sendPostRequest(Constants.UPLOAD_URL, data);
+
+                return result;
+            }
+        }
+
+        UploadImage ui = new UploadImage();
+        ui.execute(bitmap);
     }
 }
