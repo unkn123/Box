@@ -1,5 +1,6 @@
 package com.jiit.minor2.shubhamjoshi.box.AddingPost;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +32,8 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class PostAdding extends AppCompatActivity {
     private static final int SELECT_PHOTO = 100;
@@ -43,6 +46,7 @@ public class PostAdding extends AppCompatActivity {
     private ImageView imageOfPost;
     private EditText postTitle;
     private EditText postBody;
+    private ProgressDialog mProgress;
     private String postImageName;
 
 
@@ -55,6 +59,12 @@ public class PostAdding extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_adding);
         init();
+        mProgress = new ProgressDialog(PostAdding.this, ProgressDialog.STYLE_HORIZONTAL);
+        mProgress.setTitle(getString(R.string.processing));
+        mProgress.setMessage(getString(R.string.please_wait));
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
+
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         pathPart = sp.getString(Constants.SPEMAIL, "Error");
         // Log.e("SJSj", pathPart);
@@ -83,17 +93,43 @@ public class PostAdding extends AppCompatActivity {
             public void onClick(View v) {
                 Firebase posts = baseRef.child("posts").child(pathPart);
                 Firebase allPosts = baseRef.child("allPosts");
-                String uniqueKey = posts.push().getKey();
+                final String uniqueKey = posts.push().getKey();
+                String imageUrl;
+                if(filePath==null)
+                    imageUrl="";
+                else
+                    imageUrl=Constants.MAIN_URL + uniqueKey + ".JPG";
+
                 Post post = new Post(postTitle.getText().toString(), postBody.getText().toString(),
-                        pathPart, Constants.MAIN_URL + uniqueKey + ".JPG");
+                        pathPart,imageUrl );
 
 
                 posts.child(uniqueKey).setValue(post);
                 allPosts.child(uniqueKey).setValue(post);
+                final Firebase readRef = allPosts.child(uniqueKey);
+                readRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Post post = dataSnapshot.getValue(Post.class);
+                        Long timeStamp = post.getTimestampLastChangedLong();
+
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
                 //if()
                 if (filePath != null)
                     uploadImage(uniqueKey);
-                finish();
+                else
+                    finish();
+
             }
         });
 
@@ -113,6 +149,7 @@ public class PostAdding extends AppCompatActivity {
         imageOfPost = (ImageView) findViewById(R.id.image_of_post);
         postTitle = (EditText) findViewById(R.id.titlePost);
         postBody = (EditText) findViewById(R.id.post_body);
+
     }
 
     @Override
@@ -175,14 +212,15 @@ public class PostAdding extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-
+                mProgress.show();
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                mProgress.dismiss();
+                finish();
+//                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -205,4 +243,6 @@ public class PostAdding extends AppCompatActivity {
         UploadImage ui = new UploadImage();
         ui.execute(bitmap);
     }
+
+
 }

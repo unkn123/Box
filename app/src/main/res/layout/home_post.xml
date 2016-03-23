@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
+
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginBottom="20dp"
-    app:cardCornerRadius="0dp"    >
+    app:cardCornerRadius="0dp">
+
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/relativeLayoutMain"
         android:layout_width="wrap_content"
+        android:background="@drawable/blac_shadow_curtain"
         android:layout_height="wrap_content"
+        android:paddingTop="-10dp">
 
-        android:paddingTop="10dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:id="@+id/bgRecView"
+            android:scaleType="centerCrop"
+            android:layout_height="530dp"/>
+
 
         <RelativeLayout
             android:id="@+id/headLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:paddingLeft="10dp"
             >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/post_owner"
-                android:layout_marginTop="10dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/pen"/>
 
             <TextView
                 android:id="@+id/profileName"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:gravity="center"
-                android:layout_toRightOf="@+id/post_owner"
-                android:text="Shubham Joshi"
-                android:textColor="#000"
                 android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/post_owner"
+                android:gravity="center"
+                android:text="Shubham Joshi"
+                android:textColor="#fff"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 />
@@ -50,11 +56,11 @@
                 android:id="@+id/timeStamp"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:gravity="center"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="5dp"
+                android:gravity="center"
                 android:text="9w"
-                android:textColor="#7a7a7a"
+                android:textColor="#fff"
                 android:textSize="14sp"/>
 
 
@@ -69,29 +75,43 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:text="heading"
-            android:textColor="#202020"
+            android:textColor="#fff"
             android:textSize="15sp"
 
             />
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_below="@+id/head"
-            android:id="@+id/postImage"
-            android:layout_height="150dp"/>
+            android:id="@+id/postImageContainer"
+            android:padding="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/postImage"
+                android:layout_marginTop="5dp"
+
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:scaleType="fitXY"/>
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/head"
-            android:textSize="14sp"
-            android:layout_below="@+id/postImage"
-
+            android:layout_below="@+id/postImageContainer"
             android:layout_marginBottom="5dp"
+
             android:layout_marginTop="5dp"
             android:text="body"
-            android:textColor="#202020"
+            android:textColor="#fff"
+            android:textSize="14sp"
 
             />
 
@@ -100,9 +120,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/body"
-
             android:layout_below="@+id/body"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginTop="1dp">
 
             <LinearLayout
@@ -113,38 +132,45 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/view"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginBottom="5dp"
 
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ic_plus_one_black_24dp"/>
+                android:src="@drawable/ic_plus_one_white_36dp"/>
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="28dp"
                 android:layout_marginBottom="5dp"
 
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
 
-                android:layout_toLeftOf="@+id/sharePost"
-                android:src="@drawable/ic_insert_comment_black_48dp"/>
+                android:layout_toLeftOf="@+id/sharePostContainer"
+                android:src="@drawable/ic_insert_comment_white_48dp"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/sharePost"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
+                android:id="@+id/sharePostContainer"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/sharePost"
+                android:layout_width="25dp"
+                android:layout_height="28dp"
 
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/ic_share_black_24dp"/>
+                android:src="@drawable/ic_share_white_36dp"/>
 
-
+            </FrameLayout>
         </RelativeLayout>
     </RelativeLayout>
 
+
 </android.support.v7.widget.CardView>
+
 

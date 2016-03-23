@@ -5,17 +5,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:clipToPadding="true"
     android:layout_height="match_parent"
+    android:clipToPadding="true"
     >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="?actionBarSize"
         android:fitsSystemWindows="true"
-        android:layout_marginBottom="?actionBarSize">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -30,126 +30,126 @@
 
 
     </android.support.design.widget.AppBarLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rView"
         android:layout_width="match_parent"
-        android:background="#eeeeee"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
 
+        android:background="#000"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_alignParentStart="true"
         >
 
     </android.support.v7.widget.RecyclerView>
-    <RelativeLayout
-            android:layout_width="match_parent"
 
-            app:layout_behavior="com.jiit.minor2.shubhamjoshi.box.Behaviour.LLayoutBehaviour"
-            android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        app:layout_behavior="com.jiit.minor2.shubhamjoshi.box.Behaviour.LLayoutBehaviour">
+
+        <LinearLayout
+            android:id="@+id/navigation"
+
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/editTextColor"
+            android:orientation="horizontal"
+            android:paddingBottom="6dp"
+            android:weightSum="400">
 
             <LinearLayout
-                android:id="@+id/navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="100"
+                android:gravity="center|bottom"
+                android:orientation="vertical">
 
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:paddingBottom="6dp"
-                android:background="@color/editTextColor"
-                android:orientation="horizontal"
-                android:weightSum="400"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home_white_18dp"/>
 
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="100"
-                    android:gravity="center|bottom"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_home_white_18dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Home"
-                        android:textColor="#fff"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="100"
-                    android:gravity="center|bottom"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_grain_white_36dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Explore"
-                        android:textColor="#fff"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="100"
-                    android:gravity="center|bottom"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_notifications_none_white_48dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Notification"
-                        android:textColor="#fff"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="100"
-                    android:id="@+id/profileNav"
-                    android:gravity="center|bottom"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_person_white_36dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Profile"
-                        android:textColor="#fff"
-                        android:textSize="12sp"/>
-                </LinearLayout>
+                    android:text="Home"
+                    android:textColor="#fff"
+                    android:textSize="12sp"/>
             </LinearLayout>
 
-    </RelativeLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="100"
+                android:gravity="center|bottom"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_grain_white_36dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Explore"
+                    android:textColor="#fff"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="100"
+                android:gravity="center|bottom"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_notifications_none_white_48dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notification"
+                    android:textColor="#fff"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/profileNav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="100"
+                android:gravity="center|bottom"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_person_white_36dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textColor="#fff"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
     <android.support.design.widget.FloatingActionButton

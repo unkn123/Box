@@ -22,5 +22,6 @@ public final class Constants {
     public static String encodeEmail(String userEmail) {
         return userEmail.replace(".", ",");
     }
+    public static final String FIREBASE_PROPERTY_TIMESTAMP_LAST_CHANGED_REVERSE = "timestampLastChangedReversed";
 
 }
