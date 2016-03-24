@@ -134,7 +134,7 @@ public class PostAdding extends AppCompatActivity {
                 if (filePath != null)
                     uploadImage(uniqueKey);
 
-                startActivity(new Intent(PostAdding.this, StarterPage.class));
+               else
                 finish();
 
             }
