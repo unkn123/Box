@@ -11,7 +11,10 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,8 +27,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.firebase.ui.FirebaseRecyclerAdapter;
+import com.jiit.minor2.shubhamjoshi.box.HolderForProfilePost;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
@@ -40,7 +46,11 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private String ImageUrl;
     private CircleImageView profile;
     private Toolbar mToolbar;
+    private TextView title;
+    private String username;
     private TextView mTitle;
+    private FirebaseRecyclerAdapter mAdapter;
+    private TextView mUsername;
     private AppBarLayout mAppBarLayout;
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
@@ -79,8 +89,10 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         puller.setCallback(this);
 
         setSupportActionBar(mToolbar);
-        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
-        pathPart = sp.getString(Constants.SPEMAIL, "Error");
+            Intent intent = getIntent();
+            pathPart=intent.getExtras().getString("path");
+//        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
+//        pathPart = sp.getString(Constants.SPEMAIL, "Error");
 
         Firebase ref = baseRef.child(Constants.USER).child(pathPart);
 
@@ -95,6 +107,10 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                 ImageView relative = (ImageView) findViewById(R.id.profileBg);
                 Picasso.with(getBaseContext()).load(ImageUrl).transform(new Blur(getBaseContext(), 50)).into(relative);
                 relative.setAlpha(.5f);
+                username = user.getUsername();
+                Log.e("SJS", username);
+                mUsername.setText(username);
+                title.setText(username);
             }
 
             @Override
@@ -103,14 +119,30 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
             }
         });
 
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.postsByUser);
+        recycler.setHasFixedSize(true);
+        recycler.setLayoutManager(new GridLayoutManager(this,3));
 
+        Firebase mRef = baseRef.child(Constants.POST).child(pathPart);
+        mAdapter = new FirebaseRecyclerAdapter<Post,HolderForProfilePost>(Post.class,
+                R.layout.images_posted, HolderForProfilePost.class, mRef) {
+            @Override
+            public void populateViewHolder(HolderForProfilePost holderForProfilePost, Post post, int position) {
+                if(post.getPostImageUrl().length()>2)
+                Picasso.with(Profile.this).load(post.getPostImageUrl()).resize(250,250).into(holderForProfilePost.post);
+
+            }
+        };
+        recycler.setAdapter(mAdapter);
     }
 
     private void init() {
         profile = (CircleImageView) findViewById(R.id.fb123);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        title=(TextView)findViewById(R.id.title_toolbar);
         mTitle = (TextView) findViewById(R.id.title_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        mUsername = (TextView) findViewById(R.id.username);
     }
 
 
@@ -256,5 +288,11 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.cleanup();
     }
 }

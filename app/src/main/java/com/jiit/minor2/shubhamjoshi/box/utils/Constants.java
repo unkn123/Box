@@ -23,5 +23,5 @@ public final class Constants {
         return userEmail.replace(".", ",");
     }
     public static final String FIREBASE_PROPERTY_TIMESTAMP_LAST_CHANGED_REVERSE = "timestampLastChangedReversed";
-
+    public static final String POST ="posts";
 }

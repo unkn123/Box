@@ -84,7 +84,8 @@
             android:layout_width="match_parent"
             android:layout_below="@+id/head"
             android:id="@+id/postImageContainer"
-            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content">

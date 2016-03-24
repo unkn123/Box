@@ -57,7 +57,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private List<GalleryModel> persons;
 
     public static String caluculateTimeAgo(long timeStamp) {
-        String intervalType = null;
+
         double seconds = Math.floor((System.currentTimeMillis() - timeStamp) / 1000);  //get current time in seconds.
         double interval = Math.floor(seconds / 31536000);
         if (interval >= 1) {
@@ -102,7 +102,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         pathPart = sp.getString(Constants.SPEMAIL, "Error");
         // Log.e("SJSj", pathPart);
-        Query mRef = new Firebase(Constants.FIREBASE_URL).child("allPosts").orderByChild("timestampLastChangedReverse/timestamp");
+        Query mRef = new Firebase(Constants.FIREBASE_URL).child("allPosts").orderByChild(getString(R.string.sorting_order_time_reverse));
         final Firebase photoRef = new Firebase(Constants.FIREBASE_URL).child("user");
 
 
@@ -116,7 +116,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
             }
 
             @Override
-            public void populateViewHolder(final PostHolder postHolder, Post post, int position) {
+            public void populateViewHolder(final PostHolder postHolder, final Post post, final int position) {
 
                 if (firstStateOfAnimation) {
                     firstStateOfAnimation = false;
@@ -129,10 +129,14 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                             .setInterpolator(new AccelerateDecelerateInterpolator())
                             .start();
                 }
+
+
                 postHolder.postBody.setText(post.getTitle().toString());
                 postHolder.postHead.setText(post.getBody().toString());
 
+
                 if (post.getPostImageUrl().toString().length() >= 1) {
+
                     postHolder.postImage.setVisibility(View.VISIBLE);
                     postHolder.mainHolder.setVisibility(View.VISIBLE);
 
@@ -141,7 +145,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                             .into(postHolder.postImage);
 
                     Picasso.with(getBaseContext()).load(post.getPostImageUrl().toString())
-                            .transform(new Blur(getBaseContext(), 50)).fit().into(postHolder.mainHolder);
+                            .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
                     postHolder.mainHolder.setAlpha(.6f);
                 } else {
                     postHolder.postImage.setVisibility(View.GONE);
@@ -156,13 +160,31 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         //Log.e("SJSJ",snapshot.getValue().toString());
-                        Picasso.with(getBaseContext()).load(snapshot.getValue().toString()).resize(100, 100).into(postHolder.postOwnerPhoto);
+                        Picasso.with(getBaseContext()).load(snapshot.getValue().toString()).
+                                resize(100, 100).into(postHolder.postOwnerPhoto);
 
                     }
 
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
                         System.out.println("The read failed: " + firebaseError.getMessage());
+                    }
+                });
+
+
+
+
+                postHolder.postOwnerPhoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callProfileActivity(post.getEmail());
+                    }
+                });
+
+                postHolder.postOwnerName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callProfileActivity(post.getEmail());
                     }
                 });
                 //  Log.e("SJS",photoRef.child(post.getEmail().toString()).g);
@@ -174,12 +196,16 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
 
             }
+
         };
         recycler.setAdapter(mAdapter);
         profileNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Intent intent = new Intent(getBaseContext(), Profile.class);
+                intent.putExtra("path",pathPart);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -196,6 +222,15 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
             }
         });
 
+    }
+
+    private void callProfileActivity(String pathPart) {
+
+        Intent intent = new Intent(getBaseContext(), Profile.class);
+        intent.putExtra("path",pathPart);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
     private void init() {

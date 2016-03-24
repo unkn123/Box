@@ -1,0 +1,30 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="wrap_content"
+              android:background="@color/editTextColor"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+   android:layout_margin="1dp"
+    android:background="@color/editTextColor"
+
+    >
+
+
+
+    <ImageView
+        android:id="@+id/individual_image"
+        android:layout_width="140dp"
+        android:layout_height="110dp"
+        android:contentDescription="third"
+        android:scaleType="centerCrop"
+        />
+
+
+</FrameLayout>
+
+</LinearLayout>

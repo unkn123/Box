@@ -11,6 +11,7 @@ public class PostHolder extends RecyclerView.ViewHolder {
     TextView postHead;
     TextView postBody;
     TextView timeStamp;
+    TextView postOwnerName;
     ImageView postOwnerPhoto;
     ImageView postImage;
     ImageView mainHolder;
@@ -23,6 +24,7 @@ public class PostHolder extends RecyclerView.ViewHolder {
         timeStamp = (TextView) itemView.findViewById(R.id.timeStamp);
         postOwnerPhoto = (ImageView) itemView.findViewById(R.id.post_owner);
         postImage = (ImageView)itemView.findViewById(R.id.postImage);
+        postOwnerName=(TextView)itemView.findViewById(R.id.profileName);
         mainHolder=(ImageView)itemView.findViewById(R.id.bgRecView);
     }
 
