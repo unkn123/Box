@@ -46,7 +46,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
     private static String LOG_TAG = "RecyclerViewActivity";
     FirebaseRecyclerAdapter mAdapter;
-    private RecyclerView mRecyclerView;
+    private RecyclerView recycler;
     private Toolbar mToolbar;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout nav;
@@ -85,7 +85,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     @Override
     protected void onResume() {
         super.onResume();
-
+        recycler.setAdapter(mAdapter);
     }
 
     @Override
@@ -95,7 +95,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         init();
         setSupportActionBar(mToolbar);
         setTitle("Home");
-        final RecyclerView recycler = (RecyclerView) findViewById(R.id.rView);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
@@ -132,10 +131,11 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                 }
                 postHolder.postBody.setText(post.getTitle().toString());
                 postHolder.postHead.setText(post.getBody().toString());
+
                 if (post.getPostImageUrl().toString().length() >= 1) {
                     postHolder.postImage.setVisibility(View.VISIBLE);
                     postHolder.mainHolder.setVisibility(View.VISIBLE);
-                    //  Picasso.with(getBaseContext()).load(post.getPostImageUrl().toString()).resize(350,350).into(postHolder.postImage);
+
                     Picasso.with(getBaseContext())
                             .load(post.getPostImageUrl().toString()).fit()
                             .into(postHolder.postImage);
@@ -199,7 +199,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     }
 
     private void init() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.rView);
+        recycler = (RecyclerView) findViewById(R.id.rView);
         nav = (LinearLayout) findViewById(R.id.navigation);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         profileNav = (LinearLayout) findViewById(R.id.profileNav);

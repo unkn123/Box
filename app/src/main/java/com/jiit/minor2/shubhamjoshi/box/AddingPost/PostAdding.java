@@ -114,7 +114,7 @@ public class PostAdding extends AppCompatActivity {
                         Post post = dataSnapshot.getValue(Post.class);
                         Long timeStamp = post.getTimestampLastChangedLong();
                         Map<String, Object> fun = new HashMap<String, Object>();
-                        fun.put("timestamp",-(timeStamp));
+                        fun.put("timestamp",-1*System.currentTimeMillis() / 1000L);
                         Map<String, Object> root= new HashMap<String, Object>();
                         root.put("timestampLastChangedReverse",fun);
 
@@ -134,7 +134,7 @@ public class PostAdding extends AppCompatActivity {
                 if (filePath != null)
                     uploadImage(uniqueKey);
 
-               else
+                else
                 finish();
 
             }
