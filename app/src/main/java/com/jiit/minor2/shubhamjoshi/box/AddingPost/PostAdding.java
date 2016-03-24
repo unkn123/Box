@@ -22,6 +22,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.jiit.minor2.shubhamjoshi.box.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.utils.PicUploadBackend;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
@@ -112,7 +113,12 @@ public class PostAdding extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Post post = dataSnapshot.getValue(Post.class);
                         Long timeStamp = post.getTimestampLastChangedLong();
+                        Map<String, Object> fun = new HashMap<String, Object>();
+                        fun.put("timestamp",-(timeStamp));
+                        Map<String, Object> root= new HashMap<String, Object>();
+                        root.put("timestampLastChangedReverse",fun);
 
+                       readRef.updateChildren(root);
 
 
 
@@ -127,8 +133,9 @@ public class PostAdding extends AppCompatActivity {
                 //if()
                 if (filePath != null)
                     uploadImage(uniqueKey);
-                else
-                    finish();
+
+                startActivity(new Intent(PostAdding.this, StarterPage.class));
+                finish();
 
             }
         });

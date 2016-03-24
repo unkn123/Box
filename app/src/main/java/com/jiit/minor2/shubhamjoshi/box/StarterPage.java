@@ -19,10 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -56,7 +53,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private LinearLayout profileNav;
     private FloatingActionButton fab;
     private String pathPart;
-    private boolean firstStateOfAnimation=true;
+    private boolean firstStateOfAnimation = true;
     private List<GalleryModel> persons;
 
     public static String caluculateTimeAgo(long timeStamp) {
@@ -88,6 +85,13 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_starter_page);
         init();
         setSupportActionBar(mToolbar);
         setTitle("Home");
@@ -108,7 +112,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
             @Override
             public void onBindViewHolder(PostHolder viewHolder, int position) {
                 super.onBindViewHolder(viewHolder, position);
-              
 
 
             }
@@ -116,8 +119,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
             @Override
             public void populateViewHolder(final PostHolder postHolder, Post post, int position) {
 
-                if(firstStateOfAnimation) {
-                    firstStateOfAnimation=false;
+                if (firstStateOfAnimation) {
+                    firstStateOfAnimation = false;
                     recycler.setTranslationY(510);
                     recycler.setAlpha(0f);
                     recycler.animate()
@@ -192,13 +195,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
             }
         });
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_starter_page);
 
     }
 

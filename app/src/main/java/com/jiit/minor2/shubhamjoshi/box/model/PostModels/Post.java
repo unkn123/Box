@@ -30,9 +30,7 @@ public class Post {
         timestampLastChangedObj.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
         this.timestampLastChanged = timestampLastChangedObj;
         this.title = title;
-
-
-        this.timestampLastChangedReverse =null;
+        this.timestampLastChangedReverse =timestampLastChanged;
         this.email = email;
         this.postImageUrl = postImageUrl;
 
