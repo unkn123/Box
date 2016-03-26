@@ -5,6 +5,7 @@ package com.jiit.minor2.shubhamjoshi.box.model.list_models;
  */
 public class GiantChooserModel {
     private String url;
+    private String subDescription;
     private String description;
     private boolean selected;
 
@@ -15,6 +16,14 @@ public class GiantChooserModel {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getSubDescription() {
+        return subDescription;
+    }
+
+    public void setSubDescription(String subDescription) {
+        this.subDescription = subDescription;
     }
 
     public String getDescription() {

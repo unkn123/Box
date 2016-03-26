@@ -2,7 +2,6 @@ package com.jiit.minor2.shubhamjoshi.box.profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.renderscript.Allocation;
@@ -18,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +28,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
-import com.jiit.minor2.shubhamjoshi.box.HolderForProfilePost;
+import com.jiit.minor2.shubhamjoshi.box.Holder.HolderForProfilePost;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
@@ -55,6 +55,7 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
     private boolean mIsTheTitleVisible = false;
+    private boolean firstStateOfAnimation=true;
     final Firebase baseRef = new Firebase(Constants.FIREBASE_URL);
 
     @Override
@@ -119,7 +120,7 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
             }
         });
 
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.postsByUser);
+        final RecyclerView recycler = (RecyclerView) findViewById(R.id.postsByUser);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new GridLayoutManager(this,3));
 
@@ -128,6 +129,18 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
                 R.layout.images_posted, HolderForProfilePost.class, mRef) {
             @Override
             public void populateViewHolder(HolderForProfilePost holderForProfilePost, Post post, int position) {
+
+                if (firstStateOfAnimation) {
+                    firstStateOfAnimation = false;
+                    recycler.setTranslationY(610);
+                    recycler.setAlpha(0f);
+                    recycler.animate()
+                            .translationY(0)
+                            .setDuration(400)
+                            .alpha(1f)
+                            .setInterpolator(new AccelerateDecelerateInterpolator())
+                            .start();
+                }
                 if(post.getPostImageUrl().length()>2)
                 Picasso.with(Profile.this).load(post.getPostImageUrl()).resize(250,250).into(holderForProfilePost.post);
 
@@ -214,8 +227,10 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     @Override
     public void onPull(float v) {
 
-        if (v * 10 > 1.4)
+        if (v * 10 > 1.4) {
             finish();
+            firstStateOfAnimation=true;
+        }
     }
 
     @Override

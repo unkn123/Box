@@ -9,8 +9,8 @@ import android.widget.VideoView;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+import com.jiit.minor2.shubhamjoshi.box.Steps.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.login.LoginActivity;
-import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 import com.jiit.minor2.shubhamjoshi.box.signup.SignUp;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 

@@ -20,7 +20,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.jiit.minor2.shubhamjoshi.box.R;
-import com.jiit.minor2.shubhamjoshi.box.StarterPage;
+import com.jiit.minor2.shubhamjoshi.box.Steps.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.chooser.Chooser;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 

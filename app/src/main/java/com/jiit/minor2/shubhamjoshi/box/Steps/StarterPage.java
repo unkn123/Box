@@ -1,4 +1,4 @@
-package com.jiit.minor2.shubhamjoshi.box;
+package com.jiit.minor2.shubhamjoshi.box.Steps;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +31,9 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.AddingPost.PostAdding;
+import com.jiit.minor2.shubhamjoshi.box.Holder.PostHolder;
+import com.jiit.minor2.shubhamjoshi.box.MainActivity;
+import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
@@ -50,6 +53,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private Toolbar mToolbar;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout nav;
+    private LinearLayout explore;
     private LinearLayout profileNav;
     private FloatingActionButton fab;
     private String pathPart;
@@ -140,6 +144,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                     postHolder.postImage.setVisibility(View.VISIBLE);
                     postHolder.mainHolder.setVisibility(View.VISIBLE);
 
+                    
                     Picasso.with(getBaseContext())
                             .load(post.getPostImageUrl().toString()).fit()
                             .into(postHolder.postImage);
@@ -205,7 +210,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
 
                 Intent intent = new Intent(getBaseContext(), Profile.class);
-                intent.putExtra("path",pathPart);
+                intent.putExtra("path", pathPart);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -222,6 +227,12 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
             }
         });
 
+        explore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(),Explore.class));
+            }
+        });
     }
 
     private void callProfileActivity(String pathPart) {
@@ -238,6 +249,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         nav = (LinearLayout) findViewById(R.id.navigation);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         profileNav = (LinearLayout) findViewById(R.id.profileNav);
+        explore=(LinearLayout)findViewById(R.id.explore);
         fab = (FloatingActionButton) findViewById(R.id.fabButton);
     }
 

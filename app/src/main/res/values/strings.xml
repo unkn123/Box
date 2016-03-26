@@ -32,5 +32,6 @@
     <string name="action_settings">settings</string>
     <string name="hintTestStyle"><b>Title</b></string>
     <string name="sorting_order_time_reverse">timestampLastChangedReverse/timestamp</string>
+    <string name="description">We always have the best solution for your needs !</string>
 
 </resources>

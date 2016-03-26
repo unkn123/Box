@@ -1,4 +1,4 @@
-package com.jiit.minor2.shubhamjoshi.box;
+package com.jiit.minor2.shubhamjoshi.box.Holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -6,15 +6,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jiit.minor2.shubhamjoshi.box.R;
+
 public class PostHolder extends RecyclerView.ViewHolder {
 
-    TextView postHead;
-    TextView postBody;
-    TextView timeStamp;
-    TextView postOwnerName;
-    ImageView postOwnerPhoto;
-    ImageView postImage;
-    ImageView mainHolder;
+   public TextView postHead;
+   public TextView postBody;
+   public TextView timeStamp;
+   public TextView postOwnerName;
+   public ImageView postOwnerPhoto;
+   public ImageView postImage;
+   public ImageView mainHolder;
 
     public PostHolder(View itemView) {
         super(itemView);
