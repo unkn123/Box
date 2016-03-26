@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -41,24 +42,41 @@ import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import twitter4j.MediaEntity;
+import twitter4j.QueryResult;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 
 public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
 
     private static String LOG_TAG = "RecyclerViewActivity";
-    FirebaseRecyclerAdapter mAdapter;
+    private FirebaseRecyclerAdapter mAdapter;
     private RecyclerView recycler;
+    List<Map<String, String>> twitterList = new ArrayList<Map<String, String>>();
     private Toolbar mToolbar;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout nav;
     private LinearLayout explore;
     private LinearLayout profileNav;
+    private String likeQuery = "";
+    private Set<String> likes = new HashSet<>();
     private FloatingActionButton fab;
     private String pathPart;
     private boolean firstStateOfAnimation = true;
     private List<GalleryModel> persons;
+    private static final int TYPE_IMAGE = 1;
+    private static final int TYPE_GROUP = 2;
 
     public static String caluculateTimeAgo(long timeStamp) {
 
@@ -99,25 +117,67 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         init();
         setSupportActionBar(mToolbar);
         setTitle("Home");
+        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
+        pathPart = sp.getString(Constants.SPEMAIL, "Error");
+
+
+        //Getting users interest
+
+        Firebase ref = new Firebase(Constants.FIREBASE_URL);
+        Firebase mref = ref.child(Constants.LIKES).child(pathPart);
+
+        mref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                HashMap<String, String> a = (HashMap<String, String>) snapshot.getValue();
+
+                likes = a.keySet();
+
+
+                int count = 0;
+
+                for (String t : likes) {
+                    count++;
+
+                    likeQuery += "#";
+
+                    likeQuery += t;
+
+                    if (count != likes.size())
+                        likeQuery += " OR ";
+                }
+
+
+                new Fun().execute();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+
+
+        Log.e("SSJSJ", "CHECKING>>>>>");
+
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
 
-        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
-        pathPart = sp.getString(Constants.SPEMAIL, "Error");
-        // Log.e("SJSj", pathPart);
         Query mRef = new Firebase(Constants.FIREBASE_URL).child("allPosts").orderByChild(getString(R.string.sorting_order_time_reverse));
         final Firebase photoRef = new Firebase(Constants.FIREBASE_URL).child("user");
 
 
         mAdapter = new FirebaseRecyclerAdapter<Post, PostHolder>(Post.class, R.layout.home_post, PostHolder.class, mRef) {
 
+
             @Override
-            public void onBindViewHolder(PostHolder viewHolder, int position) {
-                super.onBindViewHolder(viewHolder, position);
+            public int getItemViewType(int position) {
 
-
+                return position % 3 == 2 ? TYPE_IMAGE : TYPE_GROUP;
             }
+
 
             @Override
             public void populateViewHolder(final PostHolder postHolder, final Post post, final int position) {
@@ -135,72 +195,89 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                 }
 
 
-                postHolder.postBody.setText(post.getTitle().toString());
-                postHolder.postHead.setText(post.getBody().toString());
+                if (postHolder.getItemViewType() == TYPE_GROUP) {
+
+                    postHolder.postBody.setText(post.getTitle().toString());
+                    postHolder.postHead.setText(post.getBody().toString());
 
 
-                if (post.getPostImageUrl().toString().length() >= 1) {
+                    if (post.getPostImageUrl().toString().length() >= 1) {
 
-                    postHolder.postImage.setVisibility(View.VISIBLE);
-                    postHolder.mainHolder.setVisibility(View.VISIBLE);
+                        postHolder.postImage.setVisibility(View.VISIBLE);
+                        postHolder.mainHolder.setVisibility(View.VISIBLE);
 
-                    
-                    Picasso.with(getBaseContext())
-                            .load(post.getPostImageUrl().toString()).fit()
-                            .into(postHolder.postImage);
 
-                    Picasso.with(getBaseContext()).load(post.getPostImageUrl().toString())
-                            .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
-                    postHolder.mainHolder.setAlpha(.6f);
+                        Picasso.with(getBaseContext())
+                                .load(post.getPostImageUrl().toString()).fit()
+                                .into(postHolder.postImage);
+
+                        Picasso.with(getBaseContext()).load(post.getPostImageUrl().toString())
+                                .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
+                        postHolder.mainHolder.setAlpha(.6f);
+                    } else {
+                        postHolder.postImage.setVisibility(View.GONE);
+                        postHolder.mainHolder.setVisibility(View.GONE);
+
+                    }
+
+
+                    Firebase photoEmailRef = photoRef.child(post.getEmail().toString()).child(Constants.PROFILE_URL);
+
+                    photoEmailRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+
+                            Picasso.with(getBaseContext()).load(snapshot.getValue().toString()).
+                                    resize(100, 100).into(postHolder.postOwnerPhoto);
+
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            System.out.println("The read failed: " + firebaseError.getMessage());
+                        }
+                    });
+
+
+                    postHolder.postOwnerPhoto.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callProfileActivity(post.getEmail());
+                        }
+                    });
+
+                    postHolder.postOwnerName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callProfileActivity(post.getEmail());
+                        }
+                    });
+
+
+                    if (post.getTimestampLastChanged() != null) {
+                        postHolder.timeStamp.setText(caluculateTimeAgo(post.getTimestampLastChangedLong()));
+
+                    }
+
+
                 } else {
-                    postHolder.postImage.setVisibility(View.GONE);
-                    postHolder.mainHolder.setVisibility(View.GONE);
 
+
+                    postHolder.postHead.setText(twitterList.get(position).get("Text"));
+                    Picasso.with(getBaseContext()).load(twitterList.get(position).get("OwnerImage")).resize(100, 100).into(postHolder.postOwnerPhoto);
+                    postHolder.postOwnerName.setText(twitterList.get(position).get("Username"));
+                    Picasso.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl")).fit().into(postHolder.postImage);
+                    Picasso.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl"))
+                            .transform(new Blur(getBaseContext(), 50)).resize(450, 660).into(postHolder.mainHolder);
+                    postHolder.postBody.setText("You've shown interest in "+twitterList.get(position).get("Matched"));
+                    postHolder.mainHolder.setAlpha(.6f);
                 }
-
-
-                Firebase photoEmailRef = photoRef.child(post.getEmail().toString()).child(Constants.PROFILE_URL);
-
-                photoEmailRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        //Log.e("SJSJ",snapshot.getValue().toString());
-                        Picasso.with(getBaseContext()).load(snapshot.getValue().toString()).
-                                resize(100, 100).into(postHolder.postOwnerPhoto);
-
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                        System.out.println("The read failed: " + firebaseError.getMessage());
-                    }
-                });
-
-
-
-
-                postHolder.postOwnerPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        callProfileActivity(post.getEmail());
-                    }
-                });
-
-                postHolder.postOwnerName.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        callProfileActivity(post.getEmail());
-                    }
-                });
-                //  Log.e("SJS",photoRef.child(post.getEmail().toString()).g);
-
-                if (post.getTimestampLastChanged() != null) {
-                    postHolder.timeStamp.setText(caluculateTimeAgo(post.getTimestampLastChangedLong()));
-
-                }
+                // postHolder.
+                //Log.e("SJSJ",twitterPosts.toString());
 
 
             }
+
 
         };
         recycler.setAdapter(mAdapter);
@@ -230,7 +307,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         explore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getBaseContext(),Explore.class));
+                startActivity(new Intent(getBaseContext(), Explore.class));
             }
         });
     }
@@ -238,7 +315,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private void callProfileActivity(String pathPart) {
 
         Intent intent = new Intent(getBaseContext(), Profile.class);
-        intent.putExtra("path",pathPart);
+        intent.putExtra("path", pathPart);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -249,7 +326,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         nav = (LinearLayout) findViewById(R.id.navigation);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         profileNav = (LinearLayout) findViewById(R.id.profileNav);
-        explore=(LinearLayout)findViewById(R.id.explore);
+        explore = (LinearLayout) findViewById(R.id.
+                explore);
         fab = (FloatingActionButton) findViewById(R.id.fabButton);
     }
 
@@ -350,6 +428,80 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         @Override
         public String key() {
             return "blurred";
+        }
+    }
+
+
+    public class Fun extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ConfigurationBuilder cb = new ConfigurationBuilder();
+            //  likeQuery="#fun OR #cool OR #srk OR #shubham OR #india";
+            cb.setDebugEnabled(true)
+                    .setOAuthConsumerKey(getString(R.string.token1))
+                    .setOAuthConsumerSecret(getString(R.string.token2))
+                    .setOAuthAccessToken(getString(R.string.token3))
+                    .setOAuthAccessTokenSecret(getString(R.string.token4));
+
+            TwitterFactory tf = new TwitterFactory(cb.build());
+            Twitter twitter = tf.getInstance();
+            int count = 0;
+            try {
+                twitter4j.Query query = new twitter4j.Query();
+                if (likeQuery != "")
+                    query.setQuery(likeQuery);
+                else
+                    query.setQuery("#fun");
+                query.setCount(100);
+                QueryResult result;
+                result = twitter.search(query);
+                List<twitter4j.Status> tweets = result.getTweets();
+
+                for (twitter4j.Status tweet : tweets) {
+
+                    MediaEntity[] media = tweet.getMediaEntities();
+                    String ans = "";
+                    for (MediaEntity m : media) {
+
+                        ans = m.getMediaURLHttps();
+                    }
+                    if (ans != "") {
+                        Map<String, String> twitterPosts = new HashMap<>();
+                        twitterPosts.put("ImageUrl", ans);
+                        twitterPosts.put("Username", tweet.getUser().getName());
+                        twitterPosts.put("Text", tweet.getText());
+                        twitterPosts.put("OwnerImage", tweet.getUser().getBiggerProfileImageURL());
+
+                        String contains = "";
+                        for (String str : likes) {
+                            if (tweet.getText().contains(str)) {
+                                contains = str;
+                                break;
+                            }
+                        }
+                        twitterPosts.put("Matched", contains);
+                        twitterList.add(twitterPosts);
+                    }
+
+
+                }
+
+
+            } catch (TwitterException te) {
+                te.printStackTrace();
+                System.out.println("Failed to search tweets: " + te.getMessage());
+                System.exit(-1);
+            }
+
+            return null;
         }
     }
 }

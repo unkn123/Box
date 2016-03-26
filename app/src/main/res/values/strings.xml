@@ -33,5 +33,10 @@
     <string name="hintTestStyle"><b>Title</b></string>
     <string name="sorting_order_time_reverse">timestampLastChangedReverse/timestamp</string>
     <string name="description">We always have the best solution for your needs !</string>
+    <string name="token1">TREBpONlWMoDOVJ5OXTGtPhBC</string>
+    <string name="token2">HMvdu3o4PBPcJ7F6kEaLt4rKh2BTVX3EXrsR6tESy8033A7kki</string>
+    <string name="token3">1547849809-ADl0MtWuaUl7d9gFHz0woWkklSpwIRbfcHiegDt</string>
+    <string name="token4">s5g8Ow4oQM4rDaQwznDoO2q6Ra97GJbJlRRteiJwHsw4x</string>
+
 
 </resources>
