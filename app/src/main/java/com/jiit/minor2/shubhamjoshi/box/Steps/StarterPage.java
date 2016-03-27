@@ -482,7 +482,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
                         String contains = "";
                         for (String str : likes) {
-                            if (tweet.getText().contains(str)) {
+                            if (tweet.getText().toLowerCase().contains(str)) {
                                 contains = str;
                                 break;
                             }
