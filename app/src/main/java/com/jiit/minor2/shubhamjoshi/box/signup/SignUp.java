@@ -249,7 +249,7 @@ public class SignUp extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-                System.out.println("onError");
+                System.out.println(error.getMessage());
             }
         });
     }

@@ -260,7 +260,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                     }
 
 
-                } else {
+                } if(postHolder.getItemViewType()==TYPE_IMAGE && twitterList.size()>position) {
 
 
                     postHolder.postHead.setText(twitterList.get(position).get("Text"));
