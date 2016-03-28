@@ -24,5 +24,6 @@ public final class Constants {
     }
     public static final String FIREBASE_PROPERTY_TIMESTAMP_LAST_CHANGED_REVERSE = "timestampLastChangedReversed";
     public static final String POST ="posts";
+    public static final String USERNAME ="username";
     public static final String LIKES = "likes";
 }

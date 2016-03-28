@@ -238,7 +238,22 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         }
                     });
 
+                    Firebase usernameRef = photoRef.child(post.getEmail().toString()).child(Constants.USERNAME);
 
+                    usernameRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+
+                            postHolder.postOwnerName.setText(snapshot.getValue().toString());
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            System.out.println("The read failed: " + firebaseError.getMessage());
+                        }
+                    });
                     postHolder.postOwnerPhoto.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
