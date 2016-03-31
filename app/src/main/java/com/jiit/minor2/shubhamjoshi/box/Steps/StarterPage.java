@@ -60,10 +60,12 @@ import twitter4j.conf.ConfigurationBuilder;
 public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
 
+    private static final int TYPE_IMAGE = 1;
+    private static final int TYPE_GROUP = 2;
     private static String LOG_TAG = "RecyclerViewActivity";
+    List<Map<String, String>> twitterList = new ArrayList<Map<String, String>>();
     private FirebaseRecyclerAdapter mAdapter;
     private RecyclerView recycler;
-    List<Map<String, String>> twitterList = new ArrayList<Map<String, String>>();
     private Toolbar mToolbar;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout nav;
@@ -75,8 +77,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private String pathPart;
     private boolean firstStateOfAnimation = true;
     private List<GalleryModel> persons;
-    private static final int TYPE_IMAGE = 1;
-    private static final int TYPE_GROUP = 2;
 
     public static String caluculateTimeAgo(long timeStamp) {
 
@@ -168,7 +168,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         Query mRef = new Firebase(Constants.FIREBASE_URL).child("allPosts").orderByChild(getString(R.string.sorting_order_time_reverse));
         final Firebase photoRef = new Firebase(Constants.FIREBASE_URL).child("user");
 
-
         mAdapter = new FirebaseRecyclerAdapter<Post, PostHolder>(Post.class, R.layout.home_post, PostHolder.class, mRef) {
 
 
@@ -214,10 +213,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         Picasso.with(getBaseContext()).load(post.getPostImageUrl().toString())
                                 .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
                         postHolder.mainHolder.setAlpha(.6f);
-                    } else {
-                        postHolder.postImage.setVisibility(View.GONE);
-                        postHolder.mainHolder.setVisibility(View.GONE);
-
                     }
 
 
@@ -275,8 +270,11 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                     }
 
 
-                } if(postHolder.getItemViewType()==TYPE_IMAGE && twitterList.size()>position) {
+                }
+                if (postHolder.getItemViewType() == TYPE_IMAGE && twitterList.size() > position) {
 
+                    postHolder.postImage.setVisibility(View.VISIBLE);
+                    postHolder.mainHolder.setVisibility(View.VISIBLE);
 
                     postHolder.postHead.setText(twitterList.get(position).get("Text"));
                     Picasso.with(getBaseContext()).load(twitterList.get(position).get("OwnerImage")).resize(100, 100).into(postHolder.postOwnerPhoto);
@@ -284,7 +282,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                     Picasso.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl")).fit().into(postHolder.postImage);
                     Picasso.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl"))
                             .transform(new Blur(getBaseContext(), 50)).resize(450, 660).into(postHolder.mainHolder);
-                    postHolder.postBody.setText("You've shown interest in "+twitterList.get(position).get("Matched"));
+                    postHolder.postBody.setText("You've shown interest in " + twitterList.get(position).get("Matched"));
                     postHolder.mainHolder.setAlpha(.6f);
                 }
                 // postHolder.

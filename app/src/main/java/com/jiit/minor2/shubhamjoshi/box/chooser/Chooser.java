@@ -21,8 +21,8 @@ import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Adapters.AdapterForChooser;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
-import com.jiit.minor2.shubhamjoshi.box.Steps.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.Steps.StarterPage;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.Categories;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.GiantChooserModel;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
@@ -49,7 +49,7 @@ public class Chooser extends AppCompatActivity {
         pathPart = sp.getString(Constants.SPEMAIL, "Error");
 //        ImageUrl = sp.getString("ProfilePhoto","ERROR");
 
-       // Log.e("SJ", ImageUrl+"SD");
+        // Log.e("SJ", ImageUrl+"SD");
 
 
     }
@@ -91,6 +91,7 @@ public class Chooser extends AppCompatActivity {
                     GiantChooserModel giantChooserModel = new GiantChooserModel();
                     giantChooserModel.setDescription(post.getDescription());
                     giantChooserModel.setSelected(false);
+                    giantChooserModel.setSubDescription(post.getSubDescription());
                     giantChooserModel.setUrl(post.getUrl());
                     mGiantChooserModels.add(giantChooserModel);
 
@@ -105,7 +106,7 @@ public class Chooser extends AppCompatActivity {
                 mGridLayoutManager = new GridLayoutManager(Chooser.this, 3);
                 RecyclerView rView = (RecyclerView) findViewById(R.id.interest_choices_recycler_view);
                 rView.setLayoutManager(mGridLayoutManager);
-                AdapterForChooser mAdapterForChooser = new AdapterForChooser(Chooser.this, chooserItems, pathPart,mGiantChooserModels);
+                AdapterForChooser mAdapterForChooser = new AdapterForChooser(Chooser.this, chooserItems, pathPart, mGiantChooserModels);
                 rView.setAdapter(mAdapterForChooser);
                 rView.setHasFixedSize(true);
 
@@ -128,7 +129,7 @@ public class Chooser extends AppCompatActivity {
                             mGiantChooserModels.get(pos).setSelected(true);
 
 
-                            ref.child(mGiantChooserModels.get(pos).getDescription()).setValue("");
+                            ref.child(mGiantChooserModels.get(pos).getSubDescription()).setValue("");
 
 
                         } else {
@@ -137,9 +138,9 @@ public class Chooser extends AppCompatActivity {
                             //o(n) complexity
                             int count = Collections.frequency(likes, mGiantChooserModels.get(pos).getDescription());
                             if (count == 1)
-                                ref.child(mGiantChooserModels.get(pos).getDescription()).removeValue();
+                                ref.child(mGiantChooserModels.get(pos).getSubDescription()).removeValue();
                             mGiantChooserModels.get(pos).setSelected(false);
-                            likes.remove(mGiantChooserModels.get(pos).getDescription());
+                            likes.remove(mGiantChooserModels.get(pos).getSubDescription());
                         }
 
 //                        Log.e("SJS",likes.size() + "");
@@ -158,8 +159,8 @@ public class Chooser extends AppCompatActivity {
         footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Chooser.this,StarterPage.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(Chooser.this, StarterPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });

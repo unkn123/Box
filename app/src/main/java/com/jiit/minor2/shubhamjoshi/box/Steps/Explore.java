@@ -38,19 +38,25 @@ public class Explore extends AppCompatActivity {
         Firebase mRef = firebase.child("categories");
         mAdapter = new FirebaseRecyclerAdapter<Topics,TopicHolder>(Topics.class, R.layout.topic_layout, TopicHolder.class, mRef) {
             @Override
-            public void populateViewHolder(TopicHolder topicHolder, Topics topic, int position) {
+            public void populateViewHolder(final TopicHolder topicHolder, final Topics topic, int position) {
 
                 Picasso.with(getBaseContext()).load(topic.getUrl()).centerCrop().resize(465,465).into(topicHolder.mImageView);
                 topicHolder.mTextView.setText(topic.getDescription());
                 topicHolder.mImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(getBaseContext(), SubCategory.class));
+                        Intent i = new Intent(getBaseContext(),SubCategory.class);
+                        i.putExtra("IMAGE",topic.getUrl());
+                        startActivity(i);
                     }
                 });
             }
         };
+
+
         recycler.setAdapter(mAdapter);
+
+
     }
 
     public void init() {
