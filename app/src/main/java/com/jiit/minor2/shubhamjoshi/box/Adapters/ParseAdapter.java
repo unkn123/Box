@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.model.SubModal;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,34 +20,13 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder
 {
 
     private final Context mContext;
-    private List<String> mData1, mData2;
+    private List<SubModal> list;
 
-    public ParseAdapter(Context mContext, String[] data1, String[] data2) {
+    public ParseAdapter(Context mContext, List<SubModal> list) {
         this.mContext = mContext;
-        if (data1 != null)
-            mData1 = new ArrayList<String>(Arrays.asList(data1));
-        else
-            mData1 = new ArrayList<String>();
-
-        if (data2 != null)
-            mData2 = new ArrayList<String>(Arrays.asList(data2));
-        else
-            mData2 = new ArrayList<String>();
+        this.list = list;
     }
 
-    public void add(String s, int position) {
-        position = position == -1 ? getItemCount() : position;
-        mData1.add(position, s);
-
-        notifyItemInserted(position);
-    }
-
-    public void remove(int position) {
-        if (position < getItemCount()) {
-            mData1.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -56,21 +38,22 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, final int position) {
-        myViewHolder.tv1.setText(mData1.get(position));
+        myViewHolder.tv1.setText(list.get(position).mHeader);
+        Picasso.with(mContext).load(list.get(position).mImageView).into(myViewHolder.tv2);
         //myViewHolder.tv2.setText(mData2.get(position));
-        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                clickListener.onClick(v, position);
-            }
-        });
+//        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                clickListener.onClick(v, position);
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
-        return mData1.size();
+        return list.size();
     }
 
     ClickListener clickListener;
@@ -80,17 +63,18 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder
     }
 
     public interface ClickListener {
-        public void onClick(View v, int pos);
+         void onClick(View v, int pos);
 
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         protected TextView tv1;
-        protected TextView tv2;
+        protected ImageView tv2;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             tv1 = (TextView) itemView.findViewById(R.id.head);
+            tv2 = (ImageView)itemView.findViewById(R.id.headPhoto);
             //tv2 = (TextView) itemView.findViewById(R.id.txt2);
 
         }

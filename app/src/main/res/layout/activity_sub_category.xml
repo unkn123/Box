@@ -125,14 +125,8 @@
                     android:text="Search"
                     android:textColor="#fff"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler"
-                    android:layout_below="@id/createQueryButton"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
 
+            </RelativeLayout>
 
         </LinearLayout>
 

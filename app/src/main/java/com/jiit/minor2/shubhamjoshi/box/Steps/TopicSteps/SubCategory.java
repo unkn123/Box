@@ -1,5 +1,6 @@
 package com.jiit.minor2.shubhamjoshi.box.Steps.TopicSteps;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -14,8 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jiit.minor2.shubhamjoshi.box.Adapters.ParseAdapter;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.Steps.Results;
+import com.jiit.minor2.shubhamjoshi.box.model.SubModal;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
 
@@ -24,8 +26,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +40,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private boolean mIsTheTitleVisible = false;
     private TextView mTitle;
     private String postHead;
+    private List<SubModal> mList = new ArrayList<>();
     private String photoHead;
     private RecyclerView mRecyclerView;
     private String urlToParse;
@@ -91,9 +96,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
 
             }
         });
-String a[]={"SJ","S"};
-        String b[]={"SDS","SD"};
-        mRecyclerView.setAdapter(new ParseAdapter(this,a,b));
+
     }
 
     @Override
@@ -116,7 +119,7 @@ String a[]={"SJ","S"};
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         mTitle = (TextView) findViewById(R.id.title);
         searchLanguage = (EditText) findViewById(R.id.searchLang);
-        mRecyclerView = (RecyclerView)findViewById(R.id.recycler);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 
     }
 
@@ -178,7 +181,12 @@ String a[]={"SJ","S"};
                     postHead = resturants.text();
                     photoHead = style.toString();
                     ratingsHead = newsHeadlines.toString();
-                    System.out.println(postHead + " " + photoHead);
+                    SubModal sm = new SubModal(photoHead, postHead, ratingsHead);
+                    mList.add(sm);
+
+
+
+
                 }
 
             } catch (IOException e) {
@@ -190,6 +198,10 @@ String a[]={"SJ","S"};
 
         @Override
         protected void onPostExecute(String result) {
+            Intent intent = new Intent(getApplicationContext(),Results.class);
+            intent.putExtra("LIST", (Serializable) mList);
+            startActivity(intent);
+
 
         }
     }
