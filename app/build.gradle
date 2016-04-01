@@ -54,4 +54,5 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:0.3.1'
     compile 'com.github.oxoooo:pull-back-layout:1.0.1'
     compile files('libs/twitter4j-core-4.0.4.jar')
+    compile files('libs/jsoup-1.8.3.jar')
 }

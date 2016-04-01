@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.facebook.login.LoginManager;
 import com.firebase.client.DataSnapshot;
@@ -71,6 +72,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private LinearLayout nav;
     private LinearLayout explore;
     private LinearLayout profileNav;
+    private ProgressBar mProgressBar;
     private String likeQuery = "";
     private Set<String> likes = new HashSet<>();
     private FloatingActionButton fab;
@@ -191,6 +193,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                             .alpha(1f)
                             .setInterpolator(new AccelerateDecelerateInterpolator())
                             .start();
+                    mProgressBar.setVisibility(View.INVISIBLE);
+
                 }
 
 
@@ -342,6 +346,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         explore = (LinearLayout) findViewById(R.id.
                 explore);
         fab = (FloatingActionButton) findViewById(R.id.fabButton);
+        mProgressBar=(ProgressBar)findViewById(R.id.chooserProgress);
     }
 
     @Override
