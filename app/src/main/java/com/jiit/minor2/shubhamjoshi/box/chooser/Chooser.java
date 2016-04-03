@@ -125,7 +125,7 @@ public class Chooser extends AppCompatActivity {
                             rl.setVisibility(View.VISIBLE);
                             countForStatus++;
 
-                            likes.add(mGiantChooserModels.get(pos).getDescription());
+                            likes.add(mGiantChooserModels.get(pos).getSubDescription());
                             mGiantChooserModels.get(pos).setSelected(true);
 
 
@@ -136,7 +136,7 @@ public class Chooser extends AppCompatActivity {
                             rl.setVisibility(View.INVISIBLE);
                             countForStatus--;
                             //o(n) complexity
-                            int count = Collections.frequency(likes, mGiantChooserModels.get(pos).getDescription());
+                            int count = Collections.frequency(likes, mGiantChooserModels.get(pos).getSubDescription());
                             if (count == 1)
                                 ref.child(mGiantChooserModels.get(pos).getSubDescription()).removeValue();
                             mGiantChooserModels.get(pos).setSelected(false);

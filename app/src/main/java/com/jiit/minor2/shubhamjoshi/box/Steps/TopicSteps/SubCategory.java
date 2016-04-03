@@ -118,6 +118,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private void init() {
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         mTitle = (TextView) findViewById(R.id.title);
+
         searchLanguage = (EditText) findViewById(R.id.searchLang);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 
@@ -172,15 +173,16 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
 
                 for (org.jsoup.nodes.Element element : article) {
                     Elements resturants = element.select("a.result-title");
-                    Elements newsHeadlines = element.select(".res-rating-nf");
 
+                    Elements newsHeadlines = element.select(".res-rating-nf");
                     Elements photo = element.select("a.feat-img");
 
-
+                    newsHeadlines = newsHeadlines.select("title.Legendary");
                     String style = photo.attr("data-original");
                     postHead = resturants.text();
                     photoHead = style.toString();
                     ratingsHead = newsHeadlines.toString();
+                    Log.e("SJS",ratingsHead);
                     SubModal sm = new SubModal(photoHead, postHead, ratingsHead);
                     mList.add(sm);
 

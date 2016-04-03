@@ -67,6 +67,8 @@ public class SignUp extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        //Boiler Plate Code
+
         dateTextView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -284,6 +286,8 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int responseCode,
                                     Intent data) {
+
+        //get responce
         super.onActivityResult(requestCode, responseCode, data);
         mCallbackManager.onActivityResult(requestCode, responseCode, data);
     }
@@ -301,6 +305,9 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void sharedPrefCreator(String Email) {
+
+        //key value pair
+
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sp.edit();
         mEditor.putString(Constants.SPEMAIL, Constants.encodeEmail(Email));

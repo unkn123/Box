@@ -12,12 +12,9 @@ import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.SubModal;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder>
-{
+public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder> {
 
     private final Context mContext;
     private List<SubModal> list;
@@ -40,6 +37,8 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder myViewHolder, final int position) {
         myViewHolder.tv1.setText(list.get(position).mHeader);
         Picasso.with(mContext).load(list.get(position).mImageView).into(myViewHolder.tv2);
+        myViewHolder.tv1.setText(list.get(position).mHeader);
+        myViewHolder.tv3.setText(list.get(position).mRating);
         //myViewHolder.tv2.setText(mData2.get(position));
 //        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 //
@@ -63,18 +62,20 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder
     }
 
     public interface ClickListener {
-         void onClick(View v, int pos);
+        void onClick(View v, int pos);
 
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         protected TextView tv1;
         protected ImageView tv2;
+        protected TextView tv3;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             tv1 = (TextView) itemView.findViewById(R.id.head);
-            tv2 = (ImageView)itemView.findViewById(R.id.headPhoto);
+            tv2 = (ImageView) itemView.findViewById(R.id.headPhoto);
+            tv3 = (TextView)itemView.findViewById(R.id.rating);
             //tv2 = (TextView) itemView.findViewById(R.id.txt2);
 
         }
