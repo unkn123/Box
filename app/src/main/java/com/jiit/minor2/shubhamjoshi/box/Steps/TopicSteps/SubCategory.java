@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,9 +41,10 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private TextView mTitle;
     private String postHead;
     private ProgressBar mProgressBar;
-    private List<SubModal> mList = new ArrayList<>();
+    private ArrayList<SubModal> mList = new ArrayList<>();
     private String photoHead;
     private RecyclerView mRecyclerView;
+    private int count=0;
     private String urlToParse;
     private String ratingsHead;
     private EditText searchLanguage;
@@ -110,6 +110,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     public String generateURL(String phrase, String count) {
         String finalUrl = "";
         String CITY = "ncr";
+        this.count = Integer.parseInt(count);
         if (phrase.toLowerCase().equals("top"))
             finalUrl = Constants.generalFoodUrl + "" + CITY + "/best" + "-" + "restaurants";
         else
@@ -194,7 +195,8 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
                     System.out.print(ratingsHead);
 
 
-                    SubModal sm = new SubModal(photoHead, postHead, ratingsHead);
+                    SubModal sm = new SubModal(photoHead, postHead, ratingsHead,count);
+
                     mList.add(sm);
 
 
@@ -214,7 +216,10 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
           //  Log.e("SJSJ",ratingsHead);
 
             Intent intent = new Intent(getApplicationContext(),Results.class);
-            intent.putExtra("LIST", (Serializable) mList);
+            Log.e("SJJS",count+"");
+            ArrayList<SubModal> list = new ArrayList<>();
+            list.addAll(mList.subList(0,count));
+            intent.putExtra("LIST", (Serializable)list);
             startActivity(intent);
 
 

@@ -11,11 +11,13 @@ import java.io.Serializable;
 public class SubModal implements Serializable {
     public String mImageView;
     public String mHeader;
+    public int count;
     public String mRating;
 
-    public SubModal(String imageView, String head, String rating) {
-        mImageView = imageView;
-        mHeader = head;
-        mRating = rating;
+    public SubModal(String imageView, String head, String rating,int count) {
+        this.mImageView = imageView;
+        this.mHeader = head;
+        this.mRating = rating;
+        this.count = count;
     }
 }
