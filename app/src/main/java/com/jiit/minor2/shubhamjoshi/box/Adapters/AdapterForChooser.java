@@ -13,6 +13,7 @@ import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.chooser.ChooserInterestHolder;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.Categories;
 import com.jiit.minor2.shubhamjoshi.box.model.list_models.GiantChooserModel;
+import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -55,7 +56,10 @@ public class AdapterForChooser extends RecyclerView.Adapter<ChooserInterestHolde
     @Override
     public void onBindViewHolder(final ChooserInterestHolder holder, final int position) {
 
-        Picasso.with(context).load(itemList.get(position).getUrl()).fit().into(holder.choicePhoto);
+        Picasso p = new Picasso.Builder(context)
+                .memoryCache(new LruCache(24000))
+                .build();
+        p.with(context).load(itemList.get(position).getUrl()).fit().into(holder.choicePhoto);
 
         //getImage(holder,position);
 

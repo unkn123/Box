@@ -40,6 +40,7 @@ import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
+import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -79,6 +80,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private String pathPart;
     private boolean firstStateOfAnimation = true;
     private List<GalleryModel> persons;
+    Picasso p;
 
     public static String caluculateTimeAgo(long timeStamp) {
 
@@ -117,6 +119,9 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starter_page);
         init();
+        p =  new Picasso.Builder(StarterPage.this)
+                .memoryCache(new LruCache(24000))
+                .build();
         setSupportActionBar(mToolbar);
         setTitle("Home");
         SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
@@ -210,11 +215,12 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         postHolder.mainHolder.setVisibility(View.VISIBLE);
 
 
-                        Picasso.with(getBaseContext())
+
+                        p.with(getBaseContext())
                                 .load(post.getPostImageUrl().toString()).fit()
                                 .into(postHolder.postImage);
 
-                        Picasso.with(getBaseContext()).load(post.getPostImageUrl().toString())
+                        p.with(getBaseContext()).load(post.getPostImageUrl().toString())
                                 .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
                         postHolder.mainHolder.setAlpha(.6f);
                     }
@@ -226,7 +232,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
 
-                            Picasso.with(getBaseContext()).load(snapshot.getValue().toString()).
+                            p.with(getBaseContext()).load(snapshot.getValue().toString()).
                                     resize(100, 100).into(postHolder.postOwnerPhoto);
 
                         }
@@ -281,10 +287,11 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                     postHolder.mainHolder.setVisibility(View.VISIBLE);
 
                     postHolder.postHead.setText(twitterList.get(position).get("Text"));
-                    Picasso.with(getBaseContext()).load(twitterList.get(position).get("OwnerImage")).resize(100, 100).into(postHolder.postOwnerPhoto);
+
+                    p.with(getBaseContext()).load(twitterList.get(position).get("OwnerImage")).resize(100, 100).into(postHolder.postOwnerPhoto);
                     postHolder.postOwnerName.setText(twitterList.get(position).get("Username"));
-                    Picasso.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl")).fit().into(postHolder.postImage);
-                    Picasso.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl"))
+                    p.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl")).fit().into(postHolder.postImage);
+                    p.with(getBaseContext()).load(twitterList.get(position).get("ImageUrl"))
                             .transform(new Blur(getBaseContext(), 50)).resize(450, 660).into(postHolder.mainHolder);
                     postHolder.postBody.setText("You've shown interest in " + twitterList.get(position).get("Matched"));
                     postHolder.mainHolder.setAlpha(.6f);

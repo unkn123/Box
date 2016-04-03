@@ -36,6 +36,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, final int position) {
         myViewHolder.tv1.setText(list.get(position).mHeader);
+
         Picasso.with(mContext).load(list.get(position).mImageView).into(myViewHolder.tv2);
         myViewHolder.tv1.setText(list.get(position).mHeader);
         myViewHolder.tv3.setText(list.get(position).mRating);

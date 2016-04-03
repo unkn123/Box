@@ -86,7 +86,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
                     Matcher m = Pattern.compile(value).matcher(searchHLLanguage);
                     boolean f = m.find();
                     while (f) {
-                        System.out.println(key);
+                        System.out.println(m.group(1).toLowerCase().trim());
                         urlToParse = generateURL(m.group(1).toLowerCase().trim(), m.group(2).toLowerCase().trim());
                         new MyTask().execute();
 
@@ -112,7 +112,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
         String CITY = "ncr";
         if (phrase.toLowerCase().equals("top"))
             finalUrl = Constants.generalFoodUrl + "" + CITY + "/best" + "-" + "restaurants";
-        if (phrase.toLowerCase().equals("cheapest"))
+        else
             finalUrl = Constants.generalFoodUrl + "" + CITY + "/restaurants" + "?sort=ca";
         return finalUrl;
     }
@@ -131,7 +131,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
-        Log.e("SJSJ", percentage + "");
+       // Log.e("SJSJ", percentage + "");
         handleToolbarTitleVisibility(percentage);
     }
 
@@ -211,7 +211,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
 
         @Override
         protected void onPostExecute(String result) {
-            Log.e("SJSJ",ratingsHead);
+          //  Log.e("SJSJ",ratingsHead);
 
             Intent intent = new Intent(getApplicationContext(),Results.class);
             intent.putExtra("LIST", (Serializable) mList);
