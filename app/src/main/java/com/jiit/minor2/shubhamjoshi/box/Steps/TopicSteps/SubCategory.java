@@ -13,6 +13,7 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jiit.minor2.shubhamjoshi.box.R;
@@ -40,6 +41,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private boolean mIsTheTitleVisible = false;
     private TextView mTitle;
     private String postHead;
+    private ProgressBar mProgressBar;
     private List<SubModal> mList = new ArrayList<>();
     private String photoHead;
     private RecyclerView mRecyclerView;
@@ -118,7 +120,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private void init() {
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         mTitle = (TextView) findViewById(R.id.title);
-
+        mProgressBar = (ProgressBar)findViewById(R.id.chooserProgress);
         searchLanguage = (EditText) findViewById(R.id.searchLang);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 
@@ -164,6 +166,12 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     class MyTask extends AsyncTask<Void, Void, String> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected String doInBackground(Void... params) {
             String title = "";
             Document doc;
@@ -174,15 +182,18 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
                 for (org.jsoup.nodes.Element element : article) {
                     Elements resturants = element.select("a.result-title");
 
-                    Elements newsHeadlines = element.select(".res-rating-nf");
+                    Elements rating = element.select(".res-rating-nf");
                     Elements photo = element.select("a.feat-img");
 
-                    newsHeadlines = newsHeadlines.select("title.Legendary");
+
                     String style = photo.attr("data-original");
                     postHead = resturants.text();
                     photoHead = style.toString();
-                    ratingsHead = newsHeadlines.toString();
-                    Log.e("SJS",ratingsHead);
+                    ratingsHead = rating.text();
+
+                    System.out.print(ratingsHead);
+
+
                     SubModal sm = new SubModal(photoHead, postHead, ratingsHead);
                     mList.add(sm);
 
@@ -200,6 +211,8 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
 
         @Override
         protected void onPostExecute(String result) {
+            Log.e("SJSJ",ratingsHead);
+
             Intent intent = new Intent(getApplicationContext(),Results.class);
             intent.putExtra("LIST", (Serializable) mList);
             startActivity(intent);

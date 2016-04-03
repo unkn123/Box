@@ -38,6 +38,7 @@
                 android:textStyle="bold"
                 android:id="@+id/rating"
                 android:textColor="#fff"
+                android:text="Hello"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
