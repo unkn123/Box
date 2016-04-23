@@ -33,6 +33,7 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.AddingPost.PostAdding;
+import com.jiit.minor2.shubhamjoshi.box.Friends;
 import com.jiit.minor2.shubhamjoshi.box.Holder.PostHolder;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
@@ -172,7 +173,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
 
-        Query mRef = new Firebase(Constants.FIREBASE_URL).child("allPosts").orderByChild(getString(R.string.sorting_order_time_reverse));
+        Query mRef = new Firebase(Constants.FIREBASE_URL).child("posts").child(pathPart).orderByChild(getString(R.string.sorting_order_time_reverse));
         final Firebase photoRef = new Firebase(Constants.FIREBASE_URL).child("user");
 
         mAdapter = new FirebaseRecyclerAdapter<Post, PostHolder>(Post.class, R.layout.home_post, PostHolder.class, mRef) {
@@ -334,6 +335,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                 startActivity(new Intent(getBaseContext(), Explore.class));
             }
         });
+
+
     }
 
     private void callProfileActivity(String pathPart) {
@@ -528,5 +531,10 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
             return null;
         }
+    }
+
+    public void friendActivityTest(View view)
+    {
+        startActivity(new Intent(getBaseContext(), Friends.class));
     }
 }

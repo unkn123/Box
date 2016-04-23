@@ -89,7 +89,7 @@ public class PostAdding extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Firebase posts = baseRef.child("posts").child(pathPart);
-                Firebase allPosts = baseRef.child("allPosts");
+                Firebase allPosts = baseRef.child("posts").child(pathPart);
                 final String uniqueKey = posts.push().getKey();
                 String imageUrl;
                 if(filePath==null)

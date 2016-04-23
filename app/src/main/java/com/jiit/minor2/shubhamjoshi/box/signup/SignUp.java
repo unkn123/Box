@@ -239,7 +239,7 @@ public class SignUp extends AppCompatActivity {
                         });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields",
-                        "id,name,email,gender,birthday");
+                        "id,name,email,gender,birthday,user_friends");
                 request.setParameters(parameters);
                 request.executeAsync();
             }

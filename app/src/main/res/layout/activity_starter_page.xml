@@ -113,6 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="100"
+                android:id="@+id/friendActivity"
+                android:onClick="friendActivityTest"
                 android:gravity="center|bottom"
                 android:orientation="vertical">
 
@@ -124,7 +126,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Notification"
+                    android:text="Activity"
                     android:textColor="#fff"
                     android:textSize="12sp"/>
             </LinearLayout>

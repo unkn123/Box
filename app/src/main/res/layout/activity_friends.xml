@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/baseColor"
+    tools:context="com.jiit.minor2.shubhamjoshi.box.Friends">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="people you may know !"
+        android:id="@+id/heading"
+        android:textColor="#eee"
+        android:textSize="18sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/heading"
+        android:layout_height="wrap_content">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:id="@+id/suggestions"
+            android:layout_height="180dp">
+            <RelativeLayout
+                android:layout_width="180dp"
+                android:layout_height="180dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/Sugestion1"
+                    android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:layout_width="180dp"
+                    android:text="sj"
+                    android:gravity="bottom|center"
+                    android:textColor="#eee"
+                    android:textSize="23sp"
+                    android:layout_height="match_parent"/>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/Sugestion2"
+                    android:layout_toRightOf="@+id/Sugestion1"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                    <TextView
+                        android:layout_width="180dp"
+                        android:text="sj"
+                        android:gravity="bottom|center"
+                        android:textColor="#eee"
+                        android:textSize="23sp"
+                        android:layout_height="match_parent"/>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/Sugestion3"
+                    android:layout_toRightOf="@id/Sugestion2"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                    <TextView
+                        android:layout_width="180dp"
+                        android:text="sj"
+                        android:gravity="bottom|center"
+                        android:textColor="#eee"
+                        android:textSize="23sp"
+                        android:layout_height="match_parent"/>
+                </FrameLayout>
+
+
+            </RelativeLayout>
+
+
+
+        </HorizontalScrollView>
+        <TextView
+            android:layout_width="match_parent"
+            android:text="users"
+            android:textSize="24sp"
+            android:textColor="#eee"
+            android:layout_below="@+id/suggestions"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
