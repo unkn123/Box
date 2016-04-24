@@ -22,18 +22,22 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
+
             android:id="@+id/suggestions"
             android:layout_height="180dp">
             <RelativeLayout
                 android:layout_width="180dp"
+                android:background="#000"
                 android:layout_height="180dp">
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:id="@+id/Sugestion1"
+                    android:paddingRight="2dp"
                     android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="match_parent"
                     android:id="@+id/oneSug1"
+
                     android:scaleType="centerCrop"
                     android:layout_height="match_parent"
                     />

@@ -22,7 +22,9 @@ import java.net.URL;
 
 public class Friends extends AppCompatActivity {
 
-    private ImageView firstSuggestedFriend;
+    private ImageView firstSuggestedFriend1;
+    private ImageView firstSuggestedFriend2;
+    private ImageView firstSuggestedFriend3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,11 @@ public class Friends extends AppCompatActivity {
                                 URL profile_pic = new URL(
                                         "https://graph.facebook.com/" + rawName.getJSONObject(i).getString("id").toString()
                                                 + "/picture?type=large");
-                                Picasso.with(getBaseContext()).load(profile_pic.toString()).into(firstSuggestedFriend);
+                                if(i==0)
+                                Picasso.with(getBaseContext()).load(profile_pic.toString()).into(firstSuggestedFriend1);
+                                if(i==1) Picasso.with(getBaseContext()).load(profile_pic.toString()).into(firstSuggestedFriend2);
+                                if(i==2) Picasso.with(getBaseContext()).load(profile_pic.toString()).into(firstSuggestedFriend3);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -65,6 +71,8 @@ public class Friends extends AppCompatActivity {
 
     public void init()
     {
-        firstSuggestedFriend = (ImageView)findViewById(R.id.oneSug1);
+        firstSuggestedFriend1 = (ImageView)findViewById(R.id.oneSug1);
+        firstSuggestedFriend2 = (ImageView)findViewById(R.id.oneSug2);
+        firstSuggestedFriend3 = (ImageView)findViewById(R.id.oneSug3);
     }
 }
