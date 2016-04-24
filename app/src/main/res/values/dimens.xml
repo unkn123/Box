@@ -30,5 +30,7 @@
     <dimen name="fortyDp">40dp</dimen>
     <dimen name="thirtyDp">30dp</dimen>
     <dimen name="twentyFiveDp">25dp</dimen>
+    <dimen name="imageview_height">180dp</dimen>
+    <dimen name="imageview_width">180dp</dimen>
 
 </resources>
