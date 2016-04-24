@@ -201,7 +201,7 @@ public class SignUp extends AppCompatActivity {
 
     private void fbLoginFunctionality() {
         mLoginButton.setReadPermissions(Arrays.asList(Constants.USER_PHOTO, Constants.EMAIL,
-                Constants.BIRTHDAY, Constants.PUBLIC_PROFILE));
+                Constants.BIRTHDAY, Constants.PUBLIC_PROFILE,"user_friends"));
 
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
@@ -239,7 +239,7 @@ public class SignUp extends AppCompatActivity {
                         });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields",
-                        "id,name,email,gender,birthday,user_friends");
+                        "id,name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
