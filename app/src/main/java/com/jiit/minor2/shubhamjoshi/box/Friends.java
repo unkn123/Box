@@ -1,34 +1,30 @@
 package com.jiit.minor2.shubhamjoshi.box;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Holder.FriendsHolder;
-import com.jiit.minor2.shubhamjoshi.box.Holder.TopicHolder;
-import com.jiit.minor2.shubhamjoshi.box.Steps.TopicSteps.SubCategory;
-import com.jiit.minor2.shubhamjoshi.box.model.Topics;
+import com.jiit.minor2.shubhamjoshi.box.model.PostModels.CopyPost;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
@@ -38,7 +34,6 @@ import org.json.JSONException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 
 public class Friends extends AppCompatActivity {
 
@@ -81,15 +76,15 @@ public class Friends extends AppCompatActivity {
 
 
                                 if (i == 0) {
-                                    Picasso.with(getBaseContext()).load(profile_pic.toString()).into(firstSuggestedFriend1);
+                                    Picasso.with(getBaseContext()).load(profile_pic.toString()).centerCrop().resize(450, 600).into(firstSuggestedFriend1);
                                     name1.setText(rawName.getJSONObject(0).getString("name").toString());
                                 }
                                 if (i == 1) {
-                                    Picasso.with(getBaseContext()).load(profile_pic.toString()).into(firstSuggestedFriend2);
+                                    Picasso.with(getBaseContext()).load(profile_pic.toString()).centerCrop().resize(450, 600).into(firstSuggestedFriend2);
                                     name2.setText(rawName.getJSONObject(1).getString("name").toString());
                                 }
                                 if (i == 2) {
-                                    Picasso.with(getBaseContext()).load(profile_pic.toString()).into(firstSuggestedFriend3);
+                                    Picasso.with(getBaseContext()).load(profile_pic.toString()).centerCrop().resize(450, 600).into(firstSuggestedFriend3);
                                     name3.setText(rawName.getJSONObject(2).getString("name").toString());
                                 }
                                 ;
@@ -116,22 +111,53 @@ public class Friends extends AppCompatActivity {
         usersList.setHasFixedSize(true);
         usersList.setLayoutManager(new GridLayoutManager(getBaseContext(), 2));
 
-        mAdapter = new FirebaseRecyclerAdapter<User,FriendsHolder>(User.class, R.layout.friends_list, FriendsHolder.class, ref) {
+        mAdapter = new FirebaseRecyclerAdapter<User, FriendsHolder>(User.class, R.layout.friends_list, FriendsHolder.class, ref) {
             @Override
-            public void populateViewHolder(final FriendsHolder friendsHolder, final User user, int position) {
+            public void populateViewHolder(final FriendsHolder friendsHolder, final User user, final int position) {
 
-                if(user.getProfileUrl()!="")
-                Picasso.with(getBaseContext()).load(user.getProfileUrl()).centerCrop().resize(465,465).into(friendsHolder.photo);
-                friendsHolder.name.setText(user.getUsername());
-                friendsHolder.photo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Firebase alanRef = new Firebase(Constants.FIREBASE_URL).child("friends").child(pathPart);
-                        alanRef.setValue(user);
+                if (!Constants.encodeEmail(user.getEmail()).equals(pathPart)) { //ensures user dont see himself in friends to add list
+                    if (user.getProfileUrl() != "")
+                        Picasso.with(getBaseContext()).load(user.getProfileUrl()).centerCrop().resize(465, 465).into(friendsHolder.photo);
+                    friendsHolder.name.setText(user.getUsername());
+                    friendsHolder.name.setTextSize(14);
+                    friendsHolder.photo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Firebase alanRef = new Firebase(Constants.FIREBASE_URL).child("friends").child(pathPart);
+                            alanRef.push().setValue(user);
 
-                    }
-                });
+                            Firebase ref = new Firebase(Constants.FIREBASE_URL).child("posts").child(Constants.encodeEmail(user.getEmail()));
+                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    System.out.println("There are " + dataSnapshot.getKey()+ " blog posts");
+                                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                        CopyPost post = postSnapshot.getValue(CopyPost.class);
+                                        String key = postSnapshot.getKey();
+                                        Firebase addingCopyPost = new Firebase(Constants.FIREBASE_URL).child("posts").child(pathPart).child(key);
+                                        addingCopyPost.setValue(post);
+                                    }
+                                }
 
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+
+                        }
+                    });
+                } else {
+                    Handler handler = new Handler();
+
+                    final Runnable r = new Runnable() {
+                        public void run() {
+                            notifyItemRemoved(position);
+                        }
+                    };
+
+                    handler.post(r);
+                }
             }
         };
 
@@ -152,8 +178,6 @@ public class Friends extends AppCompatActivity {
         name2 = (TextView) findViewById(R.id.tt2);
         name3 = (TextView) findViewById(R.id.tt3);
         usersList = (RecyclerView) findViewById(R.id.usersList);
-
-
 
 
     }
