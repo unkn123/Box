@@ -123,10 +123,12 @@ public class Friends extends AppCompatActivity {
                     friendsHolder.photo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Firebase alanRef = new Firebase(Constants.FIREBASE_URL).child("friends").child(pathPart);
+                            Firebase alanRef = new Firebase(Constants.FIREBASE_URL).
+                                    child("friends").child(pathPart);
                             alanRef.push().setValue(user);
 
-                            Firebase ref = new Firebase(Constants.FIREBASE_URL).child("posts").child(Constants.encodeEmail(user.getEmail()));
+                            Firebase ref = new Firebase(Constants.FIREBASE_URL).child("posts")
+                                    .child(Constants.encodeEmail(user.getEmail()));
                             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,8 +136,19 @@ public class Friends extends AppCompatActivity {
                                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                         CopyPost post = postSnapshot.getValue(CopyPost.class);
                                         String key = postSnapshot.getKey();
-                                        Firebase addingCopyPost = new Firebase(Constants.FIREBASE_URL).child("posts").child(pathPart).child(key);
+                                        Firebase addingCopyPost = new Firebase(Constants.FIREBASE_URL).child("posts")
+                                                .child(pathPart).child(key);
                                         addingCopyPost.setValue(post);
+
+                                        Handler handler = new Handler();
+
+                                        final Runnable r = new Runnable() {
+                                            public void run() {
+                                                notifyItemRemoved(position);
+                                            }
+                                        };
+
+                                        handler.post(r);
                                     }
                                 }
 
