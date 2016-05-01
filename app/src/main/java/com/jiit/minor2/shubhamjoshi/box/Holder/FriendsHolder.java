@@ -10,12 +10,14 @@ import com.jiit.minor2.shubhamjoshi.box.R;
 public class FriendsHolder extends RecyclerView.ViewHolder {
     public ImageView photo;
     public TextView name;
+    public TextView status;
 
     public FriendsHolder(View itemView) {
         super(itemView);
 
         photo = (ImageView) itemView.findViewById(R.id.image);
         name = (TextView) itemView.findViewById(R.id.desc);
+        status =(TextView)itemView.findViewById(R.id.statusFollowing);
 
     }
 }

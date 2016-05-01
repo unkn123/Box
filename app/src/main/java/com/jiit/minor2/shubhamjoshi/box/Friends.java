@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -33,7 +34,10 @@ import org.json.JSONException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Friends extends AppCompatActivity {
 
@@ -43,6 +47,7 @@ public class Friends extends AppCompatActivity {
 
     private String pathPart;
     RelativeLayout rl;
+    private HashSet<String> followingList=new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,17 +137,64 @@ public class Friends extends AppCompatActivity {
                 friendsHolder.name.setText(user.getUsername());
                 friendsHolder.name.setTextSize(14);
 
-                friendsHolder.photo.setOnClickListener(new View.OnClickListener() {
+                Firebase getFollowings = new Firebase(Constants.FIREBASE_URL).child("following")
+                        .child(pathPart);
+                getFollowings.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshots : dataSnapshot.getChildren()) {
+                            followingList.add(dataSnapshots.getKey());
+                        }
+                        Log.e("SJ",followingList.toString());
+                        boolean flag = false;
+                        for (int i = 0; i < followingList.size(); i++) {
+                            if(followingList.contains(Constants.encodeEmail(user.getEmail())))
+                                flag=true;
+
+                        }
+                        if (flag)
+                            friendsHolder.status.setText("unfollow");
+
+                        else {
+                            friendsHolder.status.setText("follow");
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+
+                final Firebase alanRef = new Firebase(Constants.FIREBASE_URL).
+                        child("following").child(pathPart);
+                final Firebase follower = new Firebase(Constants.FIREBASE_URL).child("follower");
+
+                friendsHolder.status.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        Firebase alanRef = new Firebase(Constants.FIREBASE_URL).
-                                child("friends").child(pathPart);
-                        Firebase follower = new Firebase(Constants.FIREBASE_URL).child("follower");
-                        alanRef.child(Constants.encodeEmail(user.getEmail())).setValue(user);
-                        HashMap<String, String> h = new HashMap<String, String>();
-                        h.put("name", pathPart);
-                        follower.child(Constants.encodeEmail(user.getEmail())).push().setValue(h);
+                        if(friendsHolder.status.getText().toString()=="unfollow")
+                        {
+                            alanRef.child(Constants.encodeEmail(user.getEmail())).removeValue();
+                            friendsHolder.status.setText("follow");
+                            follower.child(Constants.encodeEmail(user.getEmail())).child(pathPart).removeValue();
+
+
+
+                        }else{
+                            alanRef.child(Constants.encodeEmail(user.getEmail())).setValue("");
+                            friendsHolder.status.setText("unfollow");
+
+                            follower.child(Constants.encodeEmail(user.getEmail())).child(pathPart).setValue("");
+                        }
+
+
+
+
+
 
                         Firebase ref = new Firebase(Constants.FIREBASE_URL).child("posts")
                                 .child(Constants.encodeEmail(user.getEmail()));
@@ -156,8 +208,6 @@ public class Friends extends AppCompatActivity {
                                     Firebase addingCopyPost = new Firebase(Constants.FIREBASE_URL).child("DisplayPosts")
                                             .child(pathPart).child(key);
                                     addingCopyPost.setValue(post);
-
-
                                 }
                             }
 

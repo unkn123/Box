@@ -142,8 +142,7 @@ public class PostAdding extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot sp : dataSnapshot.getChildren()) {
-                                    SingleEmail singleEmail = sp.getValue(SingleEmail.class);
-                                    followersList.add(singleEmail.getName());
+                                    followersList.add(sp.getKey());
 
                                 }
 
