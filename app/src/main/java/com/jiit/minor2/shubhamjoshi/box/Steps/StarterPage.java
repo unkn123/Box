@@ -206,78 +206,94 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
                 if (postHolder.getItemViewType() == TYPE_GROUP) {
 
-                    postHolder.postBody.setText(post.getTitle().toString());
-                    postHolder.postHead.setText(post.getBody().toString());
+                    //postHolder.postBody.setText(post.getTitle().toString());
+
 
 
                     if (post.getPostImageUrl().toString().length() >= 1) {
 
                         postHolder.postImage.setVisibility(View.VISIBLE);
                         postHolder.mainHolder.setVisibility(View.VISIBLE);
+                        postHolder.postHead.setText(post.getBody().toString());
 
+                        if (!Constants.encodeEmail(post.getEmail()).contains(",com")) {
+                            p.with(getBaseContext())
+                                    .load(post.getPostImageUrl().toString()).fit()
+                                    .into(postHolder.postImage);
 
-
-                        p.with(getBaseContext())
-                                .load(post.getPostImageUrl().toString()).fit()
-                                .into(postHolder.postImage);
-
-                        p.with(getBaseContext()).load(post.getPostImageUrl().toString())
-                                .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
-                        postHolder.mainHolder.setAlpha(.6f);
-                    }
-
-
-                    Firebase photoEmailRef = photoRef.child(post.getEmail().toString()).child(Constants.PROFILE_URL);
-
-                    photoEmailRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-
-                            p.with(getBaseContext()).load(snapshot.getValue().toString()).
+                            postHolder.postBody.setText("You have shown interest in "+post.getEmail());
+                            p.with(getBaseContext()).load(post.getTitle()).
                                     resize(100, 100).into(postHolder.postOwnerPhoto);
 
+                            p.with(getBaseContext()).load(post.getPostImageUrl().toString())
+                                    .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
+
+                        } else {
+
+                            postHolder.postBody.setText(post.getTitle().toString());
+                            postHolder.postHead.setText(post.getBody().toString());
+                            p.with(getBaseContext())
+                                    .load(post.getPostImageUrl().toString()).fit()
+                                    .into(postHolder.postImage);
+
+                            p.with(getBaseContext()).load(post.getPostImageUrl().toString())
+                                    .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
+                            postHolder.mainHolder.setAlpha(.6f);
                         }
 
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-                            System.out.println("The read failed: " + firebaseError.getMessage());
+
+                        Firebase photoEmailRef = photoRef.child(post.getEmail().toString()).child(Constants.PROFILE_URL);
+
+                        photoEmailRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                if (snapshot.getValue() != null)
+                                    p.with(getBaseContext()).load(snapshot.getValue().toString()).
+                                            resize(100, 100).into(postHolder.postOwnerPhoto);
+
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+                                System.out.println("The read failed: " + firebaseError.getMessage());
+                            }
+                        });
+
+                        Firebase usernameRef = photoRef.child(post.getEmail().toString()).child(Constants.USERNAME);
+
+                        usernameRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
+                                if (snapshot.getValue() != null)
+                                    postHolder.postOwnerName.setText(snapshot.getValue().toString());
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+                                System.out.println("The read failed: " + firebaseError.getMessage());
+                            }
+                        });
+                        postHolder.postOwnerPhoto.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callProfileActivity(post.getEmail());
+                            }
+                        });
+
+                        postHolder.postOwnerName.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callProfileActivity(post.getEmail());
+                            }
+                        });
+
+
+                        if (post.getTimestampLastChanged() != null) {
+                            postHolder.timeStamp.setText(caluculateTimeAgo(post.getTimestampLastChangedLong()));
+
                         }
-                    });
-
-                    Firebase usernameRef = photoRef.child(post.getEmail().toString()).child(Constants.USERNAME);
-
-                    usernameRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-
-                            postHolder.postOwnerName.setText(snapshot.getValue().toString());
-
-
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-                            System.out.println("The read failed: " + firebaseError.getMessage());
-                        }
-                    });
-                    postHolder.postOwnerPhoto.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            callProfileActivity(post.getEmail());
-                        }
-                    });
-
-                    postHolder.postOwnerName.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            callProfileActivity(post.getEmail());
-                        }
-                    });
-
-
-                    if (post.getTimestampLastChanged() != null) {
-                        postHolder.timeStamp.setText(caluculateTimeAgo(post.getTimestampLastChangedLong()));
-
                     }
 
 
@@ -483,8 +499,10 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
             int count = 0;
             try {
                 twitter4j.Query query = new twitter4j.Query();
-                if (likeQuery != "")
+                if (likeQuery != "") {
                     query.setQuery(likeQuery);
+                    query.setCount(20);
+                }
                 else
                     query.setQuery("#fun");
                 query.setCount(100);
@@ -516,6 +534,10 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         }
                         twitterPosts.put("Matched", contains);
                         twitterList.add(twitterPosts);
+
+//                        Post p = new Post(twitterPosts.get("Text"),twitterPosts.get("OwnerImage"),contains,twitterPosts.get("ImageUrl"));
+//                        Firebase f = new Firebase(Constants.FIREBASE_URL).child("DisplayPosts");
+//                        f.child(pathPart).push().setValue(p);
                     }
 
 
