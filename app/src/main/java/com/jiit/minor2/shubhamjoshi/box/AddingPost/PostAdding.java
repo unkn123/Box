@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,17 +21,19 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.jiit.minor2.shubhamjoshi.box.utils.PicUploadBackend;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.model.PostModels.CopyPost;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
+import com.jiit.minor2.shubhamjoshi.box.model.SingleEmail;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
+import com.jiit.minor2.shubhamjoshi.box.utils.PicUploadBackend;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class PostAdding extends AppCompatActivity {
     private static final int SELECT_PHOTO = 100;
@@ -45,6 +48,9 @@ public class PostAdding extends AppCompatActivity {
     private EditText postBody;
     private ProgressDialog mProgress;
     private String postImageName;
+    HashMap<String, Object> fun;
+    HashMap<String, Object> timePre;
+    HashMap<String, Object> root;
 
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -88,35 +94,91 @@ public class PostAdding extends AppCompatActivity {
         submitPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Firebase posts = baseRef.child("posts").child(pathPart);
-                Firebase allPosts = baseRef.child("posts").child(pathPart);
-                final String uniqueKey = posts.push().getKey();
-                String imageUrl;
-                if(filePath==null)
-                    imageUrl="";
-                else
-                    imageUrl=Constants.MAIN_URL + uniqueKey + ".JPG";
+                final Firebase posts = baseRef.child("posts").child(pathPart);
+                final Firebase allPosts = baseRef.child("posts").child(pathPart);
 
-                Post post = new Post(postTitle.getText().toString(), postBody.getText().toString(),
-                        pathPart,imageUrl );
+
+                final Firebase follower = baseRef.child("follower").child(pathPart);
+                final String uniqueKey = posts.push().getKey();
+
+                final String imageUrl;
+                if (filePath == null)
+                    imageUrl = "";
+                else
+                    imageUrl = Constants.MAIN_URL + uniqueKey + ".JPG";
+
+                final Post post = new Post(postTitle.getText().toString(), postBody.getText().toString(),
+                        pathPart, imageUrl);
 
 
                 posts.child(uniqueKey).setValue(post);
                 allPosts.child(uniqueKey).setValue(post);
+
+
+                final Long time = -1 * System.currentTimeMillis() / 1000L;
+
                 final Firebase readRef = allPosts.child(uniqueKey);
+
                 readRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Post post = dataSnapshot.getValue(Post.class);
                         Long timeStamp = post.getTimestampLastChangedLong();
-                        Map<String, Object> fun = new HashMap<String, Object>();
-                        fun.put("timestamp",-1*System.currentTimeMillis() / 1000L);
-                        Map<String, Object> root= new HashMap<String, Object>();
-                        root.put("timestampLastChangedReverse",fun);
+                        timePre = new HashMap<String, Object>();
+                        timePre.put("timestamp", timeStamp);
+                        fun = new HashMap<String, Object>();
+                        fun.put("timestamp", time);
+                        root = new HashMap<String, Object>();
+                        root.put("timestampLastChangedReverse", fun);
 
-                       readRef.updateChildren(root);
+                        readRef.updateChildren(root);
+
+                        //Getting all followers
+                        final ArrayList<String> followersList = new ArrayList<String>();
+
+                        Firebase refBaseForFollowers = new Firebase(Constants.FIREBASE_URL).child("follower")
+                                .child(pathPart);
+                        refBaseForFollowers.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot sp : dataSnapshot.getChildren()) {
+                                    SingleEmail singleEmail = sp.getValue(SingleEmail.class);
+                                    followersList.add(singleEmail.getName());
+
+                                }
+
+                                final CopyPost newCopyPost = new CopyPost(postTitle.getText().toString(), postBody.getText().toString(),
+                                        pathPart, imageUrl, timePre, fun);
+
+                                posts.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.e("SJ", "size " + followersList.size());
+                                        for (int i = 0; i < followersList.size(); i++) {
+
+                                            Firebase workRef = new Firebase(Constants.FIREBASE_URL);
+                                            workRef.child("DisplayPosts").child(followersList.get(i))
+                                                    .child(uniqueKey).setValue(newCopyPost);
+                                        }
+                                        Firebase personal = new Firebase(Constants.FIREBASE_URL);
+                                        personal.child("DisplayPosts").child(pathPart)
+                                                .child(uniqueKey).setValue(newCopyPost);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
 
 
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
 
                     }
 
@@ -126,12 +188,13 @@ public class PostAdding extends AppCompatActivity {
                     }
                 });
 
+
                 //if()
                 if (filePath != null)
                     uploadImage(uniqueKey);
 
                 else
-                finish();
+                    finish();
 
             }
         });

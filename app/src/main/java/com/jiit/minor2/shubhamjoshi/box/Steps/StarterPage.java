@@ -173,7 +173,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
 
-        Query mRef = new Firebase(Constants.FIREBASE_URL).child("posts").child(pathPart).orderByChild(getString(R.string.sorting_order_time_reverse));
+        Query mRef = new Firebase(Constants.FIREBASE_URL).child("DisplayPosts").child(pathPart).orderByChild(getString(R.string.sorting_order_time_reverse));
         final Firebase photoRef = new Firebase(Constants.FIREBASE_URL).child("user");
 
         mAdapter = new FirebaseRecyclerAdapter<Post, PostHolder>(Post.class, R.layout.home_post, PostHolder.class, mRef) {
@@ -367,7 +367,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.starter,menu);
         return true;
     }
 
@@ -378,9 +378,8 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
 
         if (id == R.id.action_settings) {
-            //For loggin out from facebook
-            LoginManager.getInstance().logOut();
-            startActivity(new Intent(getBaseContext(), MainActivity.class));
+
+            startActivity(new Intent(getBaseContext(), Friends.class));
             return true;
         }
 
