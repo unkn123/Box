@@ -124,6 +124,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="3"
+                            android:id="@+id/postNo"
                             android:textColor="#fff"
                             android:textSize="15sp"/>
 
@@ -154,6 +155,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="3"
+                                android:id="@+id/followerCount"
                                 android:textColor="#fff"
                                 android:textSize="15sp"/>
 
@@ -187,6 +189,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="3"
+                                android:id="@+id/followingCount"
                                 android:textColor="#fff"
                                 android:textSize="15sp"/>
 

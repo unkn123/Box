@@ -216,19 +216,19 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         postHolder.mainHolder.setVisibility(View.VISIBLE);
                         postHolder.postHead.setText(post.getBody().toString());
 
-                        if (!Constants.encodeEmail(post.getEmail()).contains(",com")) {
-                            p.with(getBaseContext())
-                                    .load(post.getPostImageUrl().toString()).fit()
-                                    .into(postHolder.postImage);
-
-                            postHolder.postBody.setText("You have shown interest in "+post.getEmail());
-                            p.with(getBaseContext()).load(post.getTitle()).
-                                    resize(100, 100).into(postHolder.postOwnerPhoto);
-
-                            p.with(getBaseContext()).load(post.getPostImageUrl().toString())
-                                    .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
-
-                        } else {
+//                        if (!Constants.encodeEmail(post.getEmail()).contains(",com")||!Constants.encodeEmail(post.getEmail()).contains(",in")) {
+////                            p.with(getBaseContext())
+////                                    .load(post.getPostImageUrl().toString()).fit()
+////                                    .into(postHolder.postImage);
+////
+////                            postHolder.postBody.setText("You have shown interest in "+post.getEmail());
+////                            p.with(getBaseContext()).load(post.getTitle()).
+////                                    resize(100, 100).into(postHolder.postOwnerPhoto);
+////
+////                            p.with(getBaseContext()).load(post.getPostImageUrl().toString())
+////                                    .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
+//
+//                        } else {
 
                             postHolder.postBody.setText(post.getTitle().toString());
                             postHolder.postHead.setText(post.getBody().toString());
@@ -239,7 +239,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                             p.with(getBaseContext()).load(post.getPostImageUrl().toString())
                                     .transform(new Blur(getBaseContext(), 50)).fit().centerCrop().into(postHolder.mainHolder);
                             postHolder.mainHolder.setAlpha(.6f);
-                        }
+
 
 
                         Firebase photoEmailRef = photoRef.child(post.getEmail().toString()).child(Constants.PROFILE_URL);
@@ -552,6 +552,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
             return null;
         }
+
     }
 
     public void friendActivityTest(View view)

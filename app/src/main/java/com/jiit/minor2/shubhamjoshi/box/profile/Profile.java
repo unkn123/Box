@@ -46,8 +46,11 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private String ImageUrl;
     private CircleImageView profile;
     private Toolbar mToolbar;
+    private TextView postNo;
     private TextView title;
     private String username;
+    private TextView follower;
+    private TextView following;
     private TextView mTitle;
     private FirebaseRecyclerAdapter mAdapter;
     private TextView mUsername;
@@ -84,6 +87,9 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
 
         init();
         setTitle("");
+
+
+
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
         PullBackLayout puller = (PullBackLayout) findViewById(R.id.puller);
@@ -96,6 +102,8 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
 //        pathPart = sp.getString(Constants.SPEMAIL, "Error");
 
         Firebase ref = baseRef.child(Constants.USER).child(pathPart);
+
+
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -120,6 +128,45 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
             }
         });
 
+
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
+        firebase.child("DisplayPosts").child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                postNo.setText(dataSnapshot.getChildrenCount() + "");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+        firebase.child("follower").child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                follower.setText(dataSnapshot.getChildrenCount()+"");
+            }
+
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        firebase.child("following").child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                following.setText(dataSnapshot.getChildrenCount()+"");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
         final RecyclerView recycler = (RecyclerView) findViewById(R.id.postsByUser);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new GridLayoutManager(this,3));
@@ -154,8 +201,11 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         title=(TextView)findViewById(R.id.title_toolbar);
         mTitle = (TextView) findViewById(R.id.title_toolbar);
+        follower = (TextView)findViewById(R.id.followerCount);
+        following = (TextView)findViewById(R.id.followingCount);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         mUsername = (TextView) findViewById(R.id.username);
+        postNo =(TextView)findViewById(R.id.postNo);
     }
 
 

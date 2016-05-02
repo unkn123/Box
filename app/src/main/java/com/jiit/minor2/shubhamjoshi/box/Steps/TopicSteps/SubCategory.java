@@ -1,6 +1,8 @@
 package com.jiit.minor2.shubhamjoshi.box.Steps.TopicSteps;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -16,8 +18,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.Steps.Results;
+import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.model.SubModal;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.Picasso;
@@ -47,12 +54,17 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private int count=0;
     private String urlToParse;
     private String ratingsHead;
+    private String pathPart;
     private EditText searchLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_category);
+
+        SharedPreferences sp = getSharedPreferences(Constants.SHAREDPREF_EMAIL, Context.MODE_PRIVATE);
+        pathPart = sp.getString(Constants.SPEMAIL, "Error");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,6 +85,25 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Post p = new Post("User just asked ","tell me ","","");
+                final Firebase firebase = new Firebase(Constants.FIREBASE_URL);
+
+                firebase.child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot snapshot :dataSnapshot.getChildren()){
+                            firebase.child("DisplayPosts").child(snapshot.getKey()).push().setValue(p);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+
+
                 String searchHLLanguage = searchLanguage.getText().toString();
                 HashMap<String, String> regs = new HashMap<String, String>();
                 regs.put("TOP", "(top) (\\d+)");

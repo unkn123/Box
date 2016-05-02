@@ -132,7 +132,7 @@
             </LinearLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/view"
+                android:id="@+id/like"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginBottom="5dp"
