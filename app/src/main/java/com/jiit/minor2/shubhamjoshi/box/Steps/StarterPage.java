@@ -24,6 +24,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.firebase.client.DataSnapshot;
@@ -45,6 +46,7 @@ import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -74,6 +76,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private LinearLayout nav;
     private LinearLayout explore;
     private LinearLayout profileNav;
+
     private ProgressBar mProgressBar;
     private String likeQuery = "";
     private Set<String> likes = new HashSet<>();
@@ -132,7 +135,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         //Getting users interest
 
         Firebase ref = new Firebase(Constants.FIREBASE_URL);
-        Firebase mref = ref.child(Constants.LIKES).child(pathPart);
+        final Firebase mref = ref.child(Constants.LIKES).child(pathPart);
 
         mref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -216,6 +219,64 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         postHolder.mainHolder.setVisibility(View.VISIBLE);
                         postHolder.postHead.setText(post.getBody().toString());
 
+                        String iii = post.getPostImageUrl();
+                        int start = iii.lastIndexOf("/");
+                        final String keyUnique =post.getPostImageUrl().substring(start+1,iii.length()-4);
+                        final Firebase newQuery  = new Firebase(Constants.FIREBASE_URL).child("postsStatus");
+
+
+
+
+
+
+
+
+                        postHolder.like.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+
+
+                                newQuery.child(keyUnique).child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        if(!dataSnapshot.exists())
+                                        {
+                                            newQuery.child(keyUnique).child(pathPart).setValue("1");
+                                        }else
+                                        {
+                                            newQuery.child(keyUnique).child(pathPart).removeValue();
+                                        }
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+                            }
+                        });
+
+
+
+
+                        newQuery.child(keyUnique).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        postHolder.likeCount.setText(dataSnapshot.getChildrenCount()+" likes");
+
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+
 //                        if (!Constants.encodeEmail(post.getEmail()).contains(",com")||!Constants.encodeEmail(post.getEmail()).contains(",in")) {
 ////                            p.with(getBaseContext())
 ////                                    .load(post.getPostImageUrl().toString()).fit()
@@ -275,10 +336,15 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                                 System.out.println("The read failed: " + firebaseError.getMessage());
                             }
                         });
+
+
+
+
                         postHolder.postOwnerPhoto.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 callProfileActivity(post.getEmail());
+
                             }
                         });
 
@@ -371,6 +437,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         profileNav = (LinearLayout) findViewById(R.id.profileNav);
         explore = (LinearLayout) findViewById(R.id.
                 explore);
+
         fab = (FloatingActionButton) findViewById(R.id.fabButton);
         mProgressBar=(ProgressBar)findViewById(R.id.chooserProgress);
     }

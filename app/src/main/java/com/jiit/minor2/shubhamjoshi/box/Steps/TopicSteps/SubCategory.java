@@ -85,7 +85,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Post p = new Post("User just asked ","tell me ","","");
+                final Post p = new Post("User just asked ","tell me ",pathPart,"http://jiitminor128.netai.net/pictures/2.JPG");
                 final Firebase firebase = new Firebase(Constants.FIREBASE_URL);
 
                 firebase.child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,8 +109,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
                 regs.put("TOP", "(top) (\\d+)");
                 regs.put("cheapest", "(cheapest) (\\d+)");
 
-//                mAppBarLayout.animate().translationY(-600).setDuration(500);
-//                searchLanguage.animate().translationY(-300).setDuration(500);
+
                 for (HashMap.Entry<String, String> entry : regs.entrySet()) {
                     String key = entry.getKey();
                     String value = entry.getValue();

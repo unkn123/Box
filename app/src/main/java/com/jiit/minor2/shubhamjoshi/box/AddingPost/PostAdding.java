@@ -111,6 +111,14 @@ public class PostAdding extends AppCompatActivity {
                         pathPart, imageUrl);
 
 
+                String iii = post.getPostImageUrl();
+                int start = iii.lastIndexOf("/");
+                final String keyUnique =post.getPostImageUrl().substring(start+1,iii.length()-4);
+                final Firebase newQuery  = new Firebase(Constants.FIREBASE_URL).child("postsStatus");
+
+
+
+
                 posts.child(uniqueKey).setValue(post);
                 allPosts.child(uniqueKey).setValue(post);
 

@@ -118,7 +118,7 @@
 
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/body"
             android:layout_below="@+id/body"
@@ -133,12 +133,24 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/like"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginBottom="5dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
 
-                android:layout_marginTop="5dp"
+
+
                 android:src="@drawable/ic_plus_one_white_36dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="hello"
+                android:textSize="14sp"
+                android:id="@+id/likecount"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:textColor="#eee"
+                android:layout_below="@+id/imageView2"
+                android:layout_toStartOf="@+id/imageView2"/>
 
             <ImageView
                 android:layout_width="25dp"
@@ -149,7 +161,8 @@
                 android:layout_marginTop="5dp"
 
                 android:layout_toLeftOf="@+id/sharePostContainer"
-                android:src="@drawable/ic_insert_comment_white_48dp"/>
+                android:src="@drawable/ic_insert_comment_white_48dp"
+                android:id="@+id/imageView2"/>
 
 
 

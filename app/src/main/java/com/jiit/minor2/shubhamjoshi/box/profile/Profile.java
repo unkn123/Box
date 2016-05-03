@@ -130,7 +130,7 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
 
 
         Firebase firebase = new Firebase(Constants.FIREBASE_URL);
-        firebase.child("DisplayPosts").child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.child("posts").child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 postNo.setText(dataSnapshot.getChildrenCount() + "");
