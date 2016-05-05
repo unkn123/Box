@@ -1,4 +1,4 @@
-package com.jiit.minor2.shubhamjoshi.box;
+package com.jiit.minor2.shubhamjoshi.box.Steps;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,6 +24,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Holder.FriendsHolder;
+import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.CopyPost;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;

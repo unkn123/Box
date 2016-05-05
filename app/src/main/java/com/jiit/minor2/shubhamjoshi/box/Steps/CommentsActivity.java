@@ -1,4 +1,4 @@
-package com.jiit.minor2.shubhamjoshi.box;
+package com.jiit.minor2.shubhamjoshi.box.Steps;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +16,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Holder.CommentsHolder;
+import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Comment;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
@@ -42,7 +43,7 @@ public class CommentsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String comment = commentBox.getText().toString();
                 final HashMap<String, String> h = new HashMap<String, String>();
-
+                commentBox.setText("");
 
                 vaibhavFirebaseQuery.child("user").child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

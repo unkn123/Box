@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:background="#000"
             app:layout_scrollFlags="scroll|enterAlways"
-            tools:context="com.jiit.minor2.shubhamjoshi.box.Friends">
+            tools:context=".Steps.Friends">
 
             <TextView
                 android:id="@+id/heading"

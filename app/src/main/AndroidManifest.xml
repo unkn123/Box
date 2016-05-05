@@ -62,13 +62,13 @@
             android:label="@string/title_activity_results"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".Friends">
+        <activity android:name=".Steps.Friends">
         </activity>
         <activity
             android:name=".ShowFollowers"
             android:theme="@style/Theme.AppCompat.Translucent">
         </activity>
-        <activity android:name=".CommentsActivity">
+        <activity android:name=".Steps.CommentsActivity">
         </activity>
     </application>
 

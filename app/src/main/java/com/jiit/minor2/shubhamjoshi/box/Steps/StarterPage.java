@@ -25,6 +25,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -32,24 +34,32 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.AddingPost.PostAdding;
-import com.jiit.minor2.shubhamjoshi.box.CommentsActivity;
-import com.jiit.minor2.shubhamjoshi.box.Friends;
 import com.jiit.minor2.shubhamjoshi.box.Holder.PostHolder;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
+import com.jiit.minor2.shubhamjoshi.box.model.SubModal;
 import com.jiit.minor2.shubhamjoshi.box.profile.Profile;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import twitter4j.MediaEntity;
 import twitter4j.QueryResult;
@@ -69,18 +79,37 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private FirebaseRecyclerAdapter mAdapter;
     private RecyclerView recycler;
     private Toolbar mToolbar;
+    private int count;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout nav;
+    private String urlToParse;
     private LinearLayout explore;
     private LinearLayout profileNav;
     private ProgressBar mProgressBar;
     private String likeQuery = "";
+    private String photoHead;
+    private String postHead;
+    private String ratingsHead;
+    private ArrayList<SubModal> mList = new ArrayList<>();
     private Set<String> likes = new HashSet<>();
     private FloatingActionButton fab;
     private String pathPart;
     private boolean firstStateOfAnimation = true;
     private List<GalleryModel> persons;
     Picasso p;
+
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
 
     public static String caluculateTimeAgo(long timeStamp) {
 
@@ -220,8 +249,38 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                         final String keyUnique =post.getPostImageUrl().substring(start + 1, iii.length() - 4);
                         final Firebase newQuery  = new Firebase(Constants.FIREBASE_URL).child("postsStatus");
 
+                        if(isNumeric(keyUnique)) {
+                            if (Integer.parseInt(keyUnique) == 2) {
+                                postHolder.postImage.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        String searchHLLanguage = post.getTitle().toString();
+                                        HashMap<String, String> regs = new HashMap<String, String>();
+                                        regs.put("TOP", "(top) (\\d+)");
+                                        regs.put("cheapest", "(cheapest) (\\d+)");
 
 
+                                        for (HashMap.Entry<String, String> entry : regs.entrySet()) {
+                                            String key = entry.getKey();
+                                            String value = entry.getValue();
+                                            Matcher m = Pattern.compile(value).matcher(searchHLLanguage);
+                                            boolean f = m.find();
+                                            while (f) {
+                                                System.out.println(m.group(1).toLowerCase().trim());
+                                                urlToParse = generateURL(m.group(1).toLowerCase().trim(), m.group(2).toLowerCase().trim());
+                                                new MyTask().execute();
+
+                                                f = m.find();
+                                            }
+
+                                        }
+
+
+                                    }
+                                });
+                            }
+                        }
 
 
 
@@ -643,5 +702,79 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     public void friendActivityTest(View view)
     {
         startActivity(new Intent(getBaseContext(), Friends.class));
+    }
+
+    public String generateURL(String phrase, String count) {
+        String finalUrl = "";
+        String CITY = "ncr";
+        this.count = Integer.parseInt(count);
+        if (phrase.toLowerCase().equals("top"))
+            finalUrl = Constants.generalFoodUrl + "" + CITY + "/best" + "-" + "restaurants";
+        else
+            finalUrl = Constants.generalFoodUrl + "" + CITY + "/restaurants" + "?sort=ca";
+        return finalUrl;
+    }
+
+
+
+    class MyTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String title = "";
+            Document doc;
+            try {
+                doc = Jsoup.connect(urlToParse).get();
+                Elements article = doc.select("article.search-result");
+
+                for (org.jsoup.nodes.Element element : article) {
+                    Elements resturants = element.select("a.result-title");
+
+                    Elements rating = element.select(".res-rating-nf");
+                    Elements photo = element.select("a.feat-img");
+
+
+                    String style = photo.attr("data-original");
+                    postHead = resturants.text();
+                    photoHead = style.toString();
+                    ratingsHead = rating.text();
+
+                    System.out.print(ratingsHead);
+
+
+                    SubModal sm = new SubModal(photoHead, postHead, ratingsHead,count);
+
+                    mList.add(sm);
+
+
+
+
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return title;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            //  Log.e("SJSJ",ratingsHead);
+
+            Intent intent = new Intent(getApplicationContext(),Results.class);
+            Log.e("SJJS",count+"");
+            ArrayList<SubModal> list = new ArrayList<>();
+            list.addAll(mList.subList(0,count));
+            intent.putExtra("LIST", (Serializable)list);
+            startActivity(intent);
+
+        }
     }
 }

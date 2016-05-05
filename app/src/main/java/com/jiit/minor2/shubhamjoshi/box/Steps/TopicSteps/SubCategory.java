@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -50,7 +51,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private ArrayList<SubModal> mList = new ArrayList<>();
     private String photoHead;
     private RecyclerView mRecyclerView;
-    private int count=0;
+    private int count = 0;
     private String urlToParse;
     private String ratingsHead;
     private String pathPart;
@@ -84,13 +85,15 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Post p = new Post("User just asked ","tell me ",pathPart,"http://jiitminor128.netai.net/pictures/2.JPG");
+
+                final Post p = new Post("User just asked ", searchLanguage.getText().toString(),
+                        pathPart, "http://jiitminor128.netai.net/pictures/2.JPG");
                 final Firebase firebase = new Firebase(Constants.FIREBASE_URL);
 
-                firebase.child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
+                firebase.child("follower").child(pathPart).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot snapshot :dataSnapshot.getChildren()){
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             firebase.child("DisplayPosts").child(snapshot.getKey()).push().setValue(p);
                         }
                     }
@@ -100,7 +103,6 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
 
                     }
                 });
-
 
 
                 String searchHLLanguage = searchLanguage.getText().toString();
@@ -150,7 +152,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     private void init() {
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         mTitle = (TextView) findViewById(R.id.title);
-        mProgressBar = (ProgressBar)findViewById(R.id.chooserProgress);
+        mProgressBar = (ProgressBar) findViewById(R.id.chooserProgress);
         searchLanguage = (EditText) findViewById(R.id.searchLang);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 
@@ -161,7 +163,7 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
-       // Log.e("SJSJ", percentage + "");
+        // Log.e("SJSJ", percentage + "");
         handleToolbarTitleVisibility(percentage);
     }
 
@@ -224,11 +226,9 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
                     System.out.print(ratingsHead);
 
 
-                    SubModal sm = new SubModal(photoHead, postHead, ratingsHead,count);
+                    SubModal sm = new SubModal(photoHead, postHead, ratingsHead, count);
 
                     mList.add(sm);
-
-
 
 
                 }
@@ -242,13 +242,14 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
 
         @Override
         protected void onPostExecute(String result) {
-          //  Log.e("SJSJ",ratingsHead);
+            //  Log.e("SJSJ",ratingsHead);
 
-            Intent intent = new Intent(getApplicationContext(),Results.class);
-            Log.e("SJJS",count+"");
+            mProgressBar.setVisibility(View.INVISIBLE);
+            Intent intent = new Intent(getApplicationContext(), Results.class);
+            Log.e("SJJS", count + "");
             ArrayList<SubModal> list = new ArrayList<>();
-            list.addAll(mList.subList(0,count));
-            intent.putExtra("LIST", (Serializable)list);
+            list.addAll(mList.subList(0, count));
+            intent.putExtra("LIST", (Serializable) list);
             startActivity(intent);
 
 
