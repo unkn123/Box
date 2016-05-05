@@ -165,7 +165,15 @@
                 android:id="@+id/imageView2"/>
 
 
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#eee"
+                    android:id="@+id/commentCount"
+                    android:text=""
+                    android:layout_below="@+id/sharePostContainer"
+                    android:layout_alignEnd="@+id/imageView2"/>
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"

@@ -24,9 +24,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.facebook.login.LoginManager;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -34,9 +32,9 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.AddingPost.PostAdding;
+import com.jiit.minor2.shubhamjoshi.box.CommentsActivity;
 import com.jiit.minor2.shubhamjoshi.box.Friends;
 import com.jiit.minor2.shubhamjoshi.box.Holder.PostHolder;
-import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
 import com.jiit.minor2.shubhamjoshi.box.model.GalleryModel;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
@@ -46,7 +44,6 @@ import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,7 +73,6 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
     private LinearLayout nav;
     private LinearLayout explore;
     private LinearLayout profileNav;
-
     private ProgressBar mProgressBar;
     private String likeQuery = "";
     private Set<String> likes = new HashSet<>();
@@ -221,7 +217,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
                         String iii = post.getPostImageUrl();
                         int start = iii.lastIndexOf("/");
-                        final String keyUnique =post.getPostImageUrl().substring(start+1,iii.length()-4);
+                        final String keyUnique =post.getPostImageUrl().substring(start + 1, iii.length() - 4);
                         final Firebase newQuery  = new Firebase(Constants.FIREBASE_URL).child("postsStatus");
 
 
@@ -260,14 +256,36 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
                             }
                         });
 
+                        postHolder.comments.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getBaseContext(), CommentsActivity.class);
+                                intent.putExtra("KEY", keyUnique);
+                                startActivity(intent);
+                            }
+                        });
 
 
 
+
+                        Firebase piyushTree = new Firebase(Constants.FIREBASE_URL);
+                        piyushTree.child("postsComments").child(keyUnique).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                postHolder.commentCount.setText(dataSnapshot.getChildrenCount()+"");
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
                         newQuery.child(keyUnique).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                         postHolder.likeCount.setText(dataSnapshot.getChildrenCount()+" likes");
+
 
                             }
 
