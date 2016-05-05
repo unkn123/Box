@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
@@ -31,6 +32,7 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.jiit.minor2.shubhamjoshi.box.Holder.HolderForProfilePost;
 import com.jiit.minor2.shubhamjoshi.box.MainActivity;
 import com.jiit.minor2.shubhamjoshi.box.R;
+import com.jiit.minor2.shubhamjoshi.box.ShowFollowers;
 import com.jiit.minor2.shubhamjoshi.box.model.PostModels.Post;
 import com.jiit.minor2.shubhamjoshi.box.model.User;
 import com.jiit.minor2.shubhamjoshi.box.utils.Constants;
@@ -52,6 +54,7 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
     private TextView follower;
     private TextView following;
     private TextView mTitle;
+    private LinearLayout followerSpan;
     private FirebaseRecyclerAdapter mAdapter;
     private TextView mUsername;
     private AppBarLayout mAppBarLayout;
@@ -194,11 +197,19 @@ public class Profile extends AppCompatActivity implements AppBarLayout.OnOffsetC
             }
         };
         recycler.setAdapter(mAdapter);
+
+        followerSpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), ShowFollowers.class));
+            }
+        });
     }
 
     private void init() {
         profile = (CircleImageView) findViewById(R.id.fb123);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        followerSpan = (LinearLayout)findViewById(R.id.followerSpan);
         title=(TextView)findViewById(R.id.title_toolbar);
         mTitle = (TextView) findViewById(R.id.title_toolbar);
         follower = (TextView)findViewById(R.id.followerCount);
