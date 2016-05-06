@@ -80,7 +80,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
 
-                android:text="Mood"
+                android:text="Food"
                 android:textSize="24sp"/>
 
 
@@ -126,13 +126,54 @@
                     android:textColor="#fff"/>
 
 
+
+
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recent Activity"
+                android:textColor="#fff"
+                android:textSize="20sp"
+
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+
+            <HorizontalScrollView
+                android:id="@+id/suggestions"
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:layout_height="180dp"
+                android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:id="@+id/relativeLayoutHSV"
+                    android:background="#000">
+
+
+
+
+
+                </RelativeLayout>
+
+
+            </HorizontalScrollView>
+
 
         </LinearLayout>
 
-
-
     </android.support.v4.widget.NestedScrollView>
+
+
+
 
     <ProgressBar
         android:id="@+id/chooserProgress"
@@ -143,4 +184,7 @@
         android:indeterminateDrawable="@drawable/progress_style"
         android:progressDrawable="@drawable/progress_style"
         android:visibility="invisible"/>
+
+
+
 </android.support.design.widget.CoordinatorLayout>

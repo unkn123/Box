@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -298,9 +299,19 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
 
                                         if(!dataSnapshot.exists())
                                         {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                postHolder.like.setImageDrawable(getResources().getDrawable(R.drawable.ic_plus_one_black_36dp, getApplicationContext().getTheme()));
+                                            } else {
+                                                postHolder.like.setImageDrawable(getResources().getDrawable(R.drawable.ic_plus_one_black_36dp));
+                                            }
                                             newQuery.child(keyUnique).child(pathPart).setValue("1");
                                         }else
                                         {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                postHolder.like.setImageDrawable(getResources().getDrawable(R.drawable.ic_plus_one_white_36dp, getApplicationContext().getTheme()));
+                                            } else {
+                                                postHolder.like.setImageDrawable(getResources().getDrawable(R.drawable.ic_plus_one_white_36dp));
+                                            }
                                             newQuery.child(keyUnique).child(pathPart).removeValue();
                                         }
 
@@ -767,7 +778,7 @@ public class StarterPage extends AppCompatActivity implements AppBarLayout.OnOff
         @Override
         protected void onPostExecute(String result) {
             //  Log.e("SJSJ",ratingsHead);
-
+            mProgressBar.setVisibility(View.GONE);
             Intent intent = new Intent(getApplicationContext(),Results.class);
             Log.e("SJJS",count+"");
             ArrayList<SubModal> list = new ArrayList<>();

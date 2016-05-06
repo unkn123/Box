@@ -130,6 +130,10 @@ public class SubCategory extends AppCompatActivity implements AppBarLayout.OnOff
             }
         });
 
+
+
+
+
     }
 
     @Override
