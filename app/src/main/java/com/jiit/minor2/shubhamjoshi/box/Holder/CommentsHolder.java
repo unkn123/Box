@@ -16,6 +16,7 @@ public class CommentsHolder extends RecyclerView.ViewHolder {
     public ImageView image;
     public TextView username;
     public TextView comment;
+    public TextView time;
 
     public CommentsHolder(View itemView) {
         super(itemView);
@@ -23,6 +24,7 @@ public class CommentsHolder extends RecyclerView.ViewHolder {
         image = (ImageView) itemView.findViewById(R.id.ownerI);
         username = (TextView) itemView.findViewById(R.id.usernameI);
         comment =(TextView)itemView.findViewById(R.id.commentI);
+        time = (TextView)itemView.findViewById(R.id.timeI);
     }
 
 }
